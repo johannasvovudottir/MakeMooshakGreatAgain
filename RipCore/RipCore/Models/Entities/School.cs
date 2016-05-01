@@ -5,7 +5,7 @@ using System.Web;
 
 namespace RipCore.Models.Entities
 {
-    public class Teacher
+    public class School
     {
     }
 }

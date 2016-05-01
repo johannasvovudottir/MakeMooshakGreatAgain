@@ -5,13 +5,10 @@ using System.Web;
 
 namespace RipCore.Models.Entities
 {
-    public class Assignment
+    public class Course_Student
     {
         public int ID { get; set; }
-        public string Title { get; set; }
-        public int Weight { get; set; }
         public int CourseID { get; set; }
-        List<string> input;
-        List<string> output;
+        public int UserID { get; set; }
     }
 }

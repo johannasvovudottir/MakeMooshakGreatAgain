@@ -8,13 +8,18 @@ using System.Web.Mvc;
 
 namespace RipCore.Controllers
 {
-    public class StudentController : Controller
+    public class UserController : Controller
     {
-        private UsersService service = new UsersService();
+        private CourseService service = new CourseService();
         // GET: Student
         public ActionResult Index()
         {
-            int id = 1;
+            var viewModels = service.GetCoursesWhereStudent(2);
+            return View(viewModels);
+        }
+
+        public ActionResult CourseDetails(int id)
+        {
             var viewModel = service.GetCoursesById(id);
             return View(viewModel);
         }

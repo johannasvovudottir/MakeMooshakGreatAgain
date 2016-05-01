@@ -22,11 +22,14 @@ namespace RipCore.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Assignment> Assignments { get; set; }
-        //public DbSet<AssignmentMilestone> Milestones { get; set; }
-        //public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Student> Users { get; set; }
+        public DbSet<AssignmentMilestone> Milestones { get; set; }
+        public DbSet<Course_Teacher> CoursesTeachers { get; set; }
+        public DbSet<Course_Student> CoursesStudents { get; set; }
+       // public DbSet<School> Schools { get; set; }
+        //public DbSet<User> Solutions { get; set; }
         public DbSet<Course> Courses { get; set; }
-        //public DbSet<Admin> Admins { get; set; }
+        public DbSet<User> Users { get; set; }
+
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

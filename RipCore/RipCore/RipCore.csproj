@@ -172,8 +172,7 @@
     <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\StudentController.cs" />
-    <Compile Include="Controllers\TeacherController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,17 +181,19 @@
     <Compile Include="Models\Entities\Assignment.cs" />
     <Compile Include="Models\Entities\AssignmentMilestone.cs" />
     <Compile Include="Models\Entities\Course.cs" />
-    <Compile Include="Models\Entities\Person.cs" />
-    <Compile Include="Models\Entities\Student.cs" />
-    <Compile Include="Models\Entities\Teacher.cs" />
+    <Compile Include="Models\Entities\CourseStudent.cs" />
+    <Compile Include="Models\Entities\CourseTeacher.cs" />
+    <Compile Include="Models\Entities\School.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AssignmentMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\AssignmentViewModel.cs" />
+    <Compile Include="Models\ViewModels\CourseOverViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AssignmentsService.cs" />
-    <Compile Include="Services\UsersService.cs" />
+    <Compile Include="Services\CourseService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,10 +252,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Assignments\Details.cshtml" />
-    <Content Include="Views\Student\Index.cshtml" />
-    <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\User\CourseDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
