@@ -1,5 +1,6 @@
 ﻿using RipCore.Models;
 using RipCore.Models.ViewModels;
+using RipCore.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,20 @@ namespace RipCore.Services
         }
         public List<AssignmentViewModel> GetAssignmentsInCourse(int courseId)
         {
-            return null;
+            var assignments = (from a in db.Assignments
+                               where a.CourseID == courseId
+                               select a).ToList();
+            List <AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
+            foreach (var item in assignments)
+            {
+                AssignmentViewModel tmp = new AssignmentViewModel
+                {
+                    Title = item.Title,
+                    Weight = item.Weight
+                };
+                assignentViewModel.Add(tmp);
+            }
+            return assignentViewModel;
         }
 
         public AssignmentViewModel GetAssignmentsById(int assignmentID)

@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.assignments {
+    margin: -11em 20em;
+}
+
+nav.courses {
+    margin-bottom: 20em;
+}
+
+main.courseInfo {
+    margin: -30em 20em;
+}

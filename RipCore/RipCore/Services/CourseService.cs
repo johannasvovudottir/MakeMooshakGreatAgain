@@ -31,6 +31,28 @@ namespace RipCore.Services
             return viewModel;
         }
 
+        public List<AssignmentViewModel> GetAllUserAssignments(int userID)
+        {
+            var allCourses = GetCoursesWhereStudent(userID);
+            List <AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
+            AssignmentsService tmp = new AssignmentsService();
+            foreach(var item in allCourses)
+            {
+                allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
+            }
+            return allAssignments;
+        }
+        public CourseOverViewModel GetAllInfo(int userID)
+        {
+            CourseOverViewModel viewModel = new CourseOverViewModel
+            {
+                whereTeacher = GetCoursesWhereTeacher(userID),
+                whereStudent = GetCoursesWhereStudent(userID),
+                assignments = GetAllUserAssignments(userID)
+            };
+            return viewModel;
+
+        }
         public List<Course> GetCoursesWhereStudent(int userID)
         {
             List<Course> result = (from c in db.CoursesStudents
@@ -89,19 +111,9 @@ namespace RipCore.Services
         public List<User> Students { get; set; }
         public List<Course> Courses { get; set; }
             */
-            List<Assignment> assignments = (from a in db.Assignments
-                                            where a.CourseID == courseID
-                                            select a).ToList();
-            List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
-            foreach(var item in assignments)
-            {
-                AssignmentViewModel tmp = new AssignmentViewModel
-                {
-                    Title = item.Title,
-                    Weight = item.Weight
-                };
-                assignentViewModel.Add(tmp);
-            }
+
+            AssignmentsService tmp = new AssignmentsService();
+            List<AssignmentViewModel> assignentViewModel = tmp.GetAssignmentsInCourse(courseID);
             var coursesAsTeacher = GetCoursesWhereTeacher(1);
             var coursesAsStudent = GetCoursesWhereStudent(1);
             var students = GetAllStudents(courseID);

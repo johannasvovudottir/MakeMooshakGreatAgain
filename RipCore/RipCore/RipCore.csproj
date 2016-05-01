@@ -255,7 +255,12 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\User\CourseDetails.cshtml" />
+    <Content Include="Views\User\TeacherOverview.cshtml" />
+    <Content Include="Views\User\CourseInfo.cshtml" />
+    <Content Include="Views\User\StudentOverview.cshtml" />
+    <Content Include="Views\User\AssignmentForm.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

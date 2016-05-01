@@ -9,9 +9,12 @@ namespace RipCore.Models.ViewModels
     {
         public string Title { get; set; }
         public int Weight { get; set; }
-       // public int parts { get; set; }
-       // public List<AssignmentMilestoneViewModel> milestones;
-       // List<string> input;
-       // List<string> output;
+        public string Description { get; set; }
+        public List<AssignmentMilestoneViewModel> milestones;
+        public DateTime DateCreated { get; set; }
+        public DateTime DueDate { get; set; }
+
+        // List<string> input;
+        // List<string> output;
     }
 }

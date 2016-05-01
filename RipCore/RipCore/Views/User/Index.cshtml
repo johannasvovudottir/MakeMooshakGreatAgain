@@ -1,13 +1,35 @@
-﻿@model List<RipCore.Models.Entities.Course>
+﻿@model RipCore.Models.ViewModels.CourseOverViewModel
 @{
     ViewBag.Title = "Index";
 }
-<h1>Courses</h1>
-<ul> 
-@foreach (var item in Model)
-{
-    <li>
-        @Html.ActionLink(item.Name, "CourseDetails", new { id=item.ID }) 
-    </li>
-}
-</ul>
+<nav class="courese">
+    <h3>Courses as Student</h3>
+    <ul>
+        @foreach (var item in Model.whereStudent)
+        {
+            <li>
+                @Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })
+            </li>
+        }
+    </ul>
+    <h3>Courses as Teacher</h3>
+    <ul>
+        @foreach (var item in Model.whereTeacher)
+        {
+            <li>
+                @Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })
+            </li>
+        }
+    </ul>
+</nav>
+<main class="assignments">
+    <h3>Assignments</h3>
+    <ul>
+        @foreach (var item in Model.assignments)
+        {
+            <li>
+                <p>@item.Title</p>
+            </li>
+        }
+    </ul>
+</main>

@@ -8,7 +8,8 @@ namespace RipCore.Models.ViewModels
 {
     public class CourseOverViewModel
     {
-        List<Course> whereTeacher;
-        List<Course> whereStudent;
+        public List<Course> whereTeacher { get; set; }
+        public List<Course> whereStudent { get; set; }
+        public List<AssignmentViewModel> assignments { get; set; }
     }
 }
