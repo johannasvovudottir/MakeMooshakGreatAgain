@@ -3,14 +3,28 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 <h2>Admin Homepage</h2>
-<p><a href="CourseOverview">Courses</a></p>
-<p><a asp-action="AddCourse">Add course</a></p>
-<p><a asp-action="EditCourse">Edit course</a></p>
-<p><a href="PersonOverview">Persons</a></p>
-<p><a asp-action="AddPerson">Add person</a></p>
-<p><a asp-action="EditPerson">Edit person</a></p>
-<p><a href="User">User</a></p>
-
+<ul>
+    <li>
+        @Html.ActionLink("Courses", "CourseOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("Add course", "AddCourse", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("Edit course", "EditCourse", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("Persons", "PersonOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("Add Person", "AddPerson", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("Edit Person", "EditPerson", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+    <li>
+        @Html.ActionLink("User", "User", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+    </li>
+</ul>
 
