@@ -5,11 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RipCore.Models;
-
+using RipCore.Services;
 namespace RipCore.Controllers
 {
     [Authorize]
@@ -17,6 +18,7 @@ namespace RipCore.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private AccountsService service = new AccountsService();
 
         public AccountController()
         {
@@ -52,43 +54,46 @@ namespace RipCore.Controllers
             }
         }
 
-        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //If this is triggered, it means a logged in user is trying to access login page through non-standard ways - let's redirect.
+            if (HttpContext.Request.IsAuthenticated)
+            {
+                return RedirectToAction("", "User");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
+        {        
+            List<string> roles = new List<string>();
+            if(service.IsValid(model.Username, model.Password))
             {
-                return View(model);
+                var ident = new ClaimsIdentity(
+                  new[]
+                  {
+                      new Claim(ClaimTypes.NameIdentifier, model.Username),
+                      new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider"
+                      , "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
+                      new Claim(ClaimTypes.Name,model.Username),
+                      //new Claim(ClaimTypes.Role, "Role"),
+                      //new Claim(ClaimTypes.Role, "AnotherRole"),
+                  },
+                  DefaultAuthenticationTypes.ApplicationCookie);
+                HttpContext.GetOwinContext().Authentication.SignIn(
+                    new AuthenticationProperties { IsPersistent = false }, ident);
+                return RedirectToAction("", "User");
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
+            ModelState.AddModelError("", "Invalid login details");
+            return View(model);
         }
 
         //
