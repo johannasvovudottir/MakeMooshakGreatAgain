@@ -1,4 +1,4 @@
-﻿
+﻿@model List<RipCore.Models.ViewModels.PersonViewModel>
 @{
     ViewBag.Title = "PersonOverview";
 }
@@ -6,3 +6,12 @@
 <h2>PersonOverview</h2>
 
 <p>All persons should be displayed here</p>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.ActionLink(item.Name, "PersonDetails", new { id = item.ID })
+        </li>
+    }
+</ul>

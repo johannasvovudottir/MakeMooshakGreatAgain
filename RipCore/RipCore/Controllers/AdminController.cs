@@ -9,7 +9,8 @@ namespace RipCore.Controllers
 {
     public class AdminController : Controller
     {
-        private CourseService service = new CourseService();
+        private CourseService CourseService = new CourseService();
+        private PersonService PersonService = new PersonService();
         // GET: Admin
         public ActionResult Index()
         {
@@ -21,12 +22,13 @@ namespace RipCore.Controllers
         }
         public ActionResult CourseOverview()
         {
-            var viewModel = service.GetCoursesWhereStudent(2);
+            var viewModel = CourseService.GetAllCourses();
             return View(viewModel);
         }
         public ActionResult PersonOverview()
         {
-            return View();
+            var viewModel = PersonService.GetAllPersons();
+            return View(viewModel);
         }
 
     }
