@@ -32,5 +32,19 @@ nav.courses {
 }
 
 main.courseInfo {
-    margin: -30em 20em;
+    margin: -35em 20em 10em 20em;
+}
+
+.lists {
+    margin: -10em -10em 10em 62em;
+}
+
+footer{
+    margin-top: 25em;
+}
+
+.col-md-4 {
+    border-style: solid;
+    border-collapse: separate;
+    border-color: grey;
 }

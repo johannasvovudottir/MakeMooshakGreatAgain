@@ -26,7 +26,12 @@ namespace RipCore.Services
                 AssignmentViewModel tmp = new AssignmentViewModel
                 {
                     Title = item.Title,
-                    Weight = item.Weight
+                    Weight = item.Weight,
+                    ID = item.ID,
+                    Description = item.Description,
+                    CourseID = item.CourseID,
+                    DateCreated = item.DateCreated,
+                    DueDate = item.DueDate
                 };
                 assignentViewModel.Add(tmp);
             }
@@ -35,10 +40,13 @@ namespace RipCore.Services
 
         public AssignmentViewModel GetAssignmentsById(int assignmentID)
         {
-            var assignment = db.Assignments.SingleOrDefault(x => x.ID == assignmentID);
-            if (assignment == null)
+            var item = (from a in db.Assignments
+                              where a.ID == assignmentID
+                              select a).SingleOrDefault();
+            if (item == null)
             {
                 //TODO kasta
+                return null;
             }
             /*
             var milestones = db.Milestones.Where(x => x.AssignmendId == assignmentID).Select(x => new AssignmentMilestoneViewModel
@@ -48,9 +56,15 @@ namespace RipCore.Services
             */
             var viewModel = new AssignmentViewModel
             {
-                Title = assignment.Title
+                Title = item.Title,
+                Weight = item.Weight,
+                Description = item.Description,
+                ID = item.ID,
+                CourseID = item.CourseID,
+                DateCreated = item.DateCreated,
+                DueDate = item.DueDate
             };
-            return null;
+            return viewModel;
         }
     }
 }

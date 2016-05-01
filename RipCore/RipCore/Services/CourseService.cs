@@ -44,8 +44,13 @@ namespace RipCore.Services
         }
         public CourseOverViewModel GetAllInfo(int userID)
         {
+            string strID = (from u in db.Users where u.ID == userID select u.ID).SingleOrDefault().ToString();
+            int intID = 0;
+            int.TryParse(strID, out intID);
             CourseOverViewModel viewModel = new CourseOverViewModel
             {
+                Name = (from u in db.Users where u.ID == userID select u.FullName).SingleOrDefault().ToString(),
+                UserID = intID,
                 whereTeacher = GetCoursesWhereTeacher(userID),
                 whereStudent = GetCoursesWhereStudent(userID),
                 assignments = GetAllUserAssignments(userID)
@@ -92,7 +97,7 @@ namespace RipCore.Services
                                    select ct).ToList();
             return result;
         }
-        public CourseViewModel GetCoursesById(int courseID)
+        public CourseViewModel GetCoursesById(int courseID, int userID)
         {
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);
             if (course == null)
@@ -119,11 +124,13 @@ namespace RipCore.Services
             var students = GetAllStudents(courseID);
             var teachers = GetAllTeachers(courseID);
 
-
+            string userName = (from u in db.Users where u.ID == userID select u.FullName).SingleOrDefault().ToString();
             var viewModel = new CourseViewModel
             {
                 Name = course.Name,
                 ID = course.ID,
+                UserID = userID,
+                UserName = userName,
                 Teachers = teachers,
                 Students = students,
                 CoursesAsStudent = coursesAsStudent,
