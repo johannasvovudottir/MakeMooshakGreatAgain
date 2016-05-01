@@ -1,0 +1,18 @@
+﻿@model List<RipCore.Models.ViewModels.CourseViewModel>
+@{
+    ViewBag.Title = "CourseOverview";
+}
+
+<h2>CourseOverview</h2>
+
+<p>All courses </p>
+
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.ActionLink(item.Name, "CourseDetails", new { id = item.ID })
+        </li>
+    }
+</ul>
