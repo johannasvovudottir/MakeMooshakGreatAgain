@@ -14,4 +14,8 @@
             @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
         </li>
     }
+
 </ul>
+
+
+@Html.ActionLink("New Person", "AddPerson", new { id = 0 })

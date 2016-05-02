@@ -1,4 +1,6 @@
-﻿using RipCore.Models.ViewModels;
+﻿using RipCore.Models;
+using RipCore.Models.Entities;
+using RipCore.Models.ViewModels;
 using RipCore.Services;
 using System;
 using System.Collections.Generic;
@@ -13,9 +15,12 @@ namespace RipCore.Controllers
         private CourseService CourseService = new CourseService();
         private PersonService PersonService = new PersonService();
         private AccountsService accountService = new AccountsService();
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Admin
         public ActionResult Index()
         {
+            //int id = accountService.GetIdByUser(User.Identity.Name);
+
             return View();
         }
         //public ActionResult User()
@@ -26,9 +31,17 @@ namespace RipCore.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult AddPerson(PersonViewModel newData)
+        {
+            User newPerson = new User { FullName = newData.Name,Ssn =newData.Ssn,UserName="Dummy",Email="Dummy",Password="12414141"};
+            db.Users.Add(newPerson);
+            db.SaveChanges();
+            return View();
+        }
         public ActionResult EditPerson(int id)
         {
-            if(id != null)
+            if(id != 0)
             {
 
             PersonViewModel viewModel = PersonService.GetPersonById(id);

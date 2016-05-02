@@ -19,7 +19,13 @@ namespace RipCore.Controllers
         // GET: Student
         public ActionResult Index()
         {
-            int id = accountService.GetIdByUser(User.Identity.Name);
+            int id = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref id))
+                return RedirectToAction("Index", "Home");
+
             var viewModels = service.GetAllInfo(id);
             viewModels.Name = User.Identity.Name;
             return View(viewModels);
@@ -41,6 +47,13 @@ namespace RipCore.Controllers
 
         public ActionResult Create(int id)
         {
+            /*
+            int userID = accountService.GetIdByUser(User.Identity.Name);
+            if (!accountService.IsUserQualified("Teacher", userID, id))
+            {
+                return RedirectToAction("", "User");
+            }
+            */
             AssignmentViewModel viewModel = new AssignmentViewModel();
             viewModel.CourseID = id;
             return View(viewModel);
