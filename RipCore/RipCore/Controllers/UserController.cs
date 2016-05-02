@@ -128,7 +128,7 @@ namespace RipCore.Controllers
             return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = ID});
         }
 
-        public ActionResult Edit(int assignID)
+        public ActionResult Edit(int id)
         {
             #region Security
             int ID = 0;
@@ -138,20 +138,20 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
                 return RedirectToAction("Index", "Home");
 
-            if(assignID <= 0)
+            if(id <= 0)
             {
                 return View();
             }
             #endregion
             //if(id.HasValue)
             //{
-            AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(assignID);
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
                 if(viewModel != null)
                 {
                     return View(viewModel);
                 }
             //}
-            return RedirectToAction("TeacherOverview", new { id = assignID, userID = ID });
+            return RedirectToAction("TeacherOverview", new { id = id, userID = ID });
         }
 
         [HttpPost]
