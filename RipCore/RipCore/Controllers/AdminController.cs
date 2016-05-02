@@ -34,7 +34,7 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddPerson(PersonViewModel newData)
         {
-            User newPerson = new User { FullName = newData.Name,Ssn =newData.Ssn,UserName="Dummy",Email="Dummy",Password="12414141"};
+            User newPerson = new User { FullName = newData.Name,Ssn =newData.Ssn,UserName=newData.Username,Email=newData.Email,Password=newData.Password};
             db.Users.Add(newPerson);
             db.SaveChanges();
             return View();
@@ -50,7 +50,25 @@ namespace RipCore.Controllers
                     return View(viewModel);
                 }
             }
-            // return RedirectToAction("TeacherOverview", new { id = 1, userID = 1 });
+            return View();
+        }
+        [HttpPost]
+        public ActionResult EditPerson(PersonViewModel newData)
+        {
+            if (ModelState.IsValid)
+            {
+                User newPerson = db.Users.Where(x => x.ID == newData.ID).SingleOrDefault();
+                if (newPerson != null)
+                {
+                    newPerson.FullName = newData.Name;
+                    newPerson.Email = newData.Email;
+                    newPerson.Password = newData.Password;
+                    newPerson.Ssn = newData.Ssn;
+                    newPerson.UserName = newData.Username;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
             return View();
 
         }

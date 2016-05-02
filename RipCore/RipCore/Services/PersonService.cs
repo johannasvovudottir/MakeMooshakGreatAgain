@@ -48,7 +48,10 @@ namespace RipCore.Services
             {
                 Name = result.FullName,
                 ID = result.ID,
-                Ssn = result.Ssn
+                Ssn = result.Ssn,
+                Password = result.Password,
+                Email = result.Email,
+                Username = result.UserName
             };
 
             return viewModel;
