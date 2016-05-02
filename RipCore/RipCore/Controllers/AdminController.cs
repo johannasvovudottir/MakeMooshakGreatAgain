@@ -20,6 +20,22 @@ namespace RipCore.Controllers
         {
             return View();
         }
+        public ActionResult AddPerson()
+        {
+            return View();
+        }
+        public ActionResult EditPerson()
+        {
+            return View();
+        }
+        public ActionResult AddCourse()
+        {
+            return View();
+        }
+        public ActionResult EditCourse()
+        {
+            return View();
+        }
         public ActionResult CourseOverview()
         {
             var viewModel = CourseService.GetAllCourses();
@@ -30,6 +46,6 @@ namespace RipCore.Controllers
             var viewModel = PersonService.GetAllPersons();
             return View(viewModel);
         }
-
+        
     }
 }
