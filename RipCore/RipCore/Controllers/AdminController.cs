@@ -17,7 +17,7 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
            
-            int id = accountService.GetIdByUser(User.Identity.Name);
+            //int id = accountService.GetIdByUser(User.Identity.Name);
             return View();
         }
         //public ActionResult User()

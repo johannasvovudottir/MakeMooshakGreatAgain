@@ -17,9 +17,32 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
-        public int GetIdByUser(string name)
+        public bool GetIdByUser(string name, ref int userID)
         {
-            return db.Users.First(u => u.UserName == name).ID;
+            int id = db.Users.First(u => u.UserName == name).ID;
+            if (id == 0)
+            {
+                return false;
+            }
+            userID = id;
+            return true;
+        }
+
+        public bool IsUserQualified(string role, int userID, int courseID)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                if (role.ToLower() == "Teacher")
+                {
+                    return db.CoursesTeachers.Any(u => u.TeacherID == userID
+                        && u.CourseID == courseID);
+                }
+                else
+                {
+                    return db.CoursesStudents.Any(u => u.UserID == userID
+                        && u.CourseID == courseID);
+                }
+            }
         }
 
         public bool IsValid(string username, string password)
