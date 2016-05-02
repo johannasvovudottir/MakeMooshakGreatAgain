@@ -13,12 +13,15 @@ namespace RipCore.Controllers
     public class UserController : Controller
     {
         private CourseService service = new CourseService();
+        private AccountsService accountService = new AccountsService();
         private AssignmentsService assignmentService = new AssignmentsService();
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Student
         public ActionResult Index()
         {
-            var viewModels = service.GetAllInfo(1);
+            int id = accountService.GetIdByUser(User.Identity.Name);
+            var viewModels = service.GetAllInfo(id);
+            viewModels.Name = User.Identity.Name;
             return View(viewModels);
         }
 
@@ -38,17 +41,20 @@ namespace RipCore.Controllers
 
         public ActionResult Create(int id)
         {
-            return View(new AssignmentViewModel { CourseID = id });
+            AssignmentViewModel viewModel = new AssignmentViewModel();
+            viewModel.CourseID = id;
+            return View(viewModel);
         }
 
         [HttpPost]
         public ActionResult Create(AssignmentViewModel newData)
         {
-            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = 1, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
+            int tmp = newData.CourseID;
+            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
-            return RedirectToAction("TeacherOverview", new { id=1, userID = 1});
+            return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = 1});
         }
 
         public ActionResult Edit(int id)
