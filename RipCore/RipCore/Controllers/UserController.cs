@@ -33,6 +33,23 @@ namespace RipCore.Controllers
 
         public ActionResult StudentOverview(int id, int userID)
         {
+            #region Security
+            int actualID = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
+                return RedirectToAction("Index", "Home");
+
+            if (userID != actualID)
+            {
+                var model = service.GetCoursesById(id, actualID);
+                model.UserID = actualID;
+                model.isTeacher = false;
+                return View(model);
+            }
+            #endregion
+
             var viewModel = service.GetCoursesById(id, userID);
             viewModel.isTeacher = false;
             return View(viewModel);
@@ -40,6 +57,22 @@ namespace RipCore.Controllers
 
         public ActionResult TeacherOverview(int id, int userID)
         {
+            #region Security
+            int actualID = 0;
+            if(!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
+                return RedirectToAction("Index", "Home");
+
+            if(userID != actualID)
+            {
+                var model = service.GetCoursesById(id, actualID);
+                model.UserID = actualID;
+                return View(model);
+            }
+            #endregion
+
             var viewModel = service.GetCoursesById(id, userID);
             viewModel.isTeacher = true;
             return View(viewModel);
