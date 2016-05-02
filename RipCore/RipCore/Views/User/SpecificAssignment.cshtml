@@ -1,0 +1,24 @@
+﻿@model RipCore.Models.ViewModels.AssignmentViewModel
+<h3>@Html.DisplayFor(modelItem => Model.Title)</h3>
+<table>
+    <tbody>
+        <tr>
+            <td>Date Created: @Model.DateCreated</td>
+            <td>Weight: @Model.Weight</td>
+        </tr>
+        <tr>
+            <td>Due Date: @Model.DueDate</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<h4>Project Description</h4>
+@Html.DisplayFor(modelItem => Model.Description)
+@if (Model.IsTeacher)
+{
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+}
+@if (!Model.IsTeacher)
+{
+    @Html.ActionLink("Uplod File", "Upload", new { id = Model.ID })
+}

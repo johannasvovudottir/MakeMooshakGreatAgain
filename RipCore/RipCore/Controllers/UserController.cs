@@ -172,5 +172,17 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
+
+        public ActionResult StudentAssignmentView(int id, int userID)
+        {
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, false);
+            return View(viewModel);
+        }
+
+        public ActionResult TeacherAssignmentView(int id, int userID)
+        {
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
+            return View(viewModel);
+        }
     }
 }

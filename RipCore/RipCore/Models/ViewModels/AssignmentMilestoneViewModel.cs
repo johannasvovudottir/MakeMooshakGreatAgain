@@ -8,6 +8,8 @@ namespace RipCore.Models.ViewModels
     public class AssignmentMilestoneViewModel
     {
         public string Title { get; set; }
-        //public List<>
+        public string Description { get; set; }
+        public int Weight { get; set; }
+        public int AssignmentID { get; set; }
     }
 }
