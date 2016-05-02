@@ -26,7 +26,18 @@ namespace RipCore.Controllers
         }
         public ActionResult EditPerson()
         {
+            // taka inn id 
+            //if(id.HasValue)
+            //{
+            //PersonViewModel viewModel = PersonService.GetAssignmentsById(id);
+            //if (viewModel != null)
+            //{
+            //    return View(viewModel);
+            //}
+            ////}
+            // return RedirectToAction("TeacherOverview", new { id = 1, userID = 1 });
             return View();
+
         }
         public ActionResult AddCourse()
         {

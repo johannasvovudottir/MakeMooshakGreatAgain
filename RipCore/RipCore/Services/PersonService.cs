@@ -32,5 +32,27 @@ namespace RipCore.Services
             }
             return viewModel;
         }
+        public PersonViewModel GetPersonById(int PersonID)
+        {
+            var result = (from x in db.Users
+                          where x.ID == PersonID
+                          select x).SingleOrDefault();
+
+            if (result == null)
+            {
+                //TODO kasta villu
+                return null;
+            }
+
+            var viewModel = new PersonViewModel
+            {
+                Name = result.FullName,
+                ID = result.ID,
+                Ssn = result.Ssn
+            };
+
+            return viewModel;
+            return null;
+        }
     }
 }
