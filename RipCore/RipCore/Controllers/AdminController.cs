@@ -1,4 +1,5 @@
-﻿using RipCore.Services;
+﻿using RipCore.Models.ViewModels;
+using RipCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +12,32 @@ namespace RipCore.Controllers
     {
         private CourseService CourseService = new CourseService();
         private PersonService PersonService = new PersonService();
+        private AccountsService accountService = new AccountsService();
         // GET: Admin
         public ActionResult Index()
         {
+           
+            int id = accountService.GetIdByUser(User.Identity.Name);
             return View();
         }
-        public ActionResult User()
-        {
-            return View();
-        }
+        //public ActionResult User()
+        //{
+        //    return View();
+        //}
         public ActionResult AddPerson()
         {
             return View();
         }
-        public ActionResult EditPerson()
+        public ActionResult EditPerson(int id)
         {
-            // taka inn id 
-            //if(id.HasValue)
-            //{
-            //PersonViewModel viewModel = PersonService.GetAssignmentsById(id);
-            //if (viewModel != null)
-            //{
-            //    return View(viewModel);
-            //}
-            ////}
+            if(id != null)
+            {
+            PersonViewModel viewModel = PersonService.GetPersonById(id);
+                if (viewModel != null)
+                {
+                return View(viewModel);
+                }
+            }
             // return RedirectToAction("TeacherOverview", new { id = 1, userID = 1 });
             return View();
 
