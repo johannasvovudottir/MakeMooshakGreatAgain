@@ -18,14 +18,16 @@ namespace RipCore.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private AccountsService service = new AccountsService();
+        private AccountsService service;
 
         public AccountController()
         {
+            service = new AccountsService();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
+            service = new AccountsService();
             UserManager = userManager;
             SignInManager = signInManager;
         }

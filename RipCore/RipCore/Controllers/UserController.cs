@@ -13,12 +13,15 @@ namespace RipCore.Controllers
     public class UserController : Controller
     {
         private CourseService service = new CourseService();
+        private AccountsService accountService = new AccountsService();
         private AssignmentsService assignmentService = new AssignmentsService();
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Student
         public ActionResult Index()
         {
-            var viewModels = service.GetAllInfo(1);
+            int id = accountService.GetIdByUser(User.Identity.Name);
+            var viewModels = service.GetAllInfo(id);
+            viewModels.Name = User.Identity.Name;
             return View(viewModels);
         }
 

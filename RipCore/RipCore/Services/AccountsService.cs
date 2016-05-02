@@ -17,6 +17,11 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
+        public int GetIdByUser(string name)
+        {
+            return db.Users.First(u => u.UserName == name).ID;
+        }
+
         public bool IsValid(string username, string password)
         {
             using (var db = new ApplicationDbContext())
