@@ -21,7 +21,7 @@ namespace RipCore.Services
                                where a.CourseID == courseId
                                select a).ToList();
             List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
-            
+
             foreach (var item in assignments)
             {
                 List<AssignmentMilestoneViewModel> milestones = GetMilestones(item.ID);
@@ -97,6 +97,20 @@ namespace RipCore.Services
                 milestoneViewModel.Add(tmp);
             }
             return milestoneViewModel;
+        }
+
+        public List<Submission> GetUserSubmissions(int solutionID)
+        {
+            var submissions = (from s in db.Submission
+                               where s.SolutionID == solutionID
+                               select s).ToList();
+            return null;
+        }
+
+        public List<Submission> GetAssignmentSubmissions(int assignmentID)
+        {
+            //var submissions = (from s in db.Submission)
+            return null;
         }
     }
 }
