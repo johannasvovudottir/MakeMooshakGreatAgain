@@ -112,12 +112,23 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult Create(AssignmentViewModel newData)
         {
+            #region Security
+            int ID = 0;
+            if(User.Identity.IsAuthenticated)
+            {
+                accountService.GetIdByUser(User.Identity.Name, ref ID);
+            }
+            if(!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
+            {
+                return RedirectToAction("Index", "User");
+            }
+            #endregion
+
             int tmp = newData.CourseID;
             Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
-
             return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = ID});
         }
 
