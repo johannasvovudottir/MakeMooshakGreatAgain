@@ -43,6 +43,13 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
+            if(!accountService.IsUserQualified("Teacher", actualID, id));
+            {
+                if (!accountService.IsUserQualified("Student", actualID, id))
+                {
+                    return RedirectToAction("Index", "User");
+                }
+            }
             if (userID != actualID)
             {
                 var model = service.GetCoursesById(id, actualID);
@@ -67,18 +74,22 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
-            bool isQualified = accountService.IsUserQualified("Teacher", actualID, id);
+            if (!accountService.IsUserQualified("Teacher", actualID, id)) 
+            {
+                return RedirectToAction("Index", "User");
+            }
+
             if (userID != actualID)
             {
                 var model = service.GetCoursesById(id, actualID);
                 model.UserID = actualID;
-                model.isTeacher = isQualified;
+                model.isTeacher = true;
                 return View(model);
             }
             #endregion
 
             var viewModel = service.GetCoursesById(id, userID);
-            viewModel.isTeacher = isQualified;
+            viewModel.isTeacher = true;
             return View(viewModel);
         }
 
