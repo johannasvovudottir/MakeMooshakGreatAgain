@@ -22,7 +22,7 @@ namespace RipCore.Controllers
             #region Security
             int ID = 0;
             if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
 
             if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
                 return RedirectToAction("Index", "Home");
@@ -95,21 +95,6 @@ namespace RipCore.Controllers
 
         public ActionResult Create(int id)
         {
-            /*
-            int userID = accountService.GetIdByUser(User.Identity.Name);
-            if (!accountService.IsUserQualified("Teacher", userID, id))
-            {
-                return RedirectToAction("", "User");
-            }
-            */
-            AssignmentViewModel viewModel = new AssignmentViewModel();
-            viewModel.CourseID = id;
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult Create(AssignmentViewModel newData)
-        {
             #region Security
             int ID = 0;
             if (!User.Identity.IsAuthenticated)
@@ -119,6 +104,14 @@ namespace RipCore.Controllers
                 return RedirectToAction("Index", "Home");
             #endregion
 
+            AssignmentViewModel viewModel = new AssignmentViewModel();
+            viewModel.CourseID = id;
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(AssignmentViewModel newData)
+        {
             int tmp = newData.CourseID;
             Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
             UpdateModel(newAssignment);
@@ -172,7 +165,7 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
-
+        
         public ActionResult StudentAssignmentView(int id, int userID)
         {
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, false);
