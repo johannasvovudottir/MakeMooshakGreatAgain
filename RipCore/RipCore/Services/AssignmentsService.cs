@@ -20,7 +20,7 @@ namespace RipCore.Services
             var assignments = (from a in db.Assignments
                                where a.CourseID == courseId
                                select a).ToList();
-            List <AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
+            List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
             foreach (var item in assignments)
             {
                 AssignmentViewModel tmp = new AssignmentViewModel
@@ -28,6 +28,7 @@ namespace RipCore.Services
                     Title = item.Title,
                     Weight = item.Weight,
                     ID = item.ID,
+                    IsTeacher = false,
                     Description = item.Description,
                     CourseID = item.CourseID,
                     DateCreated = item.DateCreated,
@@ -41,8 +42,8 @@ namespace RipCore.Services
         public AssignmentViewModel GetAssignmentsById(int assignmentID)
         {
             var item = (from a in db.Assignments
-                              where a.ID == assignmentID
-                              select a).SingleOrDefault();
+                        where a.ID == assignmentID
+                        select a).SingleOrDefault();
             if (item == null)
             {
                 //TODO kasta
@@ -60,10 +61,18 @@ namespace RipCore.Services
                 Weight = item.Weight,
                 Description = item.Description,
                 ID = item.ID,
+                IsTeacher = false,
                 CourseID = item.CourseID,
                 DateCreated = item.DateCreated,
                 DueDate = item.DueDate
             };
+            return viewModel;
+        }
+
+        public AssignmentViewModel GetAssignmentForView(int assignmentID, bool teacher)
+        {
+            AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
+            viewModel.IsTeacher = teacher;
             return viewModel;
         }
     }

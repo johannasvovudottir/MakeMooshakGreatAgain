@@ -1,0 +1,17 @@
+﻿@model RipCore.Models.ViewModels.AssignmentViewModel
+@Html.DisplayFor(modelItem => Model.CourseID)
+@Html.DisplayFor(modelItem => Model.Title)
+<table>
+    <tbody>
+        <tr>
+            <td>@Model.DateCreated</td>
+            <td>@Model.Weight</td>
+        </tr>
+        <tr>
+            <td>@Model.DueDate</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<h3>Project Description</h3>
+@Html.DisplayFor(modelItem => Model.Description)

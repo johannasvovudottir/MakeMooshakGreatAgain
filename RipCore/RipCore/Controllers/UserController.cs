@@ -88,5 +88,11 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
+
+        public ActionResult StudentAssignmentView(int assignmentID, int userID)
+        {
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(assignmentID, false);
+            return View(viewModel);
+        }
     }
 }

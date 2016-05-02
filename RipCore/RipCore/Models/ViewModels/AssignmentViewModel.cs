@@ -17,6 +17,7 @@ namespace RipCore.Models.ViewModels
         public List<AssignmentMilestoneViewModel> milestones;
         //[Required, Microsoft.Web.Mvc.FileExtensions(Extensions = "csv",
         // ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
+        public bool IsTeacher { get; set; }
         //public byte[] DescriptionFile { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }
