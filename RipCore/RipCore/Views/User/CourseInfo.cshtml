@@ -11,7 +11,7 @@
 
     @foreach (var item in Model.CoursesAsTeacher)
     {
-        <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID, userID = 1 })</p>
+        <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID, userID = Model.UserID })</p>
     }
 </nav>
 <main class="courseInfo">
