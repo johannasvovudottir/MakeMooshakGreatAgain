@@ -21,8 +21,10 @@ namespace RipCore.Services
                                where a.CourseID == courseId
                                select a).ToList();
             List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
+            
             foreach (var item in assignments)
             {
+                List<AssignmentMilestoneViewModel> milestones = GetMilestones(item.ID);
                 AssignmentViewModel tmp = new AssignmentViewModel
                 {
                     Title = item.Title,
@@ -32,6 +34,8 @@ namespace RipCore.Services
                     Description = item.Description,
                     CourseID = item.CourseID,
                     DateCreated = item.DateCreated,
+                    Milestones = milestones,
+                    MilestoneCount = milestones.Count,
                     DueDate = item.DueDate
                 };
                 assignentViewModel.Add(tmp);
@@ -49,13 +53,10 @@ namespace RipCore.Services
                 //TODO kasta
                 return null;
             }
-            /*
-            var milestones = db.Milestones.Where(x => x.AssignmendId == assignmentID).Select(x => new AssignmentMilestoneViewModel
-            {
-                Title = x.Title
-            }).ToList();
-            */
-            var viewModel = new AssignmentViewModel
+
+            List<AssignmentMilestoneViewModel> milestoneViewModel = GetMilestones(assignmentID);
+
+            AssignmentViewModel viewModel = new AssignmentViewModel
             {
                 Title = item.Title,
                 Weight = item.Weight,
@@ -64,7 +65,9 @@ namespace RipCore.Services
                 IsTeacher = false,
                 CourseID = item.CourseID,
                 DateCreated = item.DateCreated,
-                DueDate = item.DueDate
+                DueDate = item.DueDate,
+                Milestones = milestoneViewModel,
+                MilestoneCount = milestoneViewModel.Count,
             };
             return viewModel;
         }
@@ -74,6 +77,26 @@ namespace RipCore.Services
             AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
             viewModel.IsTeacher = teacher;
             return viewModel;
+        }
+
+        public List<AssignmentMilestoneViewModel> GetMilestones(int assignmentID)
+        {
+            var milestones = (from m in db.Milestones
+                              where m.AssignmentID == assignmentID
+                              select m).ToList();
+            List<AssignmentMilestoneViewModel> milestoneViewModel = new List<AssignmentMilestoneViewModel>();
+            foreach (var item in milestones)
+            {
+                AssignmentMilestoneViewModel tmp = new AssignmentMilestoneViewModel
+                {
+                    Title = item.Title,
+                    Weight = item.Weight,
+                    Description = item.Description,
+                    AssignmentID = item.AssignmentID
+                };
+                milestoneViewModel.Add(tmp);
+            }
+            return milestoneViewModel;
         }
     }
 }

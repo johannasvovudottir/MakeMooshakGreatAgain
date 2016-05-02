@@ -5,10 +5,12 @@ using System.Web;
 
 namespace RipCore.Models.Entities
 {
-    public class AssignmentMilestone
+    public class Milestone
     {
         public int ID { get; set; }
-        public int AssignmendId { get; set; }
+        public int AssignmentID { get; set; }
+        public int Weight { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

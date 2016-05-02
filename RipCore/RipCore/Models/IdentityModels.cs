@@ -22,7 +22,7 @@ namespace RipCore.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Assignment> Assignments { get; set; }
-        public DbSet<AssignmentMilestone> Milestones { get; set; }
+        public DbSet<Milestone> Milestones { get; set; }
         public DbSet<Course_Teacher> CoursesTeachers { get; set; }
         public DbSet<Course_Student> CoursesStudents { get; set; }
        // public DbSet<School> Schools { get; set; }

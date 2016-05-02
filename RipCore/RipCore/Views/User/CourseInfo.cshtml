@@ -19,12 +19,20 @@
     @foreach (var item in Model.Assignments)
     {
         <div class="col-md-4">
-            <h4>@Html.ActionLink(item.Title, "TeacherOverview", new { id = item.ID, userID = 1 })@Html.DisplayFor(modelItem => item.Title)</h4>
+            @if(Model.isTeacher == true)
+            {
+                <h4>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID, Model.UserID })</h4>
+            }
+            @if (Model.isTeacher == false)
+            {
+                <h4>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID, Model.UserID })</h4>
+            }
+
             <p>
                 @item.Description
             </p>
             @if (Model.isTeacher == true)
-                {
+            {
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
             }
         </div>
