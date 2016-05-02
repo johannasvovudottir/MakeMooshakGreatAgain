@@ -16,8 +16,6 @@ namespace RipCore.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-           
-            int id = accountService.GetIdByUser(User.Identity.Name);
             return View();
         }
         //public ActionResult User()
@@ -32,10 +30,11 @@ namespace RipCore.Controllers
         {
             if(id != null)
             {
+
             PersonViewModel viewModel = PersonService.GetPersonById(id);
                 if (viewModel != null)
                 {
-                return View(viewModel);
+                    return View(viewModel);
                 }
             }
             // return RedirectToAction("TeacherOverview", new { id = 1, userID = 1 });
