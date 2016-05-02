@@ -19,14 +19,16 @@ namespace RipCore.Controllers
         // GET: Student
         public ActionResult Index()
         {
-            int id = 0;
+            #region Security
+            int ID = 0;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
-            if (!accountService.GetIdByUser(User.Identity.Name, ref id))
+            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
                 return RedirectToAction("Index", "Home");
+            #endregion
 
-            var viewModels = service.GetAllInfo(id);
+            var viewModels = service.GetAllInfo(ID);
             viewModels.Name = User.Identity.Name;
             return View(viewModels);
         }
@@ -36,7 +38,7 @@ namespace RipCore.Controllers
             #region Security
             int actualID = 0;
             if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
 
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
@@ -60,21 +62,23 @@ namespace RipCore.Controllers
             #region Security
             int actualID = 0;
             if(!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
 
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
-            if(userID != actualID)
+            bool isQualified = accountService.IsUserQualified("Teacher", actualID, id);
+            if (userID != actualID)
             {
                 var model = service.GetCoursesById(id, actualID);
                 model.UserID = actualID;
+                model.isTeacher = isQualified;
                 return View(model);
             }
             #endregion
 
             var viewModel = service.GetCoursesById(id, userID);
-            viewModel.isTeacher = true;
+            viewModel.isTeacher = isQualified;
             return View(viewModel);
         }
 
@@ -95,25 +99,48 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult Create(AssignmentViewModel newData)
         {
+            #region Security
+            int ID = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
+                return RedirectToAction("Index", "Home");
+            #endregion
+
             int tmp = newData.CourseID;
             Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
-            return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = 1});
+
+            return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = ID});
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int assignID)
         {
+            #region Security
+            int ID = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
+                return RedirectToAction("Index", "Home");
+
+            if(assignID <= 0)
+            {
+                return View();
+            }
+            #endregion
             //if(id.HasValue)
             //{
-                AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(assignID);
                 if(viewModel != null)
                 {
                     return View(viewModel);
                 }
             //}
-            return RedirectToAction("TeacherOverview", new { id = 1, userID = 1 });
+            return RedirectToAction("TeacherOverview", new { id = assignID, userID = ID });
         }
 
         [HttpPost]
