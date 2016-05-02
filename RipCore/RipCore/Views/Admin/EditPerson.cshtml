@@ -1,7 +1,8 @@
-﻿
+﻿@model RipCore.Models.ViewModels.PersonViewModel
 @{
     ViewBag.Title = "EditPerson";
 }
 
 <h2>EditPerson</h2>
 
+@{ Html.RenderPartial("PersonForm"); }

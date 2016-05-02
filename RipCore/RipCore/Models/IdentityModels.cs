@@ -26,7 +26,8 @@ namespace RipCore.Models
         public DbSet<Course_Teacher> CoursesTeachers { get; set; }
         public DbSet<Course_Student> CoursesStudents { get; set; }
        // public DbSet<School> Schools { get; set; }
-        //public DbSet<User> Solutions { get; set; }
+        public DbSet<Solution> Solutions { get; set; }
+        public DbSet<Submission> Submission { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<User> Users { get; set; }
 
