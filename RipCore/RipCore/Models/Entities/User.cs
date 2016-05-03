@@ -18,5 +18,6 @@ namespace RipCore.Models.Entities
         //public List<Course> courses; //{ get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Passkey { get; set; }
     }
 }

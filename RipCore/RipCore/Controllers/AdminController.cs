@@ -16,6 +16,7 @@ namespace RipCore.Controllers
         private PersonService PersonService = new PersonService();
         private AccountsService accountService = new AccountsService();
         private ApplicationDbContext db = new ApplicationDbContext();
+        private EncryptionService encService = new EncryptionService();
         // GET: Admin
         public ActionResult Index()
         {
@@ -34,7 +35,9 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddPerson(PersonViewModel newData)
         {
-            User newPerson = new User { FullName = newData.Name,Ssn =newData.Ssn,UserName=newData.Username,Email=newData.Email,Password=newData.Password};
+            string key = encService.RandomizePasskey();
+            string encrypted = encService.Encrypt(newData.Password, key);
+            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn,UserName=newData.Username,Email=newData.Email,Password=encrypted,Passkey=key};
             db.Users.Add(newPerson);
             db.SaveChanges();
             return View();
@@ -63,6 +66,7 @@ namespace RipCore.Controllers
                     newPerson.FullName = newData.Name;
                     newPerson.Email = newData.Email;
                     newPerson.Password = newData.Password;
+                    newPerson.Passkey = newData.Passkey;
                     newPerson.Ssn = newData.Ssn;
                     newPerson.UserName = newData.Username;
                     db.SaveChanges();
