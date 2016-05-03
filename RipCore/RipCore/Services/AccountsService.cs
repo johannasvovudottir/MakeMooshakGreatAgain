@@ -6,15 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace RipCore.Services
 {
     public class AccountsService
     {
         private ApplicationDbContext db;
-
+        private EncryptionService encService;
         public AccountsService()
         {
             db = new ApplicationDbContext();
+            encService = new EncryptionService();
         }
 
         public bool GetIdByUser(string name, ref int userID)
@@ -47,10 +49,25 @@ namespace RipCore.Services
 
         public bool IsValid(string username, string password)
         {
+            User user = new User();
             using (var db = new ApplicationDbContext())
             {
-                return db.Users.Any(u => u.UserName == username
-                    && u.Password == password);
+
+                if(db.Users.Any(u => u.UserName == username))
+                {
+                    user = db.Users.First(u => u.UserName == username);
+                }
+                else
+                {
+                    return false;
+                }
+
+                string userdecrypt = encService.Decrypt(user.Password, user.Passkey);
+                if(password == userdecrypt)
+                {
+                    return true;
+                }
+                return false;
             }
         }
 

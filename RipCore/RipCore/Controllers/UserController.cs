@@ -161,6 +161,18 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult Edit(AssignmentViewModel model)
         {
+            #region Security
+            int ID = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                accountService.GetIdByUser(User.Identity.Name, ref ID);
+            }
+            if (!accountService.IsUserQualified("Teacher", ID, model.CourseID))
+            {
+                return RedirectToAction("Index", "User");
+            }
+            #endregion
+
             if (ModelState.IsValid)
             {
                 Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
