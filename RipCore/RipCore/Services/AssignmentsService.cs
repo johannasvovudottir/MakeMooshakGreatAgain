@@ -35,7 +35,6 @@ namespace RipCore.Services
                     CourseID = item.CourseID,
                     DateCreated = item.DateCreated,
                     Milestones = milestones,
-                    MilestoneCount = milestones.Count,
                     DueDate = item.DueDate
                 };
                 assignentViewModel.Add(tmp);
@@ -67,7 +66,6 @@ namespace RipCore.Services
                 DateCreated = item.DateCreated,
                 DueDate = item.DueDate,
                 Milestones = milestoneViewModel,
-                MilestoneCount = milestoneViewModel.Count,
             };
             return viewModel;
         }

@@ -146,6 +146,7 @@ namespace RipCore.Controllers
             //if(id.HasValue)
             //{
             AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
+            viewModel.CurrentMilestone = new AssignmentMilestoneViewModel();
                 if(viewModel != null)
                 {
                     return View(viewModel);
@@ -159,16 +160,31 @@ namespace RipCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
-                if (assignment != null)
+                if(model.CurrentMilestone != null)
                 {
-                    assignment.Title = model.Title;
-                    assignment.Description = model.Description;
-                    assignment.DateCreated = model.DateCreated;
-                    assignment.DueDate = model.DueDate;
+                    Milestone milestone = new Milestone { Title = model.CurrentMilestone.Title, Description = model.CurrentMilestone.Description, Weight = model.CurrentMilestone.Weight, AssignmentID = model.CurrentMilestone.AssignmentID };
+                    UpdateModel(milestone);
+                    db.Milestones.Add(milestone);
                     db.SaveChanges();
+                    AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(model.ID);
+                    viewModel.CurrentMilestone = new AssignmentMilestoneViewModel();
+                    return RedirectToAction("Edit", new { id = model.ID });
                 }
-                return RedirectToAction("Index");
+
+                else
+                {
+                    Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
+                    if (assignment != null)
+                    {
+                        assignment.Title = model.Title;
+                        assignment.Description = model.Description;
+                        assignment.DateCreated = model.DateCreated;
+                        assignment.DueDate = model.DueDate;
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
+
             }
             return View(model);
         }
@@ -180,6 +196,12 @@ namespace RipCore.Controllers
         }
 
         public ActionResult TeacherAssignmentView(int id, int userID)
+        {
+            AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
+            return View(viewModel);
+        }
+
+        public ActionResult AddMilestone(int id)
         {
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
             return View(viewModel);
