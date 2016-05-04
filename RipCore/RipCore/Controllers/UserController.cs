@@ -33,7 +33,7 @@ namespace RipCore.Controllers
             return View(viewModels);
         }
 
-        public ActionResult StudentOverview(int id, int userID)
+        public ActionResult StudentOverview(int id)
         {
             #region Security
             int actualID = 0;
@@ -50,21 +50,14 @@ namespace RipCore.Controllers
                     return RedirectToAction("Index", "User");
                 }
             }
-            if (userID != actualID)
-            {
-                var model = service.GetCoursesById(id, actualID);
-                model.UserID = actualID;
-                model.isTeacher = false;
-                return View(model);
-            }
             #endregion
 
-            var viewModel = service.GetCoursesById(id, userID);
+            var viewModel = service.GetCoursesById(id, actualID);
             viewModel.isTeacher = false;
             return View(viewModel);
         }
 
-        public ActionResult TeacherOverview(int id, int userID)
+        public ActionResult TeacherOverview(int id)
         {
             #region Security
             int actualID = 0;
@@ -78,17 +71,9 @@ namespace RipCore.Controllers
             {
                 return RedirectToAction("Index", "User");
             }
-
-            if (userID != actualID)
-            {
-                var model = service.GetCoursesById(id, actualID);
-                model.UserID = actualID;
-                model.isTeacher = true;
-                return View(model);
-            }
             #endregion
 
-            var viewModel = service.GetCoursesById(id, userID);
+            var viewModel = service.GetCoursesById(id, actualID);
             viewModel.isTeacher = true;
             return View(viewModel);
         }

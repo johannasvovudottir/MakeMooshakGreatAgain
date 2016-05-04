@@ -5,13 +5,13 @@
     <h3>Courses as Student</h3>
     @foreach (var item in Model.CoursesAsStudent)
     {
-        <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID, userId = Model.UserID })</p>
+        <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })</p>
     }
     <h3>Courses as Teacher</h3>
 
     @foreach (var item in Model.CoursesAsTeacher)
     {
-        <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID, userID = Model.UserID })</p>
+        <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })</p>
     }
 </nav>
 <main class="courseInfo">
@@ -21,11 +21,11 @@
         <div class="col-md-4">
             @if(Model.isTeacher == true)
             {
-                <h4>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID, Model.UserID })</h4>
+                <h4>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</h4>
             }
             @if (Model.isTeacher == false)
             {
-                <h4>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID, Model.UserID })</h4>
+                <h4>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</h4>
             }
 
             <p>
