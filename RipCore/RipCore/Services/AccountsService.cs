@@ -34,7 +34,7 @@ namespace RipCore.Services
         {
             using (var db = new ApplicationDbContext())
             {
-                if (role.ToLower() == "Teacher")
+                if (role.ToLower() == "teacher")
                 {
                     return db.CoursesTeachers.Any(u => u.TeacherID == userID
                         && u.CourseID == courseID);
