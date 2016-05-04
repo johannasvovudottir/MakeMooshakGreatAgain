@@ -150,7 +150,6 @@ namespace RipCore.Controllers
             //if(id.HasValue)
             //{
             AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
-            viewModel.CurrentMilestone = new AssignmentMilestoneViewModel();
                 if(viewModel != null)
                 {
                     return View(viewModel);
@@ -160,7 +159,7 @@ namespace RipCore.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(AssignmentViewModel model)
+        public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
         {
             #region Security
             int ID = 0;
@@ -170,36 +169,42 @@ namespace RipCore.Controllers
             }
             if (!accountService.IsUserQualified("Teacher", ID, model.CourseID))
             {
-                return RedirectToAction("Index", "User");
+                //return RedirectToAction("Index", "User");
             }
             #endregion
 
             if (ModelState.IsValid)
             {
-                if(model.CurrentMilestone != null)
+                for(int i = 0; i < counter; i++)
                 {
-                    Milestone milestone = new Milestone { Title = model.CurrentMilestone.Title, Description = model.CurrentMilestone.Description, Weight = model.CurrentMilestone.Weight, AssignmentID = model.CurrentMilestone.AssignmentID };
-                    UpdateModel(milestone);
-                    db.Milestones.Add(milestone);
-                    db.SaveChanges();
-                    AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(model.ID);
-                    viewModel.CurrentMilestone = new AssignmentMilestoneViewModel();
-                    return RedirectToAction("Edit", new { id = model.ID });
-                }
-
-                else
-                {
-                    Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
-                    if (assignment != null)
+                    bool exists = collection["Milestones[" + i + "].ID"] != null;
+                    if (!exists)
                     {
-                        assignment.Title = model.Title;
-                        assignment.Description = model.Description;
-                        assignment.DateCreated = model.DateCreated;
-                        assignment.DueDate = model.DueDate;
-                        db.SaveChanges();
+                        string title = collection["Milestones[" + i + "].Title"];
+                        int weight;
+                        Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
+                        string description = collection["Milestones[" + i + "].Description"];
+
+                        db.Milestones.Add(new Milestone()
+                        {
+                            Title = title,
+                            Weight = weight,
+                            Description = description,
+                            AssignmentID = model.ID
+                        });
                     }
-                    return RedirectToAction("Index");
+                }   
+                
+                Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
+                if (assignment != null)
+                {
+                    assignment.Title = model.Title;
+                    assignment.Description = model.Description;
+                    assignment.DateCreated = model.DateCreated;
+                    assignment.DueDate = model.DueDate;
+                    db.SaveChanges();
                 }
+                return RedirectToAction("Index");
 
             }
             return View(model);
