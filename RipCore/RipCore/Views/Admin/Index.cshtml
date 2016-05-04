@@ -1,15 +1,84 @@
-﻿
+﻿@model RipCore.Models.ViewModels.AdminIndexViewModel
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Admin Homepage</h2>
-<ul>
-    <li>
-        @Html.ActionLink("Courses", "CourseOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
-    </li>
-    <li>
-        @Html.ActionLink("Persons", "PersonOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
-    </li>
-</ul>
+
+
+<input type="text" id="searchpersons" placeholder="Skrifið til að leita">
+<table id="persontable">
+    <thead>
+        <tr>
+            <td>Name</td>
+        </tr>
+    </thead>
+    <tbody id="uppersearch">
+        @foreach (var item in Model.Persons)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+
+
+<input type="text" id="searchcourses" placeholder="Skrifið til að leita2">
+<table id="coursetable">
+    <thead>
+        <tr>
+            <td>Name</td>
+        </tr>
+    </thead>
+    <tbody id="lowersearch">
+    @foreach (var item in Model.Courses)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+
+ 
+<script>
+    var $rows = $('#coursetable tr');
+    $('#searchcourses').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    console.debug("smu");
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+    });
+
+</script>
+
+<script>
+    var $personrows = $('#persontable tr');
+    $('#searchpersons').keyup(function() {
+    var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    console.debug("smu2");
+    $personrows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(value);
+    }).hide();
+});
+</script>
+
+
+
+
+
+@*http://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table*@
 

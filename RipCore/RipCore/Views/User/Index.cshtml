@@ -9,7 +9,7 @@
         @foreach (var item in Model.whereStudent)
         {
             <li>
-                @Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID, Model.UserID})
+                @Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })
             </li>
         }
     </ul>
@@ -18,7 +18,7 @@
         @foreach (var item in Model.whereTeacher)
         {
             <li>
-                @Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID, Model.UserID })
+                @Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })
             </li>
         }
     </ul>

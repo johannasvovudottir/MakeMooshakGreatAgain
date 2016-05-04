@@ -21,13 +21,18 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             //int id = accountService.GetIdByUser(User.Identity.Name);
+            var CoursesToAppend = CourseService.GetAllCourses();
+            var PersonsToAppend = PersonService.GetAllPersons();
 
-            return View();
+            AdminIndexViewModel viewModel = new AdminIndexViewModel
+            {
+                Courses = CoursesToAppend,
+                Persons = PersonsToAppend
+            };
+
+            return View(viewModel);
         }
-        //public ActionResult User()
-        //{
-        //    return View();
-        //}
+       
         public ActionResult AddPerson()
         {
             return View();
@@ -80,9 +85,44 @@ namespace RipCore.Controllers
         {
             return View();
         }
-        public ActionResult EditCourse()
+        [HttpPost]
+        public ActionResult AddCourse(AdminCourseOverView newData)
         {
+            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID=1};
+            db.Courses.Add(newCourse);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public ActionResult EditCourse(int id)
+        {
+            
+            if (id != 0)
+            {
+                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
+                if (viewModel != null)
+                {
+                    return View(viewModel);
+                }
+            }
             return View();
+        }
+        [HttpPost]
+        public ActionResult EditCourse(AdminCourseOverView newData)
+        {
+           if (ModelState.IsValid)
+            {
+                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();   
+                if (newCourse != null)
+                {
+                    newCourse.Name = newData.Name;
+                    newCourse.Semester = newData.Semester;
+                    newCourse.Year = newData.Year;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
+            return View();
+
         }
         public ActionResult CourseOverview()
         {

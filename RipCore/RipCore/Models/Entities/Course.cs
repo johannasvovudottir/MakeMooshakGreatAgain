@@ -9,8 +9,9 @@ namespace RipCore.Models.Entities
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        //public string Date { get; set; }
         public int SchoolID { get; set; }
+        public string Semester { get; set; }
+        public int Year { get; set; }
 
         /*TODO
         students
