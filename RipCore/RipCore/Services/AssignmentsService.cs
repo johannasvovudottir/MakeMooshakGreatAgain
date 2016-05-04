@@ -107,9 +107,22 @@ namespace RipCore.Services
             return null;
         }
 
-        public List<Submission> GetAssignmentSubmissions(int assignmentID)
+        public List<Solution> GetAssignmentSubmissions(int assignmentID)
         {
-            //var submissions = (from s in db.Submission)
+            var solutions = (from s in db.Solutions
+                             where s.AssignmentID == assignmentID
+                             select s).ToList();
+            List<SolutionViewModel> solutionViewModel = new List<SolutionViewModel>();
+            {
+                foreach (var item in solutions)
+                {
+
+                }
+            }
+            List<Submission> submissions = new List<Submission>();
+            foreach (var item in solutions)
+                return null;
+
             return null;
         }
     }
