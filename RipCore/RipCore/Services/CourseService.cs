@@ -61,6 +61,29 @@ namespace RipCore.Services
             return viewModel;
 
         }
+        public AdminCourseOverView GetCourseByID(int courseID)
+        {
+            var result = (from x in db.Courses
+                          where x.ID == courseID
+                          select x).SingleOrDefault();
+
+            if (result == null)
+            {
+                //TODO kasta villu
+                return null;
+            }
+
+
+            AdminCourseOverView viewModel = new AdminCourseOverView
+            {
+                ID = result.ID,
+                Name = result.Name,
+                Semester = result.Semester,
+                Year = result.Year           
+            };
+            return viewModel;
+        }
+       
         public List<Course> GetCoursesWhereStudent(int userID)
         {
             List<Course> result = (from c in db.CoursesStudents

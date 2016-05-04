@@ -83,14 +83,41 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddCourse(AdminCourseOverView newData)
         {
-            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year,SchoolID=1};
+            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID=1};
             db.Courses.Add(newCourse);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public ActionResult EditCourse(int id)
+        {
+            
+            if (id != 0)
+            {
+                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
+                if (viewModel != null)
+                {
+                    return View(viewModel);
+                }
+            }
             return View();
         }
-        public ActionResult EditCourse()
+        [HttpPost]
+        public ActionResult EditCourse(AdminCourseOverView newData)
         {
+           if (ModelState.IsValid)
+            {
+                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();   
+                if (newCourse != null)
+                {
+                    newCourse.Name = newData.Name;
+                    newCourse.Semester = newData.Semester;
+                    newCourse.Year = newData.Year;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
             return View();
+
         }
         public ActionResult CourseOverview()
         {
