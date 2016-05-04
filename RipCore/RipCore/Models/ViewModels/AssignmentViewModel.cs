@@ -14,8 +14,8 @@ namespace RipCore.Models.ViewModels
         public int Weight { get; set; }
         public string Description { get; set; }
         public int CourseID { get; set; }
+        public AssignmentMilestoneViewModel CurrentMilestone;
         public List<AssignmentMilestoneViewModel> Milestones;
-        public int MilestoneCount { get; set; }
         //[Required, Microsoft.Web.Mvc.FileExtensions(Extensions = "csv",
         // ErrorMessage = "Specify a CSV file. (Comma-separated values)")]
         public bool IsTeacher { get; set; }

@@ -9,5 +9,6 @@
 .ui-tabs .ui-tabs-hide { display: none; }
 
 #tabs div {
-    margin: 80px 40px; padding: 25px; background: #ccc;
+    margin: 8px 4px;
+    padding: 2px;
 }

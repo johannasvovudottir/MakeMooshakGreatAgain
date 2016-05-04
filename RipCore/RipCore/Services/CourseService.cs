@@ -64,7 +64,7 @@ namespace RipCore.Services
                                   join cn in db.Courses on c.CourseID equals cn.ID
                                   join ct in db.Users on c.UserID equals ct.ID
                                   where (ct.ID == userID)
-                                  select cn).ToList(); //SORRY I COULDNT DO IT :(
+                                  select cn).ToList(); 
             return result;
         }
         
