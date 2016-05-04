@@ -9,23 +9,34 @@
 
 <input type="text" id="searchpersons" placeholder="Skrifið til að leita">
 <table id="persontable">
-    @foreach (var item in Model.Persons)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
-            </td>
+            <td>Name</td>
         </tr>
-    }
+    </thead>
+    <tbody id="uppersearch">
+        @foreach (var item in Model.Persons)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
 
 
-
-
 <input type="text" id="searchcourses" placeholder="Skrifið til að leita2">
 <table id="coursetable">
+    <thead>
+        <tr>
+            <td>Name</td>
+        </tr>
+    </thead>
+    <tbody id="lowersearch">
     @foreach (var item in Model.Courses)
     {
         <tr>
@@ -34,6 +45,7 @@
             </td>
         </tr>
     }
+    </tbody>
 </table>
 
 @Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
@@ -48,17 +60,18 @@
         var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
         return !~text.indexOf(val);
     }).hide();
-});
+    });
+
 </script>
 
 <script>
-    var $rows = $('#persontable tr');
+    var $personrows = $('#persontable tr');
     $('#searchpersons').keyup(function() {
-    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
     console.debug("smu2");
-    $rows.show().filter(function() {
+    $personrows.show().filter(function() {
         var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-        return !~text.indexOf(val);
+        return !~text.indexOf(value);
     }).hide();
 });
 </script>
