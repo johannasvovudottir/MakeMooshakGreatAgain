@@ -1,15 +1,78 @@
-﻿
+﻿@model RipCore.Models.ViewModels.AdminIndexViewModel
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Admin Homepage</h2>
-<ul>
-    <li>
-        @Html.ActionLink("Courses", "CourseOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
-    </li>
-    <li>
-        @Html.ActionLink("Persons", "PersonOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
-    </li>
-</ul>
+@*<ul>
+        <li>
+            @Html.ActionLink("Courses", "CourseOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+        </li>
+        <li>
+            @Html.ActionLink("Persons", "PersonOverview", "Admin", null, htmlAttributes: new { @class = "btn btn-info", @role = "button" })
+        </li>
+    </ul>*@
+@*<div>
+        <ul>
+            @foreach (var item in Model.Courses)
+            {
+                <li>
+                    @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
+                </li>
+            }
+        </ul>
 
+        @Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" }) 
+</div>
+
+<div>   
+        <ul>
+            @foreach (var item in Model.Persons)
+            {
+                <li>
+                    @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                </li>
+            }
+
+        </ul>
+
+        @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+    
+</div>*@
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span6">
+            <div>
+                <ul>
+                    @foreach (var item in Model.Courses)
+            {
+                        <li>
+                            @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
+                        </li>
+                    }
+                </ul>
+
+                @Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+            </div>
+        </div>
+        <div class="span6 pull-right">
+            <div>
+                <ul>
+                    @foreach (var item in Model.Persons)
+            {
+                        <li>
+                            @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                        </li>
+                    }
+
+                </ul>
+
+                @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+
+            </div>
+        </div>
+    </div>
+</div>
+ </div>

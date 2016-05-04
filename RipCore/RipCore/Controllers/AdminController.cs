@@ -21,13 +21,18 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             //int id = accountService.GetIdByUser(User.Identity.Name);
+            var CoursesToAppend = CourseService.GetAllCourses();
+            var PersonsToAppend = PersonService.GetAllPersons();
 
-            return View();
+            AdminIndexViewModel viewModel = new AdminIndexViewModel
+            {
+                Courses = CoursesToAppend,
+                Persons = PersonsToAppend
+            };
+
+            return View(viewModel);
         }
-        //public ActionResult User()
-        //{
-        //    return View();
-        //}
+       
         public ActionResult AddPerson()
         {
             return View();
