@@ -4,12 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src-min-noconflict/mode-css.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+    <script>
+        document.write('<base href="' + document.location + '" />');
+    </script>
+
+    <!-- Le css -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/themes/base/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
+
 
 </head>
 <body>
@@ -43,10 +56,6 @@
 
     @RenderSection("scripts", required: false)
 
-    <script type="text/javascript">
-         $(document).ready(function() {
-             $("#tabs").tabs();
-         });
-    </script>
+
 </body>
 </html>
