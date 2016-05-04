@@ -24,7 +24,10 @@ namespace RipCore.Services
                 var temp = new CourseViewModel
                 {
                     Name = item.Name,
-                    ID = item.ID
+                    ID = item.ID,
+                    Year = item.Year,
+                    Semester = item.Semester
+                    
                 };
                 viewModel.Add(temp);
             }

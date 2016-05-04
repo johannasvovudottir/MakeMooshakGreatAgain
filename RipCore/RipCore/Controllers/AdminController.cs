@@ -80,6 +80,14 @@ namespace RipCore.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult AddCourse(AdminCourseOverView newData)
+        {
+            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year,SchoolID=1};
+            db.Courses.Add(newCourse);
+            db.SaveChanges();
+            return View();
+        }
         public ActionResult EditCourse()
         {
             return View();
