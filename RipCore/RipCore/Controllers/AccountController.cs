@@ -71,32 +71,35 @@ namespace RipCore.Controllers
         }
 
         // POST: /Account/Login
+        
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
-        {        
-            List<string> roles = new List<string>();
-            if(service.IsValid(model.Username, model.Password))
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
             {
-                var ident = new ClaimsIdentity(
-                  new[]
-                  {
-                      new Claim(ClaimTypes.NameIdentifier, model.Username),
-                      new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider"
-                      , "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
-                      new Claim(ClaimTypes.Name,model.Username),
-                      //new Claim(ClaimTypes.Role, "Role"),
-                      //new Claim(ClaimTypes.Role, "AnotherRole"),
-                  },
-                  DefaultAuthenticationTypes.ApplicationCookie);
-                HttpContext.GetOwinContext().Authentication.SignIn(
-                    new AuthenticationProperties { IsPersistent = false }, ident);
-                return RedirectToAction("", "User");
+                return View(model);
             }
-            ModelState.AddModelError("", "Invalid login details");
-            return View(model);
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
         }
+        
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -107,7 +110,7 @@ namespace RipCore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        /*
+        
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
@@ -124,11 +127,12 @@ namespace RipCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, Ssn = model.SSN };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //Logging user in after registering... disableum thetta i admin control
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -144,7 +148,7 @@ namespace RipCore.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        */
+        
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
