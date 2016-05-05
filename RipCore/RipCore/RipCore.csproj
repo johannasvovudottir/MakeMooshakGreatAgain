@@ -195,6 +195,7 @@
     <Compile Include="Models\ViewModels\AdminIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\AssignmentMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\AssignmentViewModel.cs" />
+    <Compile Include="Models\ViewModels\CourseConnectViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseOverViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Models\ViewModels\PersonViewModel.cs" />
@@ -305,8 +306,6 @@
     <Content Include="Views\User\AssignmentForm.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\Admin\CourseOverview.cshtml" />
-    <Content Include="Views\Admin\PersonOverview.cshtml" />
     <Content Include="Views\Admin\AddPerson.cshtml" />
     <Content Include="Views\Admin\EditPerson.cshtml" />
     <Content Include="Views\Admin\AddCourse.cshtml" />
@@ -314,6 +313,12 @@
     <Content Include="Views\User\SpecificAssignment.cshtml" />
     <Content Include="Views\User\StudentAssignmentView.cshtml" />
     <Content Include="Views\Admin\PersonForm.cshtml" />
+    <Content Include="Views\Admin\CourseForm.cshtml" />
+    <Content Include="Views\Admin\DeletePerson.cshtml" />
+    <Content Include="Views\Admin\DeletePersonForm.cshtml" />
+    <Content Include="Views\Admin\DeleteCourse.cshtml" />
+    <Content Include="Views\Admin\DeleteCourseForm.cshtml" />
+    <Content Include="Views\Admin\CourseConnections.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

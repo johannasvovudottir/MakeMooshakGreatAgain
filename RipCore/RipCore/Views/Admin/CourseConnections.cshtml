@@ -1,0 +1,46 @@
+﻿@model RipCore.Models.ViewModels.CourseConnectViewModel
+
+@{
+    ViewBag.Title = "CourseConnections";
+}
+
+<h2>@Model.CurrentCourse.Name</h2>
+
+<div>
+    <input type="text" id="searchusers" placeholder="Skrifið til að leita">
+    <table class="table-bordered" id="usertable">
+        <thead></thead>
+        <tbody>
+            @foreach (var item in Model.UnConnectedUsers)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @Html.CheckBox("UserCheck")
+                    <td>
+                        <select class="form-control" id="StudentGender" name="Stada">
+                            <option>Kennari</option>
+                            <option>Nemandi</option>
+                        </select>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    var $rows = $('#usertable tr');
+    $('#searchusers').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    console.debug("smu");
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+    });
+
+</script>

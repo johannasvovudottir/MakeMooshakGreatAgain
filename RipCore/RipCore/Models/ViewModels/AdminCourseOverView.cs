@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RipCore.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,15 @@ namespace RipCore.Models.ViewModels
         public string Name { get; set; }
         public int Year { get; set; }
         public string Semester { get; set; }
+        public Course toCourse() {
+            Course courseToReturn = new Course {
+                                    ID = this.ID,
+                                    Name = this.Name,
+                                    Year = this.Year,
+                                    Semester = this.Semester
+                                    };
+            return courseToReturn;
+        }
 
     }
 }

@@ -20,6 +20,7 @@
             <tr>
                 <td>
                     @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                    @Html.ActionLink("Delete Person", "DeletePerson", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
                 </td>
             </tr>
         }
@@ -29,7 +30,7 @@
 @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
 
 
-<input type="text" id="searchcourses" placeholder="Skrifið til að leita2">
+<input type="text" id="searchcourses" placeholder="Skrifið til að leita">
 <table id="coursetable">
     <thead>
         <tr>
@@ -42,6 +43,7 @@
         <tr>
             <td>
                 @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
+                @Html.ActionLink("Delete Course", "DeleteCourse", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
             </td>
         </tr>
     }
