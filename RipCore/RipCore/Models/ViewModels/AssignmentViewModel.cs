@@ -10,7 +10,7 @@ namespace RipCore.Models.ViewModels
     public class AssignmentViewModel
     {
         public int ID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public int CourseID { get; set; }
         public int Weight { get; set; }
         public string Title { get; set; }

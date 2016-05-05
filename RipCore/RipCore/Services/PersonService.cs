@@ -26,7 +26,7 @@ namespace RipCore.Services
                 var temp = new PersonViewModel
                 {
                     Name = item.FullName,
-                    ID = item.ID
+                    ID = item.Id
                 };
                 viewModel.Add(temp);
             }
@@ -35,9 +35,9 @@ namespace RipCore.Services
         public List<PersonViewModel> GetAllTeachers(int courseID)
         {
             CourseService query = new CourseService();
-            List<User> teachers = query.GetAllTeachers(courseID);
+            List<ApplicationUser> teachers = query.GetAllTeachers(courseID);
             List<PersonViewModel> teachersToReturn = new List<PersonViewModel>();
-            foreach (User person  in teachers)
+            foreach (ApplicationUser person  in teachers)
             {
 
 
@@ -45,10 +45,10 @@ namespace RipCore.Services
 
             return null;
         }
-        public PersonViewModel GetPersonById(int PersonID)
+        public PersonViewModel GetPersonById(string PersonID)
         {
             var result = (from x in db.Users
-                          where x.ID == PersonID
+                          where x.Id == PersonID
                           select x).SingleOrDefault();
 
             if (result == null)
@@ -60,15 +60,14 @@ namespace RipCore.Services
             var viewModel = new PersonViewModel
             {
                 Name = result.FullName,
-                ID = result.ID,
+                ID = result.Id,
                 Ssn = result.Ssn,
-                Password = result.Password,
+                PasswordHash = result.PasswordHash,
                 Email = result.Email,
                 Username = result.UserName
             };
 
             return viewModel;
-            return null;
         }
     }
 }

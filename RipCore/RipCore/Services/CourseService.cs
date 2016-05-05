@@ -34,7 +34,7 @@ namespace RipCore.Services
             return viewModel;
         }
 
-        public List<AssignmentViewModel> GetAllUserAssignments(int userID)
+        public List<AssignmentViewModel> GetAllUserAssignments(string userID)
         {
             var allCourses = GetCoursesWhereStudent(userID);
             List <AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
@@ -45,15 +45,13 @@ namespace RipCore.Services
             }
             return allAssignments;
         }
-        public CourseOverViewModel GetAllInfo(int userID)
+        public CourseOverViewModel GetAllInfo(string userID)
         {
-            string strID = (from u in db.Users where u.ID == userID select u.ID).SingleOrDefault().ToString();
-            int intID = 0;
-            int.TryParse(strID, out intID);
+            string strID = (from u in db.Users where u.Id == userID select u.Id).SingleOrDefault().ToString();
             CourseOverViewModel viewModel = new CourseOverViewModel
             {
-                Name = (from u in db.Users where u.ID == userID select u.FullName).SingleOrDefault().ToString(),
-                UserID = intID,
+                Name = (from u in db.Users where u.Id == userID select u.FullName).SingleOrDefault().ToString(),
+                UserID = userID,
                 whereTeacher = GetCoursesWhereTeacher(userID),
                 whereStudent = GetCoursesWhereStudent(userID),
                 assignments = GetAllUserAssignments(userID)
@@ -84,46 +82,46 @@ namespace RipCore.Services
             return viewModel;
         }
        
-        public List<Course> GetCoursesWhereStudent(int userID)
+        public List<Course> GetCoursesWhereStudent(string userID)
         {
             List<Course> result = (from c in db.CoursesStudents
                                   join cn in db.Courses on c.CourseID equals cn.ID
-                                  join ct in db.Users on c.UserID equals ct.ID
-                                  where (ct.ID == userID)
+                                  join ct in db.Users on c.UserID equals ct.Id
+                                  where (ct.Id == userID)
                                   select cn).ToList(); 
             return result;
         }
         
-        public List<Course> GetCoursesWhereTeacher(int userID)
+        public List<Course> GetCoursesWhereTeacher(string userID)
         {
             List<Course> result = (from c in db.CoursesTeachers
                                   join cn in db.Courses on c.CourseID equals cn.ID
-                                  join ct in db.Users on c.TeacherID equals ct.ID
-                                  where (ct.ID == userID)
+                                  join ct in db.Users on c.TeacherID equals ct.Id
+                                  where (ct.Id == userID)
                                   select cn).ToList();
             return result;
         }
 
-        public List<User> GetAllStudents(int courseID)
+        public List<ApplicationUser> GetAllStudents(int courseID)
         {
-            List<User> result = (from c in db.CoursesStudents
+            List<ApplicationUser> result = (from c in db.CoursesStudents
                                    join cn in db.Courses on c.CourseID equals cn.ID
-                                   join ct in db.Users on c.UserID equals ct.ID
-                                   where (ct.ID == courseID)
+                                   join ct in db.Users on c.UserID equals ct.Id
+                                   where (cn.ID == courseID)
                                    select ct).ToList();
             return result;
         }
 
-        public List<User> GetAllTeachers(int courseID)
+        public List<ApplicationUser> GetAllTeachers(int courseID)
         {
-            List<User> result = (from c in db.CoursesTeachers
+            List<ApplicationUser> result = (from c in db.CoursesTeachers
                                    join cn in db.Courses on c.CourseID equals cn.ID
-                                   join ct in db.Users on c.TeacherID equals ct.ID
-                                   where (ct.ID == courseID)
+                                   join ct in db.Users on c.TeacherID equals ct.Id
+                                   where (cn.ID == courseID)
                                    select ct).ToList();
             return result;
         }
-        public CourseViewModel GetCoursesById(int courseID, int userID)
+        public CourseViewModel GetCoursesById(int courseID, string userID)
         {
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);
             if (course == null)
@@ -145,12 +143,12 @@ namespace RipCore.Services
 
             AssignmentsService tmp = new AssignmentsService();
             List<AssignmentViewModel> assignentViewModel = tmp.GetAssignmentsInCourse(courseID);
-            var coursesAsTeacher = GetCoursesWhereTeacher(1);
-            var coursesAsStudent = GetCoursesWhereStudent(1);
+            var coursesAsTeacher = GetCoursesWhereTeacher(userID);
+            var coursesAsStudent = GetCoursesWhereStudent(userID);
             var students = GetAllStudents(courseID);
             var teachers = GetAllTeachers(courseID);
 
-            string userName = (from u in db.Users where u.ID == userID select u.FullName).SingleOrDefault().ToString();
+            string userName = (from u in db.Users where u.Id == userID select u.FullName).SingleOrDefault().ToString();
             var viewModel = new CourseViewModel
             {
                 Name = course.Name,

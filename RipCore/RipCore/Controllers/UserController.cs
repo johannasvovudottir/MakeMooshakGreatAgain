@@ -22,7 +22,7 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             #region Security
-            int ID = 16;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -38,7 +38,7 @@ namespace RipCore.Controllers
         public ActionResult StudentOverview(int id)
         {
             #region Security
-            int actualID = 0;
+            string actualID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -62,7 +62,7 @@ namespace RipCore.Controllers
         public ActionResult TeacherOverview(int id)
         {
             #region Security
-            int actualID = 0;
+            string actualID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -83,7 +83,7 @@ namespace RipCore.Controllers
         public ActionResult Create(int id)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
@@ -101,7 +101,7 @@ namespace RipCore.Controllers
         public ActionResult Create(AssignmentViewModel newData)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             accountService.GetIdByUser(User.Identity.Name, ref ID);
             if (!User.Identity.IsAuthenticated)
             if (User.Identity.IsAuthenticated)
@@ -126,7 +126,7 @@ namespace RipCore.Controllers
         public ActionResult Edit(int id)
         {
             #region Security
-            int ID = 16;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
@@ -153,7 +153,7 @@ namespace RipCore.Controllers
         public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (User.Identity.IsAuthenticated)
             {
                 accountService.GetIdByUser(User.Identity.Name, ref ID);
@@ -213,7 +213,7 @@ namespace RipCore.Controllers
         public ActionResult StudentAssignmentView(int id)
         {
             #region Security
-            int userID = 0;
+            string userID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -235,7 +235,7 @@ namespace RipCore.Controllers
         public ActionResult TeacherAssignmentView(int id)
         {
             #region Security
-            int userID = 0;
+            string userID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 

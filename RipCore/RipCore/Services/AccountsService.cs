@@ -19,10 +19,10 @@ namespace RipCore.Services
             encService = new EncryptionService();
         }
 
-        public bool GetIdByUser(string name, ref int userID)
+        public bool GetIdByUser(string name, ref string userID)
         {
-            int id = db.Users.First(u => u.UserName == name).ID;
-            if (id == 0)
+            string id = db.Users.First(u => u.UserName == name).Id;
+            if (id == null)
             {
                 return false;
             }
@@ -30,7 +30,7 @@ namespace RipCore.Services
             return true;
         }
 
-        public bool IsUserQualified(string role, int userID, int courseID)
+        public bool IsUserQualified(string role, string userID, int courseID)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -47,29 +47,7 @@ namespace RipCore.Services
             }
         }
 
-        public bool IsValid(string username, string password)
-        {
-            User user = new User();
-            using (var db = new ApplicationDbContext())
-            {
 
-                if(db.Users.Any(u => u.UserName == username))
-                {
-                    user = db.Users.First(u => u.UserName == username);
-                }
-                else
-                {
-                    return false;
-                }
-
-                string userdecrypt = encService.Decrypt(user.Password, user.Passkey);
-                if(password == userdecrypt)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
 
         /*
         public List<string> GetRoles(int userID)

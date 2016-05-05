@@ -9,6 +9,6 @@ namespace RipCore.Models.Entities
     {
         public int ID { get; set; }
         public int CourseID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
     }
 }

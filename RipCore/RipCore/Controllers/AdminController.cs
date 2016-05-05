@@ -40,16 +40,12 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddPerson(PersonViewModel newData)
         {
-            string key = encService.RandomizePasskey();
-            string encrypted = encService.Encrypt(newData.Password, key);
-            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn, UserName = newData.Username, Email = newData.Email, Password = encrypted, Passkey = key };
-            db.Users.Add(newPerson);
-            db.SaveChanges();
+            //Implement register
             return View();
         }
-        public ActionResult EditPerson(int id)
+        public ActionResult EditPerson(string id)
         {
-            if (id != 0)
+            if (id != null)
             {
 
                 PersonViewModel viewModel = PersonService.GetPersonById(id);
@@ -65,13 +61,12 @@ namespace RipCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                User newPerson = db.Users.Where(x => x.ID == newData.ID).SingleOrDefault();
+                ApplicationUser newPerson = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
                 if (newPerson != null)
                 {
                     newPerson.FullName = newData.Name;
                     newPerson.Email = newData.Email;
-                    newPerson.Password = newData.Password;
-                    newPerson.Passkey = newData.Passkey;
+                    newPerson.PasswordHash = newData.PasswordHash;
                     newPerson.Ssn = newData.Ssn;
                     newPerson.UserName = newData.Username;
                     db.SaveChanges();
@@ -126,7 +121,7 @@ namespace RipCore.Controllers
         }
         public ActionResult CourseConnections(int courseID)
         {
-            if (courseID != null)
+            if (courseID != 0)
             {
                 var PersonsToAppend = PersonService.GetAllPersons();
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
@@ -151,9 +146,9 @@ namespace RipCore.Controllers
             return View(viewModel);
         }
 
-        public ActionResult DeletePerson(int id)
+        public ActionResult DeletePerson(string id)
         {
-           if (id != 0)
+           if (id != null)
             {
                 PersonViewModel viewModel = PersonService.GetPersonById(id);
                if (viewModel != null)
@@ -175,7 +170,7 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult DeletePerson(PersonViewModel newData)
         {
-            User userToDelete = db.Users.Where(x => x.ID == newData.ID).SingleOrDefault();
+            ApplicationUser userToDelete = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
             db.Users.Remove(userToDelete);
             db.SaveChanges();
             return RedirectToAction("Index");
