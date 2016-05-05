@@ -43,7 +43,7 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
-            if(!accountService.IsUserQualified("Teacher", actualID, id));
+            if(!accountService.IsUserQualified("Teacher", actualID, id))
             {
                 if (!accountService.IsUserQualified("Student", actualID, id))
                 {

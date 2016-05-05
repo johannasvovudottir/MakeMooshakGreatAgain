@@ -20,6 +20,7 @@
             <tr>
                 <td>
                     @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
+                    @Html.ActionLink("Delete Person", "DeletePerson", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
                 </td>
             </tr>
         }
@@ -42,6 +43,7 @@
         <tr>
             <td>
                 @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
+                @Html.ActionLink("Delete Course", "DeleteCourse", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
             </td>
         </tr>
     }
