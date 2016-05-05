@@ -32,7 +32,7 @@ namespace RipCore.Controllers
 
             return View(viewModel);
         }
-
+       
         public ActionResult AddPerson()
         {
             return View();
@@ -42,17 +42,17 @@ namespace RipCore.Controllers
         {
             string key = encService.RandomizePasskey();
             string encrypted = encService.Encrypt(newData.Password, key);
-            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn, UserName = newData.Username, Email = newData.Email, Password = encrypted, Passkey = key };
+            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn,UserName=newData.Username,Email=newData.Email,Password=encrypted,Passkey=key};
             db.Users.Add(newPerson);
             db.SaveChanges();
             return View();
         }
         public ActionResult EditPerson(int id)
         {
-            if (id != 0)
+            if(id != 0)
             {
 
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
+            PersonViewModel viewModel = PersonService.GetPersonById(id);
                 if (viewModel != null)
                 {
                     return View(viewModel);
@@ -88,14 +88,14 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddCourse(AdminCourseOverView newData)
         {
-            Course newCourse = new Course { Name = newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID = 1 };
+            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID=1};
             db.Courses.Add(newCourse);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult EditCourse(int id)
         {
-
+            
             if (id != 0)
             {
                 AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
@@ -109,9 +109,9 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult EditCourse(AdminCourseOverView newData)
         {
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
-                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
+                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();   
                 if (newCourse != null)
                 {
                     newCourse.Name = newData.Name;
@@ -124,6 +124,10 @@ namespace RipCore.Controllers
             return View();
 
         }
+        public ActionResult CourseConnections()
+        {
+            return View();
+        }
         public ActionResult CourseOverview()
         {
             var viewModel = CourseService.GetAllCourses();
@@ -134,70 +138,6 @@ namespace RipCore.Controllers
             var viewModel = PersonService.GetAllPersons();
             return View(viewModel);
         }
-
-
-
-
-        public ActionResult DeletePerson(int id)
-        {
-            if (id != 0)
-            {
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
-                if (viewModel != null)
-                {
-                    return View(viewModel);
-                }
-                
-            }
-            return View();
-
-
-            /*PersonViewModel IDFromPersonToDelete = PersonService.GetPersonById(id);
-            User userToDelete = new User { ID = IDFromPersonToDelete.ID };
-            db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
-        }
-
-        [HttpPost]
-        public ActionResult DeletePerson(PersonViewModel newData)
-        {
-            User userToDelete = db.Users.Where(x => x.ID == newData.ID).SingleOrDefault();
-            db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
-        }
-
-        public ActionResult DeleteCourse(int id)
-        {
-            if(id != 0)
-            {
-                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
-                if(viewModel != null)
-                {
-                    return View(viewModel);
-                }
-            }
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult DeleteCourse(AdminCourseOverView newData)
-        {
-            
-                Course courseToDelete = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
-                db.Courses.Remove(courseToDelete);
-                db.SaveChanges();
-                
-            
-            return RedirectToAction("Index");
-        }
-
-
-
+        
     }
-
-
-
 }
