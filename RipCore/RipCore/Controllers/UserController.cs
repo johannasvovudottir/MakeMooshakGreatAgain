@@ -43,7 +43,7 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
-            if(!accountService.IsUserQualified("Teacher", actualID, id))
+            if (!accountService.IsUserQualified("Teacher", actualID, id))
             {
                 if (!accountService.IsUserQualified("Student", actualID, id))
                 {
@@ -61,13 +61,13 @@ namespace RipCore.Controllers
         {
             #region Security
             int actualID = 0;
-            if(!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
                 return RedirectToAction("Index", "Home");
 
-            if (!accountService.IsUserQualified("Teacher", actualID, id)) 
+            if (!accountService.IsUserQualified("Teacher", actualID, id))
             {
                 return RedirectToAction("Index", "User");
             }
@@ -99,11 +99,11 @@ namespace RipCore.Controllers
         {
             #region Security
             int ID = 0;
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 accountService.GetIdByUser(User.Identity.Name, ref ID);
             }
-            if(!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
+            if (!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
             {
                 return RedirectToAction("Index", "User");
             }
@@ -114,7 +114,7 @@ namespace RipCore.Controllers
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
-            return RedirectToAction("TeacherOverview", new { id=newData.CourseID, userID = ID});
+            return RedirectToAction("TeacherOverview", new { id = newData.CourseID, userID = ID });
         }
 
         public ActionResult Edit(int id)
@@ -127,7 +127,7 @@ namespace RipCore.Controllers
             if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
                 return RedirectToAction("Index", "Home");
 
-            if(id <= 0)
+            if (id <= 0)
             {
                 return View();
             }
@@ -135,10 +135,10 @@ namespace RipCore.Controllers
             //if(id.HasValue)
             //{
             AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
-                if(viewModel != null)
-                {
-                    return View(viewModel);
-                }
+            if (viewModel != null)
+            {
+                return View(viewModel);
+            }
             //}
             return RedirectToAction("TeacherOverview", new { id = id, userID = ID });
         }
@@ -160,7 +160,7 @@ namespace RipCore.Controllers
 
             if (ModelState.IsValid)
             {
-                for(int i = 0; i < counter; i++)
+                for (int i = 0; i < counter; i++)
                 {
                     bool exists = collection["Milestones[" + i + "].ID"] != null;
                     if (!exists)
@@ -178,8 +178,8 @@ namespace RipCore.Controllers
                             AssignmentID = model.ID
                         });
                     }
-                }   
-                
+                }
+
                 Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
                 if (assignment != null)
                 {
@@ -194,16 +194,50 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
-        
-        public ActionResult StudentAssignmentView(int id, int userID)
+
+        public ActionResult StudentAssignmentView(int id)
         {
+            #region Security
+            int userID = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.IsUserQualified("Teacher", userID, id) || !accountService.IsUserQualified("Student", userID, id))
+                return RedirectToAction("Index", "User");
+
+
+            if (id <= 0)
+                return View();
+            #endregion
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, false);
+            viewModel.UserID = userID;
             return View(viewModel);
         }
 
-        public ActionResult TeacherAssignmentView(int id, int userID)
+       
+
+        public ActionResult TeacherAssignmentView(int id)
         {
+            #region Security
+            int userID = 0;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.IsUserQualified("Teacher", userID, id))
+                return RedirectToAction("Index", "User");
+
+            if (id <= 0)
+                return View();
+            #endregion
+
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
+            viewModel.UserID = userID;
             return View(viewModel);
         }
 
