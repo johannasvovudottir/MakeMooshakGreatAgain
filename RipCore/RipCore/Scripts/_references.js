@@ -9,4 +9,5 @@
 /// <reference path="mode-css.js" />
 /// <reference path="mode-example.js" />
 /// <reference path="modernizr-2.6.2.js" />
+/// <reference path="myscripts.js" />
 /// <reference path="respond.js" />

@@ -159,6 +159,8 @@ namespace RipCore.Services
                 UserName = userName,
                 Teachers = teachers,
                 Students = students,
+                Year = course.Year,
+                Semester = course.Semester,
                 CoursesAsStudent = coursesAsStudent,
                 CoursesAsTeacher = coursesAsTeacher,
                 Assignments = assignentViewModel
