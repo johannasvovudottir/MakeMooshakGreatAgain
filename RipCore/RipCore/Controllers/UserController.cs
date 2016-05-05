@@ -4,7 +4,9 @@ using RipCore.Models.ViewModels;
 using RipCore.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -110,7 +112,7 @@ namespace RipCore.Controllers
             #endregion
 
             int tmp = newData.CourseID;
-            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
+            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
@@ -187,6 +189,15 @@ namespace RipCore.Controllers
                     assignment.Description = model.Description;
                     assignment.DateCreated = model.DateCreated;
                     assignment.DueDate = model.DueDate;
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        model.File.InputStream.CopyTo(memoryStream);
+
+                        string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                        assignment.Input = result[0];
+                        assignment.Output = result[1];
+                    }
                     db.SaveChanges();
                 }
                 return RedirectToAction("Index");

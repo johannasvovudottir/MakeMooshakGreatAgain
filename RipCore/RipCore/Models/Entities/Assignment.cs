@@ -12,8 +12,8 @@ namespace RipCore.Models.Entities
         public string Title { get; set; }
         public int Weight { get; set; }
         public int CourseID { get; set; }
-        //List<string> input;
-        //List<string> output;
+        public string Input { get; set; }
+        public string Output { get; set; }
         public string Description { get; set; }
         //public byte[] DescriptionFile { get; set; }
         /*public List<AssignmentMilestoneViewModel> milestones;

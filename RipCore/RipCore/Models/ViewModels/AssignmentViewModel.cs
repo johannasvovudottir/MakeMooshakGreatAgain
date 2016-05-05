@@ -19,5 +19,8 @@ namespace RipCore.Models.ViewModels
         public List<AssignmentMilestoneViewModel> Milestones;
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }
+        public string Input { get; set; }
+        public string Output { get; set; }
+        public HttpPostedFileBase File { get; set; }
     }
 }
