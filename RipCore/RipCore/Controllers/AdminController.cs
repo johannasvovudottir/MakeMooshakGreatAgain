@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
@@ -17,7 +20,32 @@ namespace RipCore.Controllers
         private AccountsService accountService = new AccountsService();
         private ApplicationDbContext db = new ApplicationDbContext();
         private EncryptionService encService = new EncryptionService();
+        private ApplicationUserManager _userManager;
         // GET: Admin
+
+        public AdminController()
+        {
+
+
+        }
+
+        public AdminController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         public ActionResult Index()
         {
             //int id = accountService.GetIdByUser(User.Identity.Name);
@@ -38,10 +66,24 @@ namespace RipCore.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddPerson(PersonViewModel newData)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddPerson(RegisterViewModel model)
         {
-            //Implement register
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, Ssn = model.SSN };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+
+                    return RedirectToAction("Index", "Admin");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
         public ActionResult EditPerson(string id)
         {
@@ -205,6 +247,14 @@ namespace RipCore.Controllers
             
             return RedirectToAction("Index");
         }
-        
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
     }
 }

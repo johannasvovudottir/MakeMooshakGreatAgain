@@ -312,13 +312,13 @@
     <Content Include="Views\Admin\EditCourse.cshtml" />
     <Content Include="Views\User\SpecificAssignment.cshtml" />
     <Content Include="Views\User\StudentAssignmentView.cshtml" />
-    <Content Include="Views\Admin\PersonForm.cshtml" />
     <Content Include="Views\Admin\CourseForm.cshtml" />
     <Content Include="Views\Admin\DeletePerson.cshtml" />
     <Content Include="Views\Admin\DeletePersonForm.cshtml" />
     <Content Include="Views\Admin\DeleteCourse.cshtml" />
     <Content Include="Views\Admin\DeleteCourseForm.cshtml" />
     <Content Include="Views\Admin\CourseConnections.cshtml" />
+    <Content Include="Views\Admin\PersonForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
