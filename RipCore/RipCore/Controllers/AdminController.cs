@@ -138,6 +138,62 @@ namespace RipCore.Controllers
             var viewModel = PersonService.GetAllPersons();
             return View(viewModel);
         }
+
+        public ActionResult DeletePerson(int id)
+        {
+           if (id != 0)
+            {
+                PersonViewModel viewModel = PersonService.GetPersonById(id);
+               if (viewModel != null)
+                {
+                    return View(viewModel);
+              }
+                
+            }
+            return View();
+
+
+           /*PersonViewModel IDFromPersonToDelete = PersonService.GetPersonById(id);
+            User userToDelete = new User { ID = IDFromPersonToDelete.ID };
+           db.Users.Remove(userToDelete);
+            db.SaveChanges();
+            return RedirectToAction("Index");*/
+        }
+
+        [HttpPost]
+        public ActionResult DeletePerson(PersonViewModel newData)
+        {
+            User userToDelete = db.Users.Where(x => x.ID == newData.ID).SingleOrDefault();
+            db.Users.Remove(userToDelete);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
+
+        public ActionResult DeleteCourse(int id)
+        {
+            if(id != 0)
+            {
+                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
+                if(viewModel != null)
+                {
+                    return View(viewModel);
+               }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCourse(AdminCourseOverView newData)
+        {
+            
+                Course courseToDelete = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
+                db.Courses.Remove(courseToDelete);
+                db.SaveChanges();
+                
+            
+            return RedirectToAction("Index");
+        }
         
     }
 }
