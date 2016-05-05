@@ -48,6 +48,13 @@
                         @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.File, new { type = "file" })
+                        @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -78,7 +85,6 @@
                 <input type="hidden" name="counter" id="counter" value="@counter" />
             </div>
         </div>
-<<<<<<< HEAD
         @Html.HiddenFor(model => model.CourseID)
 
         @Html.LabelFor(model => model.Description)
@@ -92,16 +98,7 @@
                 }
             </div>
         </section>
-=======
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.File, new { type = "file" })
-                @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
-            </div>
-        </div>
->>>>>>> 334f8df3f00fa2ced5f2a47c51e748ce5d1ff202
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -132,6 +129,7 @@
 
 <script>
     var editor = ace.edit("editor");
+    editor.resize();
 </script>
 
 <script>
