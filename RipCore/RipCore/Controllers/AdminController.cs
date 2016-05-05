@@ -72,11 +72,11 @@ namespace RipCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, Ssn = model.SSN };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, FullName = model.FullName, Ssn = model.SSN };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-
+                    var res = await UserManager.UpdateAsync(user);
                     return RedirectToAction("Index", "Admin");
                 }
                 AddErrors(result);
@@ -85,6 +85,48 @@ namespace RipCore.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        public ActionResult EditPerson(string id)
+        {
+            var user = PersonService.GetPersonById(id);
+            RegisterViewModel viewModel = new RegisterViewModel {
+                ID = id,
+                UserName = user.Username,
+                FullName = user.Name,
+                Email = user.Email,
+                SSN = user.Ssn
+            };
+            if(viewModel != null)
+                return View(viewModel);
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditPerson(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(model.ID);
+                user.Email = model.Email;
+                user.FullName = model.FullName;
+                user.UserName = model.UserName;
+                user.Ssn = model.SSN;
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    db.SaveChanges();
+                    await db.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Admin");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        /*
         public ActionResult EditPerson(string id)
         {
             if (id != null)
@@ -118,6 +160,7 @@ namespace RipCore.Controllers
             return View();
 
         }
+        */
         public ActionResult AddCourse()
         {
             return View();

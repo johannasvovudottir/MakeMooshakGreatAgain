@@ -65,6 +65,7 @@ namespace RipCore.Models
 
     public class RegisterViewModel
     {
+        public string ID { get; set; }
         [Required]
         [Display(Name = "Username")]
         public string UserName { get; set; }
