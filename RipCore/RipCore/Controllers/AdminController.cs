@@ -130,10 +130,14 @@ namespace RipCore.Controllers
             {
                 var PersonsToAppend = PersonService.GetAllPersons();
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
+                var teachersToAppend = PersonService.GetAllTeachers(courseID);
+                var studentsToAppend = PersonService.GetAllStudents(courseID);
                 CourseConnectViewModel viewModel = new CourseConnectViewModel
                 {
                     UnConnectedUsers = PersonsToAppend,
-                    CurrentCourse = courseToAppend
+                    CurrentCourse = courseToAppend,
+                    Teachers = teachersToAppend,
+                    Students = studentsToAppend
                 };
                 return View(viewModel);
 

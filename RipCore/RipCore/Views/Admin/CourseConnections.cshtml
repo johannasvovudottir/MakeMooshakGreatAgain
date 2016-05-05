@@ -31,6 +31,19 @@
     </table>
 </div>
 
+@foreach (var item in Model.Teachers)
+{
+    <div>
+        @item.Name
+    </div>
+}
+
+@foreach (var item in Model.Students)
+{
+    <div>
+        student @item.Name 
+    </div>
+}
 
 <script>
     var $rows = $('#usertable tr');

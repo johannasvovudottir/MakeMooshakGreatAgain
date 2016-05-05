@@ -109,7 +109,7 @@ namespace RipCore.Services
             List<User> result = (from c in db.CoursesStudents
                                    join cn in db.Courses on c.CourseID equals cn.ID
                                    join ct in db.Users on c.UserID equals ct.ID
-                                   where (ct.ID == courseID)
+                                   where (cn.ID == courseID)
                                    select ct).ToList();
             return result;
         }
@@ -119,7 +119,7 @@ namespace RipCore.Services
             List<User> result = (from c in db.CoursesTeachers
                                    join cn in db.Courses on c.CourseID equals cn.ID
                                    join ct in db.Users on c.TeacherID equals ct.ID
-                                   where (ct.ID == courseID)
+                                   where (cn.ID == courseID)
                                    select ct).ToList();
             return result;
         }

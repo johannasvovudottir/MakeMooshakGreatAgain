@@ -39,11 +39,38 @@ namespace RipCore.Services
             List<PersonViewModel> teachersToReturn = new List<PersonViewModel>();
             foreach (User person  in teachers)
             {
-
-
+                PersonViewModel personToAppend = new PersonViewModel
+                {
+                    ID=person.ID,
+                    Email=person.Email,
+                    Name=person.FullName,
+                    Ssn=person.Ssn,
+                    Username = person.UserName
+                };
+                teachersToReturn.Add(personToAppend);
             }
 
-            return null;
+            return teachersToReturn;
+        }
+        public List<PersonViewModel> GetAllStudents(int courseID)
+        {
+            CourseService query = new CourseService();
+            List<User> students = query.GetAllStudents(courseID);
+            List<PersonViewModel> studentsToReturn = new List<PersonViewModel>();
+            foreach (User person in students)
+            {
+                PersonViewModel personToAppend = new PersonViewModel
+                {
+                    ID = person.ID,
+                    Email = person.Email,
+                    Name = person.FullName,
+                    Ssn = person.Ssn,
+                    Username = person.UserName
+                };
+                studentsToReturn.Add(personToAppend);
+            }
+
+            return studentsToReturn;
         }
         public PersonViewModel GetPersonById(int PersonID)
         {
