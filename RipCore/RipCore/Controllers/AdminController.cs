@@ -126,7 +126,16 @@ namespace RipCore.Controllers
         }
         public ActionResult CourseConnections()
         {
-            return View();
+            var CoursesToAppend = CourseService.GetAllCourses();
+            var PersonsToAppend = PersonService.GetAllPersons();
+
+            AdminIndexViewModel viewModel = new AdminIndexViewModel
+            {
+                Courses = CoursesToAppend,
+                Persons = PersonsToAppend
+            };
+
+            return View(viewModel);
         }
         public ActionResult CourseOverview()
         {
