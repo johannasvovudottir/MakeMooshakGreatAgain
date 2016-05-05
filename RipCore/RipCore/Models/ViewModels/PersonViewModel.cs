@@ -10,10 +10,9 @@ namespace RipCore.Models.ViewModels
     {
         public string Name { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
-        public string Passkey { get; set; }
+        public string PasswordHash { get; set; }
         public string Email { get; set; }
-        public int ID { get; set; }
+        public string ID { get; set; }
         public int Ssn { get; set; }
     }
 }
