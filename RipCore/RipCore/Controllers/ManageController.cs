@@ -65,7 +65,7 @@ namespace RipCore.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var n = 0;
+            string n = null;
             accountService.GetIdByUser(User.Identity.Name, ref n);
             string userId = n.ToString();
             var model = new IndexViewModel
@@ -84,9 +84,8 @@ namespace RipCore.Controllers
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
             ManageMessageId? message;
-            int id = 0;
-            accountService.GetIdByUser(User.Identity.Name, ref id);
-            string userId = id.ToString();
+            string userId= null;
+            accountService.GetIdByUser(User.Identity.Name, ref userId);
             var result = await UserManager.RemoveLoginAsync(userId, new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {

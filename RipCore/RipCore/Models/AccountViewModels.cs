@@ -59,14 +59,27 @@ namespace RipCore.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+      
     }
 
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Fullname")]
+        public string FullName { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "SSN")]
+        public int SSN { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

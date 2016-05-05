@@ -5,7 +5,7 @@ using System.Web;
 
 namespace RipCore.Models.Entities
 {
-    public class User
+    public class AppUser
     {
         public int ID { get; set; }
         // public int Year { get; set; }

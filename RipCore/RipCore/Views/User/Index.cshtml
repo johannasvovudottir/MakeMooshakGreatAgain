@@ -5,7 +5,7 @@
 <h2>Hello @Model.Name</h2>
 <nav class="courese">
     <h3>Courses as Student</h3>
-    <ul>
+    <ul class="unorderedCourses">
         @foreach (var item in Model.whereStudent)
         {
             <li>
@@ -14,7 +14,7 @@
         }
     </ul>
     <h3>Courses as Teacher</h3>
-    <ul>
+    <ul class="unorderedCourses">
         @foreach (var item in Model.whereTeacher)
         {
             <li>
@@ -25,12 +25,8 @@
 </nav>
 <main class="assignments">
     <h3>Assignments</h3>
-    <ul>
-        @foreach (var item in Model.assignments)
-        {
-            <li>
-                <p>@item.Title</p>
-            </li>
-        }
-    </ul>
+    @foreach (var item in Model.assignments)
+    {
+        <p>@item.Title</p>
+    }
 </main>

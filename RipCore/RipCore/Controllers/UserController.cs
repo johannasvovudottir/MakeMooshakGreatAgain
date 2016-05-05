@@ -4,7 +4,9 @@ using RipCore.Models.ViewModels;
 using RipCore.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,7 +22,7 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -36,7 +38,7 @@ namespace RipCore.Controllers
         public ActionResult StudentOverview(int id)
         {
             #region Security
-            int actualID = 0;
+            string actualID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -60,7 +62,7 @@ namespace RipCore.Controllers
         public ActionResult TeacherOverview(int id)
         {
             #region Security
-            int actualID = 0;
+            string actualID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -81,7 +83,7 @@ namespace RipCore.Controllers
         public ActionResult Create(int id)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
@@ -91,6 +93,7 @@ namespace RipCore.Controllers
 
             AssignmentViewModel viewModel = new AssignmentViewModel();
             viewModel.CourseID = id;
+            viewModel.Milestones = new List<AssignmentMilestoneViewModel>();
             return View(viewModel);
         }
 
@@ -98,19 +101,22 @@ namespace RipCore.Controllers
         public ActionResult Create(AssignmentViewModel newData)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
+            accountService.GetIdByUser(User.Identity.Name, ref ID);
+            if (!User.Identity.IsAuthenticated)
             if (User.Identity.IsAuthenticated)
             {
-                accountService.GetIdByUser(User.Identity.Name, ref ID);
+                return RedirectToAction("Index", "User");
             }
-            if (!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
+
+            if(!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
             {
                 return RedirectToAction("Index", "User");
             }
             #endregion
 
             int tmp = newData.CourseID;
-            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description };
+            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
@@ -120,7 +126,7 @@ namespace RipCore.Controllers
         public ActionResult Edit(int id)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
 
@@ -133,7 +139,7 @@ namespace RipCore.Controllers
             }
             #endregion
             //if(id.HasValue)
-            //{
+            //{ 
             AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
             if (viewModel != null)
             {
@@ -147,14 +153,14 @@ namespace RipCore.Controllers
         public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
         {
             #region Security
-            int ID = 0;
+            string ID = null;
             if (User.Identity.IsAuthenticated)
             {
                 accountService.GetIdByUser(User.Identity.Name, ref ID);
             }
             if (!accountService.IsUserQualified("Teacher", ID, model.CourseID))
             {
-                //return RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "User");
             }
             #endregion
 
@@ -187,6 +193,15 @@ namespace RipCore.Controllers
                     assignment.Description = model.Description;
                     assignment.DateCreated = model.DateCreated;
                     assignment.DueDate = model.DueDate;
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        model.File.InputStream.CopyTo(memoryStream);
+
+                        string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                        assignment.Input = result[0];
+                        assignment.Output = result[1];
+                    }
                     db.SaveChanges();
                 }
                 return RedirectToAction("Index");
@@ -198,7 +213,7 @@ namespace RipCore.Controllers
         public ActionResult StudentAssignmentView(int id)
         {
             #region Security
-            int userID = 0;
+            string userID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -217,12 +232,10 @@ namespace RipCore.Controllers
             return View(viewModel);
         }
 
-       
-
         public ActionResult TeacherAssignmentView(int id)
         {
             #region Security
-            int userID = 0;
+            string userID = null;
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -239,6 +252,14 @@ namespace RipCore.Controllers
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
             viewModel.UserID = userID;
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult SubmitSolution(AssignmentViewModel viewModel, int id, int userID)
+        {
+            Solution solution = new Solution { AssignmentID = id, StudentID = userID, SolutionOutput = viewModel.Solution };
+            //TODO TJEKKA STATUS  A LAUSN
+            return RedirectToAction("StudentOverview", new { id = viewModel.CourseID, userID = 16 } );
         }
 
         public ActionResult AddMilestone(int id)

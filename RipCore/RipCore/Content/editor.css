@@ -1,0 +1,28 @@
+﻿
+.ace_editor{
+  min-height : 300px;
+}
+
+
+/*
+ Your marker style
+*/
+.ace_marker-layer .warning {
+    position: absolute;
+    z-index: 4;
+    background: #f1c40f;
+}
+
+/*
+ TWBS HACK
+*/
+
+.jumbotron {
+  position: relative;
+  font-size: 16px;
+  color: #fff;
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  background-color: #563d7c;
+  border-radius: 0;
+}

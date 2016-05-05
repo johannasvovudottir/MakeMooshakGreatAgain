@@ -12,13 +12,63 @@
         </tr>
     </tbody>
 </table>
-<h4>Project Description</h4>
-@Html.DisplayFor(modelItem => Model.Description)
-@if (Model.IsTeacher)
-{
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
-}
-@if (!Model.IsTeacher)
-{
-    @Html.ActionLink("Uplod File", "Upload", new { id = Model.ID })
-}
+
+@Styles.Render("~/Content/tabs.css")
+
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1"><span>Project</span></a></li>
+        <li><a href="#tabs-2"><span>Code Editor</span></a></li>
+        <li><a href="#tabs-3"><span>Milestones</span></a></li>
+    </ul>
+    <div id="tabs-1">
+        <h4>Project Description</h4>
+        @Html.DisplayFor(modelItem => Model.Description)
+        @if (Model.IsTeacher)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+        }
+        @if (!Model.IsTeacher)
+        {
+            @Html.ActionLink("Uplod File", "Upload", new { id = Model.ID })
+        }
+    </div>
+    <div id="tabs-2">
+        @if (!Model.IsTeacher)
+        {
+            @Html.AntiForgeryToken()
+            <section>
+                <div id="editor">
+                    function foo(items) {
+                    var x = "All this is syntax highlighted";
+                    return x;
+                    }
+                </div>
+            </section>
+
+            @Html.HiddenFor(model => model.Solution)
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" id="solutionButton" class="btn btn-default" />
+                </div>
+            </div>
+            @Html.ActionLink("Save", "SubmitSolution", new { id = "solutionSubmit" })
+
+        }
+    </div>
+    <div id="tabs-3">
+        @foreach(var item in Model.Milestones)
+        {
+            <h4>@item.Title</h4>
+            <p>@item.Description</p>
+        }
+   </div>
+</div>
+
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
+

@@ -44,25 +44,24 @@
     @Html.ActionLink("New Project", "Create", new { id = Model.ID })
 }
 
-
-    <div class="lists">
-        <h3>All Students</h3>
-        <ul>
-            @foreach (var item in Model.Students)
-            {
-                <li>
-                    @item.FullName
-                </li>
-            }
-        </ul>
-        <h3>All Teachers</h3>
-        <ul>
-            @foreach (var item in Model.Teachers)
-            {
-                <li>
-                    @item.FullName
-                </li>
-            }
-        </ul>
-    </div>
+<div class="lists">
+    <h3>All Students</h3>
+    <ul>
+        @foreach (var item in Model.Students)
+        {
+            <li>
+                @item.FullName
+            </li>
+        }
+    </ul>
+    <h3>All Teachers</h3>
+    <ul>
+        @foreach (var item in Model.Teachers)
+        {
+            <li>
+                @item.FullName
+            </li>
+        }
+    </ul>
+</div>
 
