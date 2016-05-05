@@ -32,6 +32,19 @@ namespace RipCore.Services
             }
             return viewModel;
         }
+        public List<PersonViewModel> GetAllTeachers(int courseID)
+        {
+            CourseService query = new CourseService();
+            List<User> teachers = query.GetAllTeachers(courseID);
+            List<PersonViewModel> teachersToReturn = new List<PersonViewModel>();
+            foreach (User person  in teachers)
+            {
+
+
+            }
+
+            return null;
+        }
         public PersonViewModel GetPersonById(int PersonID)
         {
             var result = (from x in db.Users

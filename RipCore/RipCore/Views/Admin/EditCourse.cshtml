@@ -1,11 +1,14 @@
-﻿
+﻿@model RipCore.Models.ViewModels.AdminCourseOverView
+
 @{
     ViewBag.Title = "EditCourse";
 }
 
 <h2>EditCourse</h2>
+<p>@Model.ID</p>
 
 @{ Html.RenderPartial("CourseForm"); }
 
 
-@Html.ActionLink("connect", "CourseConnections", new { id = 5 })
+
+@Html.ActionLink("Bæta notendun við áfangann", "CourseConnections", new { courseID = @Model.ID })

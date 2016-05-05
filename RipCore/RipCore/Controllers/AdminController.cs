@@ -32,7 +32,7 @@ namespace RipCore.Controllers
 
             return View(viewModel);
         }
-       
+
         public ActionResult AddPerson()
         {
             return View();
@@ -42,17 +42,17 @@ namespace RipCore.Controllers
         {
             string key = encService.RandomizePasskey();
             string encrypted = encService.Encrypt(newData.Password, key);
-            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn,UserName=newData.Username,Email=newData.Email,Password=encrypted,Passkey=key};
+            User newPerson = new User { FullName = newData.Name, Ssn = newData.Ssn, UserName = newData.Username, Email = newData.Email, Password = encrypted, Passkey = key };
             db.Users.Add(newPerson);
             db.SaveChanges();
             return View();
         }
         public ActionResult EditPerson(int id)
         {
-            if(id != 0)
+            if (id != 0)
             {
 
-            PersonViewModel viewModel = PersonService.GetPersonById(id);
+                PersonViewModel viewModel = PersonService.GetPersonById(id);
                 if (viewModel != null)
                 {
                     return View(viewModel);
@@ -88,14 +88,14 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult AddCourse(AdminCourseOverView newData)
         {
-            Course newCourse = new Course { Name=newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID=1};
+            Course newCourse = new Course { Name = newData.Name, Semester = newData.Semester, Year = newData.Year, SchoolID = 1 };
             db.Courses.Add(newCourse);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult EditCourse(int id)
         {
-            
+
             if (id != 0)
             {
                 AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
@@ -109,9 +109,9 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult EditCourse(AdminCourseOverView newData)
         {
-           if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();   
+                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
                 if (newCourse != null)
                 {
                     newCourse.Name = newData.Name;
@@ -124,18 +124,21 @@ namespace RipCore.Controllers
             return View();
 
         }
-        public ActionResult CourseConnections()
+        public ActionResult CourseConnections(int courseID)
         {
-            var CoursesToAppend = CourseService.GetAllCourses();
-            var PersonsToAppend = PersonService.GetAllPersons();
-
-            AdminIndexViewModel viewModel = new AdminIndexViewModel
+            if (courseID != null)
             {
-                Courses = CoursesToAppend,
-                Persons = PersonsToAppend
-            };
+                var PersonsToAppend = PersonService.GetAllPersons();
+                var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
+                CourseConnectViewModel viewModel = new CourseConnectViewModel
+                {
+                    UnConnectedUsers = PersonsToAppend,
+                    CurrentCourse = courseToAppend
+                };
+                return View(viewModel);
 
-            return View(viewModel);
+            }
+            return RedirectToAction("Index");
         }
         public ActionResult CourseOverview()
         {
