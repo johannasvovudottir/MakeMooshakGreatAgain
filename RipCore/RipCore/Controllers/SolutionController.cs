@@ -43,9 +43,6 @@ namespace RipCore.Controllers
             //TODO else ef ekkert
             db.Solutions.Add(solution);
             db.SaveChanges();
-<<<<<<< HEAD
-            return RedirectToAction("StudentOverview", "User", new { id = viewModel.CourseID });
-=======
 
             CompileSolution(solution.SolutionOutput);
 
@@ -147,7 +144,6 @@ namespace RipCore.Controllers
             // may be files we should delete etc.
 
             return View();
->>>>>>> 52d0037cdc4ddbdaf4ff125fbb8b03a1ecb9d7cd
         }
     }
 }
