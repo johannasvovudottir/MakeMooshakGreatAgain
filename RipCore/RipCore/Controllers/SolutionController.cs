@@ -42,7 +42,7 @@ namespace RipCore.Controllers
             //TODO else ef ekkert
             db.Solutions.Add(solution);
             db.SaveChanges();
-            return RedirectToAction("StudentOverview", "User", new { id = viewModel.ID });
+            return RedirectToAction("StudentOverview", "User", new { id = viewModel.CourseID });
         }
     }
 }

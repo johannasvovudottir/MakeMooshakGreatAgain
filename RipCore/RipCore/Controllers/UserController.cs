@@ -55,7 +55,7 @@ namespace RipCore.Controllers
             }
             #endregion
 
-            var viewModel = service.GetCoursesById(id, actualID);
+            CourseViewModel viewModel = service.GetCoursesById(id, actualID);
             viewModel.isTeacher = false;
             return View(viewModel);
         }
@@ -76,7 +76,7 @@ namespace RipCore.Controllers
             }
             #endregion
 
-            var viewModel = service.GetCoursesById(id, actualID);
+            CourseViewModel viewModel = service.GetCoursesById(id, actualID);
             viewModel.isTeacher = true;
             return View(viewModel);
         }
@@ -95,6 +95,7 @@ namespace RipCore.Controllers
             AssignmentViewModel viewModel = new AssignmentViewModel();
             viewModel.CourseID = id;
             viewModel.Milestones = new List<AssignmentMilestoneViewModel>();
+            viewModel.programmingLanguages = assignmentService.GetProgrammingLanguages();
             return View(viewModel);
         }
 
@@ -195,13 +196,16 @@ namespace RipCore.Controllers
                     assignment.DateCreated = model.DateCreated;
                     assignment.DueDate = model.DueDate;
                     assignment.ProgrammingLanguageID = model.ProgrammingLanguageID;
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    if (model.File != null)
                     {
-                        model.File.InputStream.CopyTo(memoryStream);
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            model.File.InputStream.CopyTo(memoryStream);
 
-                        string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                        assignment.Input = result[0];
-                        assignment.Output = result[1];
+                            string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                            assignment.Input = result[0];
+                            assignment.Output = result[1];
+                        }
                     }
                     db.SaveChanges();
                 }
