@@ -44,6 +44,18 @@ namespace RipCore.Services
             db.SaveChanges();
             return; 
         }
+        public void ConnectTeachers(string userID, int courseID)
+        {
+
+            Course_Teacher newTeacher = new Course_Teacher
+            {
+                TeacherID = userID,
+                CourseID = courseID
+            };
+            db.CoursesTeachers.Add(newTeacher);
+            db.SaveChanges();
+            return;
+        }
         public List<PersonViewModel> GetAllTeachers(int courseID)
         {
             CourseService query = new CourseService();
@@ -83,6 +95,39 @@ namespace RipCore.Services
             }
 
             return studentsToReturn;
+        }
+        public List<PersonViewModel> GetAllNotConnected(int courseID)
+        {
+            List<PersonViewModel> allUsers = GetAllPersons();
+            List<PersonViewModel> courseTeachers = GetAllTeachers(courseID);
+            List<PersonViewModel> courseStudents = GetAllStudents(courseID);
+            //var noteachersallowedher = from c in db.Courses join cn in db.CoursesTeachers on c.ID equals cn.TeacherID select !c
+            //for (int i = 0; i < allUsers.Count; i++)
+            //{
+            //    for (int j = 0; j < courseTeachers.Count; j++)
+            //    {
+            //        if (allUsers[i].ID == courseTeachers[j].ID)
+            //        {
+            //            allUsers.RemoveAt(i);
+            //                i++;
+            //        }
+            //    }
+            //}
+            //for (int i = 0; i < allUsers.Count; i++)
+            //{
+            //        for (int j = 0; j < courseStudents.Count; j++)
+            //        {
+            //            if (allUsers[i].ID == courseStudents[j].ID)
+            //            {
+            //                allUsers.RemoveAt(i);
+            //                i++;
+            //            }
+
+            //    }
+
+            //}
+
+            return allUsers;
         }
         public PersonViewModel GetPersonById(string PersonID)
         {

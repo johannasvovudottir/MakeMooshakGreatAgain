@@ -20,10 +20,10 @@
             <thead></thead>
             <tbody>
                 
-             @for (int i=0; i < Model.UnConnectedUsers.Count; i++) {
+             @for (int i = 0; i < Model.UnConnectedUsers.Count; i++) {
 
 
-                    
+
                     <tr>
                         <td>
                                 @Model.UnConnectedUsers[i].Name
@@ -39,10 +39,12 @@
                                 @Html.HiddenFor(model => model.UnConnectedUsers[i].Ssn)
                             </div>
                         <td>
-                            <select class="form-control" id="StudentGender" name="Stada">
-                                <option>Nemandi</option>
-                                <option>Kennari</option>
-                            </select>
+                            @Html.DropDownListFor(model => model.UnConnectedUsers[i].Role, new SelectList(
+                            new List<Object>{
+                               new { value = "Teacher" , text = "Teacher" },
+                               new { value = "Student" , text = "Student"}
+                            },"value","Text",1)   
+                            )
                         </td>
                     </tr>
                 }
