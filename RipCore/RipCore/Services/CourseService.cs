@@ -149,7 +149,7 @@ namespace RipCore.Services
             var teachers = GetAllTeachers(courseID);
 
             string userName = (from u in db.Users where u.Id == userID select u.FullName).SingleOrDefault().ToString();
-            var viewModel = new CourseViewModel
+            CourseViewModel viewModel = new CourseViewModel
             {
                 Name = course.Name,
                 ID = course.ID,
