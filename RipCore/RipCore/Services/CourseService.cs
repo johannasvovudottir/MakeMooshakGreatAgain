@@ -126,7 +126,9 @@ namespace RipCore.Services
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);
             if (course == null)
             {
-                //TODO kasta
+                //TODO kastah
+                int petur = 0;
+                string strengur = "helaluja";
             }
             /*
             var milestones = db.Milestones.Where(x => x.AssignmendId == assignmentID).Select(x => new AssignmentMilestoneViewModel
@@ -161,7 +163,8 @@ namespace RipCore.Services
                 Semester = course.Semester,
                 CoursesAsStudent = coursesAsStudent,
                 CoursesAsTeacher = coursesAsTeacher,
-                Assignments = assignentViewModel
+                Assignments = assignentViewModel,
+                isTeacher = false,
             };
             return viewModel;
         }
