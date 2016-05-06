@@ -60,7 +60,6 @@ namespace RipCore.Services
                 CourseID = assignment.CourseID,
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
                 DateCreated = assignment.DateCreated,
-                IsTeacher = false,
                 Milestones = milestoneViewModel,
                 DueDate = assignment.DueDate,
                 Input = assignment.Input,
