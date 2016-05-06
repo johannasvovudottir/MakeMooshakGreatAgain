@@ -32,6 +32,18 @@ namespace RipCore.Services
             }
             return viewModel;
         }
+        public void ConnectStudents(string userID,int courseID)
+        {
+               
+            Course_Student newStudent = new Course_Student
+            {
+                UserID=userID,
+                CourseID=courseID
+            };
+            db.CoursesStudents.Add(newStudent);
+            db.SaveChanges();
+            return; 
+        }
         public List<PersonViewModel> GetAllTeachers(int courseID)
         {
             CourseService query = new CourseService();
