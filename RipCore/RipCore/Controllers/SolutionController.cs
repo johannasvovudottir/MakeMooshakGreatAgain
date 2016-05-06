@@ -25,7 +25,6 @@ namespace RipCore.Controllers
         [HttpPost]
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
-            Solution solution = new Solution { AssignmentID = viewModel.ID, StudentID = User.Identity.GetUserId() };
             SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, AssignmentID = viewModel.ID };
             if (viewModel.File != null)
             {
@@ -42,28 +41,12 @@ namespace RipCore.Controllers
             {
                  submission.SolutionOutput = viewModel.Solution;
             }
-            
-            //TODO else ef ekkert
-<<<<<<< HEAD
-            db.Solutions.Add(solution);
-            db.SaveChanges();
 
-            CompileSolution(solution.SolutionOutput);
-
-            return RedirectToAction("StudentOverview", "User", new { id = viewModel.CourseID });
-        }
-
-        ///[HttpPost] // ??
-        public ActionResult CompileSolution(string data)
-=======
-
-            return RedirectToAction("CompileSolution", submission);
-
+            return RedirectToAction("CompileSolution", new { data = submission});
         }
 
         ///[HttpPost] // ??
         public ActionResult CompileSolution(Submission data)
->>>>>>> johanna
         {
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
@@ -157,13 +140,6 @@ namespace RipCore.Controllers
             // may be files we should delete etc.
 
             return View();
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 52d0037cdc4ddbdaf4ff125fbb8b03a1ecb9d7cd
-=======
->>>>>>> johanna
-=======
->>>>>>> 1fce7ab586c33c2816c042d10838afdbed15f9ef
         }
     }
 }
