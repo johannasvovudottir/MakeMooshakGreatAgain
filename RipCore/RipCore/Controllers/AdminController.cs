@@ -193,6 +193,20 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult CourseConnections(CourseConnectViewModel newData)
+        {
+            List<PersonViewModel> persons = newData.UnConnectedUsers;
+
+            foreach (PersonViewModel item in persons) {
+                if (item.isChecked == true) {
+                    PersonService.ConnectStudents(item.ID, (newData.CurrentCourse.ID));
+                }
+
+            }
+            return RedirectToAction("Index");
+        }
         public ActionResult CourseOverview()
         {
             var viewModel = CourseService.GetAllCourses();

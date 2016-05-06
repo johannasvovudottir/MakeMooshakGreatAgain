@@ -4,8 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Admin Homepage</h2>
-
 
 <input type="text" id="searchpersons" placeholder="Skrifið til að leita">
 <table id="persontable">
@@ -57,7 +55,6 @@
     var $rows = $('#coursetable tr');
     $('#searchcourses').keyup(function() {
     var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    console.debug("smu");
     $rows.show().filter(function() {
         var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
         return !~text.indexOf(val);
@@ -70,7 +67,6 @@
     var $personrows = $('#persontable tr');
     $('#searchpersons').keyup(function() {
     var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    console.debug("smu2");
     $personrows.show().filter(function() {
         var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
         return !~text.indexOf(value);

@@ -6,24 +6,88 @@
 
 <h2>@Model.CurrentCourse.Name</h2>
 
-<div>
-    <input type="text" id="searchusers" placeholder="Skrifið til að leita">
-    <table class="table-bordered" id="usertable">
-        <thead></thead>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CurrentCourse.ID)
+    @Html.HiddenFor(model => model.CurrentCourse.Name)
+    @Html.HiddenFor(model => model.CurrentCourse.SchoolID)
+    @Html.HiddenFor(model => model.CurrentCourse.Semester)
+    @Html.HiddenFor(model => model.CurrentCourse.Year)
+    <div>
+        <input type="text" id="searchusers" placeholder="Skrifið til að leita">
+        <table class="table-bordered" id="usertable">
+            <thead></thead>
+            <tbody>
+                
+             @for (int i=0; i < Model.UnConnectedUsers.Count; i++) {
+
+
+                    
+                    <tr>
+                        <td>
+                                @Model.UnConnectedUsers[i].Name
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                @Html.CheckBoxFor(model => model.UnConnectedUsers[i].isChecked)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Name)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Username)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].PasswordHash)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Email)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].ID)
+                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Ssn)
+                            </div>
+                        <td>
+                            <select class="form-control" id="StudentGender" name="Stada">
+                                <option>Nemandi</option>
+                                <option>Kennari</option>
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Staðfesta" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+<br />
+
+<div class="pull-right">
+    <table class="table-bordered" id="connectedusers">
+        <thead> </thead>
         <tbody>
-            @foreach (var item in Model.UnConnectedUsers)
+            @foreach (var item in Model.Teachers)
             {
                 <tr>
                     <td>
                         @item.Name
                     </td>
                     <td>
-                        @Html.CheckBox("UserCheck")
+                        Kennari
+                    </td>
                     <td>
-                        <select class="form-control" id="StudentGender" name="Stada">
-                            <option>Kennari</option>
-                            <option>Nemandi</option>
-                        </select>
+                        <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+            @foreach (var item in Model.Students)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        Nemandi
+                    </td>
+                    <td>
+                        <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>
             }
@@ -31,29 +95,18 @@
     </table>
 </div>
 
-@foreach (var item in Model.Teachers)
-{
-    <div>
-        @item.Name
-    </div>
-}
 
-@foreach (var item in Model.Students)
-{
-    <div>
-        student @item.Name 
-    </div>
-}
+
+
 
 <script>
     var $rows = $('#usertable tr');
-    $('#searchusers').keyup(function() {
-    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    console.debug("smu");
-    $rows.show().filter(function() {
-        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-        return !~text.indexOf(val);
-    }).hide();
+    $('#searchusers').keyup(function () {
+        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        $rows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
     });
 
 </script>

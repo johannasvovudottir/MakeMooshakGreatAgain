@@ -47,9 +47,6 @@ namespace RipCore.Controllers
 <<<<<<< HEAD
             db.Solutions.Add(solution);
             db.SaveChanges();
-<<<<<<< HEAD
-            return RedirectToAction("StudentOverview", "User", new { id = viewModel.CourseID });
-=======
 
             CompileSolution(solution.SolutionOutput);
 
@@ -161,9 +158,12 @@ namespace RipCore.Controllers
 
             return View();
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 52d0037cdc4ddbdaf4ff125fbb8b03a1ecb9d7cd
 =======
 >>>>>>> johanna
+=======
+>>>>>>> 1fce7ab586c33c2816c042d10838afdbed15f9ef
         }
     }
 }

@@ -14,5 +14,6 @@ namespace RipCore.Models.ViewModels
         public string Email { get; set; }
         public string ID { get; set; }
         public int Ssn { get; set; }
+        public bool isChecked { get; set; }
     }
 }
