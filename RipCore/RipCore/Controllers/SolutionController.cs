@@ -50,22 +50,19 @@ namespace RipCore.Controllers
         {
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
-            var code = "#include <iostream>\n" +
-                    "using namespace std;\n" +
-                    "int main()\n" +
-                    "{\n" +
-                    "cout << \"Hello world\" << endl;\n" +
-                    "cout << \"The output should contain two lines\" << endl;\n" +
-                    "return 0;\n" +
-                    "}";
+            string user = User.Identity.GetUserId();
+            var code = data.SolutionOutput;
 
             // Set up our working folder, and the file names/paths.
             // In this example, this is all hardcoded, but in a
             // real life scenario, there should probably be individual
             // folders for each user/assignment/milestone.
-            var workingFolder = "C:\\Temp\\Mooshak2Code\\";
-            var cppFileName = "Hello.cpp";
-            var exeFilePath = workingFolder + "Hello.exe";
+
+            var workingFolder = "~\\MakeMooshakGreatAgain\\RipCore\\Solutions\\"; //name; // eða ID
+            //System.IO.Directory.CreateDirectory(workingFolder + "name")
+
+            var cppFileName = "Hello.cpp"; // ---- Verkefnaheiti
+            var exeFilePath = workingFolder + "Hello.exe"; // ----- verkefnaheiti
 
             // Write the code to a file, such that the compiler
             // can find it:
@@ -103,8 +100,9 @@ namespace RipCore.Controllers
             compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
             compiler.StandardInput.WriteLine("exit");
             string output = compiler.StandardOutput.ReadToEnd();
-            compiler.WaitForExit();
+            compiler.WaitForExit(); // <----- Setja tölu hér inn.. ----
             compiler.Close();
+
 
             // Check if the compile succeeded, and if it did,
             // we try to execute the code:
@@ -133,11 +131,16 @@ namespace RipCore.Controllers
                     }
 
                     ViewBag.Output = lines;
+
+                    // ----- is accepted ----------
+                    // ------ solutionOutput er allt sem er í skjalinu. ------
                 }
             }
 
             // TODO: We might want to clean up after the process, there
             // may be files we should delete etc.
+
+            // ----- Directory.Delete("c:\\directory\\subdirectory\\", true); -----
 
             return View();
         }
