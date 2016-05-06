@@ -178,6 +178,7 @@ namespace RipCore.Controllers
             if (courseID != 0)
             {
                 var PersonsToAppend = PersonService.GetAllPersons();
+                //var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
                 var teachersToAppend = PersonService.GetAllTeachers(courseID);
                 var studentsToAppend = PersonService.GetAllStudents(courseID);
@@ -198,13 +199,22 @@ namespace RipCore.Controllers
         public ActionResult CourseConnections(CourseConnectViewModel newData)
         {
             List<PersonViewModel> persons = newData.UnConnectedUsers;
+            //gera selectorFor a nytt eigindi i personview sem heitir isTeacher
+            //gera sidan if setningu i lykkjuna og nytt query
 
             foreach (PersonViewModel item in persons) {
                 if (item.isChecked == true) {
-                    PersonService.ConnectStudents(item.ID, (newData.CurrentCourse.ID));
+                    if (item.Role == "Student")
+                    {
+                        PersonService.ConnectStudents(item.ID, (newData.CurrentCourse.ID));
+                    }
+                    else if (item.Role == "Teacher")
+                    {
+                        PersonService.ConnectTeachers(item.ID, (newData.CurrentCourse.ID));
+                    }
                 }
-
             }
+            
             return RedirectToAction("Index");
         }
         public ActionResult CourseOverview()
@@ -218,12 +228,7 @@ namespace RipCore.Controllers
             return View(viewModel);
         }
 
-        
-
-        
-
-    
-
+      
 
 
         public ActionResult DeleteCourse(int id)

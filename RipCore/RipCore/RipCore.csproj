@@ -322,10 +322,10 @@
     <Content Include="Views\Admin\PersonForm.cshtml" />
     <Content Include="Views\Admin\DeletePerson.cshtml" />
     <Content Include="Views\Admin\DeletePersonForm.cshtml" />
+    <Content Include="Views\Solution\CompileSolution.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Solution\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
