@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
@@ -17,7 +20,32 @@ namespace RipCore.Controllers
         private AccountsService accountService = new AccountsService();
         private ApplicationDbContext db = new ApplicationDbContext();
         private EncryptionService encService = new EncryptionService();
+        private ApplicationUserManager _userManager;
         // GET: Admin
+
+        public AdminController()
+        {
+
+
+        }
+
+        public AdminController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         public ActionResult Index()
         {
             //int id = accountService.GetIdByUser(User.Identity.Name);
@@ -38,44 +66,66 @@ namespace RipCore.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddPerson(PersonViewModel newData)
-        {
-            //Implement register
-            return View();
-        }
-        public ActionResult EditPerson(string id)
-        {
-            if (id != null)
-            {
-
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
-                if (viewModel != null)
-                {
-                    return View(viewModel);
-                }
-            }
-            return View();
-        }
-        [HttpPost]
-        public ActionResult EditPerson(PersonViewModel newData)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddPerson(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser newPerson = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
-                if (newPerson != null)
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, FullName = model.FullName, Ssn = model.SSN };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    newPerson.FullName = newData.Name;
-                    newPerson.Email = newData.Email;
-                    newPerson.PasswordHash = newData.PasswordHash;
-                    newPerson.Ssn = newData.Ssn;
-                    newPerson.UserName = newData.Username;
-                    db.SaveChanges();
+                    var res = await UserManager.UpdateAsync(user);
+                    return RedirectToAction("Index", "Admin");
                 }
-                return RedirectToAction("Index");
+                AddErrors(result);
             }
-            return View();
 
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
+
+        public ActionResult EditPerson(string id)
+        {
+            var user = PersonService.GetPersonById(id);
+            RegisterViewModel viewModel = new RegisterViewModel {
+                ID = id,
+                UserName = user.Username,
+                FullName = user.Name,
+                Email = user.Email,
+                SSN = user.Ssn
+            };
+            if(viewModel != null)
+                return View(viewModel);
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditPerson(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(model.ID);
+                user.Email = model.Email;
+                user.FullName = model.FullName;
+                user.UserName = model.UserName;
+                user.Ssn = model.SSN;
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    db.SaveChanges();
+                    await db.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Admin");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         public ActionResult AddCourse()
         {
             return View();
@@ -88,6 +138,7 @@ namespace RipCore.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
         public ActionResult EditCourse(int id)
         {
 
@@ -119,16 +170,23 @@ namespace RipCore.Controllers
             return View();
 
         }
+
+
+
         public ActionResult CourseConnections(int courseID)
         {
             if (courseID != 0)
             {
                 var PersonsToAppend = PersonService.GetAllPersons();
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
+                var teachersToAppend = PersonService.GetAllTeachers(courseID);
+                var studentsToAppend = PersonService.GetAllStudents(courseID);
                 CourseConnectViewModel viewModel = new CourseConnectViewModel
                 {
                     UnConnectedUsers = PersonsToAppend,
-                    CurrentCourse = courseToAppend
+                    CurrentCourse = courseToAppend,
+                    Teachers = teachersToAppend,
+                    Students = studentsToAppend
                 };
                 return View(viewModel);
 
@@ -146,36 +204,13 @@ namespace RipCore.Controllers
             return View(viewModel);
         }
 
-        public ActionResult DeletePerson(string id)
-        {
-           if (id != null)
-            {
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
-               if (viewModel != null)
-                {
-                    return View(viewModel);
-              }
-                
-            }
-            return View();
+        
+
+        
+
+    
 
 
-           /*PersonViewModel IDFromPersonToDelete = PersonService.GetPersonById(id);
-            User userToDelete = new User { ID = IDFromPersonToDelete.ID };
-           db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
-        }
-
-        [HttpPost]
-        public ActionResult DeletePerson(PersonViewModel newData)
-        {
-            ApplicationUser userToDelete = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
-            db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
-        }
 
         public ActionResult DeleteCourse(int id)
         {
@@ -201,6 +236,54 @@ namespace RipCore.Controllers
             
             return RedirectToAction("Index");
         }
+
+
+
+       public ActionResult DeletePerson(string id)
+        {
+            if (id != null)
+            {
+                var user = UserManager.FindById(id);
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    ID = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    SSN = user.Ssn,
+                    Email = user.Email
+                };
+                return View(viewModel);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeletePerson(RegisterViewModel user)
+        {
+            if (user.ID != null)
+            {
+                var deluser = await UserManager.FindByIdAsync(user.ID);
+                var result = await UserManager.DeleteAsync(deluser);
+                if (result.Succeeded)
+                {
+                    db.SaveChanges();
+                    await db.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Admin");
+            }
+        // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "fdsfsda");
+        }
         
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
     }
 }
