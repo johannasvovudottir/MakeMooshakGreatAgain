@@ -42,28 +42,29 @@ namespace RipCore.Controllers
                  submission.SolutionOutput = viewModel.Solution;
             }
 
-            return RedirectToAction("CompileSolution", new { data = submission});
+            return RedirectToAction("CompileSolution", submission);
         }
 
         ///[HttpPost] // ??
-        public ActionResult CompileSolution(Submission data)
+        public ActionResult CompileSolution(SubmissionViewModel data)
         {
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
-            string user = User.Identity.GetUserId();
+            
             var code = data.SolutionOutput;
 
             // Set up our working folder, and the file names/paths.
             // In this example, this is all hardcoded, but in a
             // real life scenario, there should probably be individual
             // folders for each user/assignment/milestone.
+            string user = User.Identity.GetUserId();
 
-            var workingFolder = "~\\MakeMooshakGreatAgain\\RipCore\\Solutions\\"; //name; // eða ID
-            //System.IO.Directory.CreateDirectory(workingFolder + "name")
+            var workingFolder = "C:\\Users\\Olafur\\Desktop\\Solutions\\" + user + "\\"; //name; // eða ID
+            System.IO.Directory.CreateDirectory(workingFolder);
 
-            var cppFileName = "Hello.cpp"; // ---- Verkefnaheiti
-            var exeFilePath = workingFolder + "Hello.exe"; // ----- verkefnaheiti
-
+            var cppFileName = data.AssignmentName + ".cpp"; // ---- Verkefnaheiti
+            var exeFilePath = workingFolder + data.AssignmentName + ".exe"; // ----- verkefnaheiti
+            
             // Write the code to a file, such that the compiler
             // can find it:
             System.IO.File.WriteAllText(workingFolder + cppFileName, code);
@@ -132,15 +133,16 @@ namespace RipCore.Controllers
 
                     ViewBag.Output = lines;
 
-                    // ----- is accepted ----------
+                    data.IsAccepted = true;
                     // ------ solutionOutput er allt sem er í skjalinu. ------
                 }
+                
             }
 
             // TODO: We might want to clean up after the process, there
             // may be files we should delete etc.
 
-            // ----- Directory.Delete("c:\\directory\\subdirectory\\", true); -----
+            Directory.Delete(workingFolder, true); //Deletar moppunni sem vid gerdum adan
 
             return View();
         }
