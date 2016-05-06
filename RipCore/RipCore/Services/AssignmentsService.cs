@@ -95,33 +95,6 @@ namespace RipCore.Services
             return milestoneViewModel;
         }
 
-        public List<Submission> GetUserSubmissions(int solutionID)
-        {
-            var submissions = (from s in db.Submission
-                               where s.SolutionID == solutionID
-                               select s).ToList();
-            return null;
-        }
-
-        public List<Solution> GetAssignmentSubmissions(int assignmentID)
-        {
-            var solutions = (from s in db.Solutions
-                             where s.AssignmentID == assignmentID
-                             select s).ToList();
-            List<SolutionViewModel> solutionViewModel = new List<SolutionViewModel>();
-            {
-                foreach (var item in solutions)
-                {
-
-                }
-            }
-            List<Submission> submissions = new List<Submission>();
-            foreach (var item in solutions)
-                return null;
-
-            return null;
-        }
-
         public List<SelectListItem> GetProgrammingLanguages()
         {
             List<SelectListItem> programmingLanguages = new List<SelectListItem>();
