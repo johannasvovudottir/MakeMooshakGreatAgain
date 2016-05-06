@@ -10,8 +10,6 @@ namespace RipCore.Models.Entities
         public int ID { get; set; }
         public int AssignmentID { get; set; }
         public string StudentID { get; set; }
-        public string SolutionOutput { get; set; }
-
 
     }
 }

@@ -26,6 +26,7 @@ namespace RipCore.Controllers
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
             Solution solution = new Solution { AssignmentID = viewModel.ID, StudentID = User.Identity.GetUserId() };
+            SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, AssignmentID = viewModel.ID };
             if (viewModel.File != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -33,14 +34,17 @@ namespace RipCore.Controllers
                     viewModel.File.InputStream.CopyTo(memoryStream);
 
                     string result = Encoding.ASCII.GetString(memoryStream.ToArray());
-                    solution.SolutionOutput = result;
+                    submission.SolutionOutput = result;
                 }
             }
+
             else if(!string.IsNullOrEmpty(viewModel.Solution))
             {
-                solution.SolutionOutput = viewModel.Solution;
+                 submission.SolutionOutput = viewModel.Solution;
             }
+            
             //TODO else ef ekkert
+<<<<<<< HEAD
             db.Solutions.Add(solution);
             db.SaveChanges();
 <<<<<<< HEAD
@@ -54,6 +58,15 @@ namespace RipCore.Controllers
 
         ///[HttpPost] // ??
         public ActionResult CompileSolution(string data)
+=======
+
+            return RedirectToAction("CompileSolution", submission);
+
+        }
+
+        ///[HttpPost] // ??
+        public ActionResult CompileSolution(Submission data)
+>>>>>>> johanna
         {
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
@@ -147,7 +160,10 @@ namespace RipCore.Controllers
             // may be files we should delete etc.
 
             return View();
+<<<<<<< HEAD
 >>>>>>> 52d0037cdc4ddbdaf4ff125fbb8b03a1ecb9d7cd
+=======
+>>>>>>> johanna
         }
     }
 }
