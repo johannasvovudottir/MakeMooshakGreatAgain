@@ -13,10 +13,12 @@ namespace RipCore.Models.ViewModels
         public string UserID { get; set; }
         public int CourseID { get; set; }
         public int Weight { get; set; }
+        public int ProgrammingLanguageID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Solution { get; set; }
         public List<AssignmentMilestoneViewModel> Milestones;
+        public List<SelectListItem> programmingLanguages;
         public bool IsTeacher { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }

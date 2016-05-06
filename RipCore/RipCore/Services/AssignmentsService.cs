@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace RipCore.Services
 {
@@ -15,9 +16,10 @@ namespace RipCore.Services
         {
             db = new ApplicationDbContext();
         }
+
         public List<AssignmentViewModel> GetAssignmentsInCourse(int courseId)
         {
-            var assignments = (from a in db.Assignments
+            List<Assignment> assignments = (from a in db.Assignments
                                where a.CourseID == courseId
                                select a).ToList();
             List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
@@ -25,20 +27,7 @@ namespace RipCore.Services
             foreach (var item in assignments)
             {
                 List<AssignmentMilestoneViewModel> milestones = GetMilestones(item.ID);
-                AssignmentViewModel tmp = new AssignmentViewModel
-                {
-                    Title = item.Title,
-                    Weight = item.Weight,
-                    ID = item.ID,
-                    IsTeacher = false,
-                    Description = item.Description,
-                    CourseID = item.CourseID,
-                    DateCreated = item.DateCreated,
-                    Milestones = milestones,
-                    DueDate = item.DueDate,
-                    Input = item.Input,    // bætt við
-                    Output = item.Output   // bætt við
-                };
+                AssignmentViewModel tmp = SetModel(item, milestones);
                 assignentViewModel.Add(tmp);
             }
             return assignentViewModel;
@@ -46,7 +35,7 @@ namespace RipCore.Services
 
         public AssignmentViewModel GetAssignmentsById(int assignmentID)
         {
-            var item = (from a in db.Assignments
+            Assignment item = (from a in db.Assignments
                         where a.ID == assignmentID
                         select a).SingleOrDefault();
             if (item == null)
@@ -56,24 +45,30 @@ namespace RipCore.Services
             }
 
             List<AssignmentMilestoneViewModel> milestoneViewModel = GetMilestones(assignmentID);
-
-            AssignmentViewModel viewModel = new AssignmentViewModel
-            {
-                Title = item.Title,
-                Weight = item.Weight,
-                Description = item.Description,
-                ID = item.ID,
-                IsTeacher = false,
-                CourseID = item.CourseID,
-                DateCreated = item.DateCreated,
-                DueDate = item.DueDate,
-                Milestones = milestoneViewModel,
-                Input = item.Input,    // bætt við
-                Output = item.Output   // bætt við
-            };
+            AssignmentViewModel viewModel = SetModel(item, milestoneViewModel);
             return viewModel;
         }
 
+        public AssignmentViewModel SetModel(Assignment assignment, List<AssignmentMilestoneViewModel> milestoneViewModel)
+        {
+            AssignmentViewModel viewModel = new AssignmentViewModel
+            {
+                Title = assignment.Title,
+                Weight = assignment.Weight,
+                Description = assignment.Description,
+                ID = assignment.ID,
+                CourseID = assignment.CourseID,
+                ProgrammingLanguageID = assignment.ProgrammingLanguageID,
+                DateCreated = assignment.DateCreated,
+                IsTeacher = false,
+                Milestones = milestoneViewModel,
+                DueDate = assignment.DueDate,
+                Input = assignment.Input,
+                Output = assignment.Output,
+                programmingLanguages = GetProgrammingLanguages()   
+            };
+            return viewModel;
+        }
         public AssignmentViewModel GetAssignmentForView(int assignmentID, bool teacher)
         {
             AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
@@ -126,6 +121,18 @@ namespace RipCore.Services
                 return null;
 
             return null;
+        }
+
+        public List<SelectListItem> GetProgrammingLanguages()
+        {
+            List<SelectListItem> programmingLanguages = new List<SelectListItem>();
+
+            programmingLanguages.Add(new SelectListItem() { Value = "1", Text = "C++" });
+            programmingLanguages.Add(new SelectListItem() { Value = "2", Text = "C#" });
+            programmingLanguages.Add(new SelectListItem() { Value = "3", Text = "C" });
+            programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "Python" });
+            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Java" });
+            return programmingLanguages;
         }
     }
 }

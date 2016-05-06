@@ -10,7 +10,7 @@ namespace RipCore.Models.ViewModels
     {
         public int ID { get; set; }
         public int AssignmentID { get; set; }
-        public int StudentID { get; set; }
+        public string StudentID { get; set; }
         public List<Submission> submissions;
 
     }

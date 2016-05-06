@@ -15,12 +15,7 @@ namespace RipCore.Models.Entities
         public string Input { get; set; }
         public string Output { get; set; }
         public string Description { get; set; }
-        //public byte[] DescriptionFile { get; set; }
-        /*public List<AssignmentMilestoneViewModel> milestones;
-                @Html.LabelFor(model => model.DescriptionFile, htmlAttributes: new { @class = "control-label col-md-2" })
-        @Html.TextBoxFor(m => m.DescriptionFile, new { type = "file" })
-        @Html.ValidationMessageFor(m => m.DescriptionFile)
-        */
+        public int ProgrammingLanguageID { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }
     }

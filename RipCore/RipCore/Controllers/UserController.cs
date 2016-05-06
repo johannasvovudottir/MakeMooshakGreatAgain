@@ -1,4 +1,5 @@
-﻿using RipCore.Models;
+﻿using Microsoft.AspNet.Identity;
+using RipCore.Models;
 using RipCore.Models.Entities;
 using RipCore.Models.ViewModels;
 using RipCore.Services;
@@ -116,11 +117,11 @@ namespace RipCore.Controllers
             #endregion
 
             int tmp = newData.CourseID;
-            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output };
+            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output, ProgrammingLanguageID = newData.ProgrammingLanguageID };
             UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
-            return RedirectToAction("TeacherOverview", new { id = newData.CourseID, userID = ID });
+            return RedirectToAction("TeacherOverview", new { id = newData.CourseID });
         }
 
         public ActionResult Edit(int id)
@@ -146,7 +147,7 @@ namespace RipCore.Controllers
                 return View(viewModel);
             }
             //}
-            return RedirectToAction("TeacherOverview", new { id = id, userID = ID });
+            return RedirectToAction("TeacherOverview", new { id = id });
         }
 
         [HttpPost]
@@ -193,7 +194,7 @@ namespace RipCore.Controllers
                     assignment.Description = model.Description;
                     assignment.DateCreated = model.DateCreated;
                     assignment.DueDate = model.DueDate;
-
+                    assignment.ProgrammingLanguageID = model.ProgrammingLanguageID;
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
                         model.File.InputStream.CopyTo(memoryStream);
@@ -228,7 +229,6 @@ namespace RipCore.Controllers
                 return View();
             #endregion
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, false);
-            viewModel.UserID = userID;
             return View(viewModel);
         }
 
@@ -250,22 +250,9 @@ namespace RipCore.Controllers
             #endregion
 
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
-            viewModel.UserID = userID;
+            viewModel.UserID = User.Identity.GetUserId();
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult SubmitSolution(AssignmentViewModel viewModel, int id, int userID)
-        {
-            Solution solution = new Solution { AssignmentID = id, StudentID = userID, SolutionOutput = viewModel.Solution };
-            //TODO TJEKKA STATUS  A LAUSN
-            return RedirectToAction("StudentOverview", new { id = viewModel.CourseID, userID = 16 } );
-        }
-
-        public ActionResult AddMilestone(int id)
-        {
-            AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
-            return View(viewModel);
-        }
     }
 }
