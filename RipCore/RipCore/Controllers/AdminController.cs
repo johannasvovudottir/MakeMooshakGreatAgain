@@ -126,41 +126,6 @@ namespace RipCore.Controllers
             return View(model);
         }
 
-        /*
-        public ActionResult EditPerson(string id)
-        {
-            if (id != null)
-            {
-
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
-                if (viewModel != null)
-                {
-                    return View(viewModel);
-                }
-            }
-            return View();
-        }
-        [HttpPost]
-        public ActionResult EditPerson(PersonViewModel newData)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser newPerson = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
-                if (newPerson != null)
-                {
-                    newPerson.FullName = newData.Name;
-                    newPerson.Email = newData.Email;
-                    newPerson.PasswordHash = newData.PasswordHash;
-                    newPerson.Ssn = newData.Ssn;
-                    newPerson.UserName = newData.Username;
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Index");
-            }
-            return View();
-
-        }
-        */
         public ActionResult AddCourse()
         {
             return View();
@@ -173,37 +138,9 @@ namespace RipCore.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public ActionResult EditCourse(int id)
-        {
-
-            if (id != 0)
-            {
-                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
-                if (viewModel != null)
-                {
-                    return View(viewModel);
-                }
-            }
-            return View();
-        }
-        [HttpPost]
-        public ActionResult EditCourse(AdminCourseOverView newData)
-        {
-            if (ModelState.IsValid)
-            {
-                Course newCourse = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
-                if (newCourse != null)
-                {
-                    newCourse.Name = newData.Name;
-                    newCourse.Semester = newData.Semester;
-                    newCourse.Year = newData.Year;
-                    db.SaveChanges();
-                }
-                return RedirectToAction("Index");
-            }
-            return View();
-
-        }
+        
+ 
+    
         public ActionResult CourseConnections(int courseID)
         {
             if (courseID != 0)
@@ -235,36 +172,13 @@ namespace RipCore.Controllers
             return View(viewModel);
         }
 
-        public ActionResult DeletePerson(string id)
-        {
-           if (id != null)
-            {
-                PersonViewModel viewModel = PersonService.GetPersonById(id);
-               if (viewModel != null)
-                {
-                    return View(viewModel);
-              }
-                
-            }
-            return View();
+        
+
+        
+
+    
 
 
-           /*PersonViewModel IDFromPersonToDelete = PersonService.GetPersonById(id);
-            User userToDelete = new User { ID = IDFromPersonToDelete.ID };
-           db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");*/
-        }
-
-        [HttpPost]
-        public ActionResult DeletePerson(PersonViewModel newData)
-        {
-            ApplicationUser userToDelete = db.Users.Where(x => x.Id == newData.ID).SingleOrDefault();
-            db.Users.Remove(userToDelete);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-
-        }
 
         public ActionResult DeleteCourse(int id)
         {
@@ -290,6 +204,46 @@ namespace RipCore.Controllers
             
             return RedirectToAction("Index");
         }
+
+
+
+       public ActionResult DeletePerson(string id)
+        {
+            if (id != null)
+            {
+                var user = UserManager.FindById(id);
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    ID = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    SSN = user.Ssn,
+                    Email = user.Email
+                };
+                return View(viewModel);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeletePerson(RegisterViewModel user)
+        {
+            if (user.ID != null)
+            {
+                var deluser = await UserManager.FindByIdAsync(user.ID);
+                var result = await UserManager.DeleteAsync(deluser);
+                if (result.Succeeded)
+                {
+                    db.SaveChanges();
+                    await db.SaveChangesAsync();
+                }
+                return RedirectToAction("Index", "Admin");
+            }
+        // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "fdsfsda");
+        }
+        
 
         private void AddErrors(IdentityResult result)
         {
