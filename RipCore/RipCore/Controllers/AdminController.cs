@@ -177,8 +177,8 @@ namespace RipCore.Controllers
         {
             if (courseID != 0)
             {
-                var PersonsToAppend = PersonService.GetAllPersons();
-                //var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
+                //var PersonsToAppend = PersonService.GetAllPersons();
+                var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
                 var teachersToAppend = PersonService.GetAllTeachers(courseID);
                 var studentsToAppend = PersonService.GetAllStudents(courseID);
