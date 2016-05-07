@@ -1,7 +1,14 @@
-﻿
-@{
-    ViewBag.Title = "CompileSolution";
+﻿@model RipCore.Models.ViewModels.SubmissionViewModel
+@if(Model.IsAccepted)
+{
+    <h3 class="accepted">Accepted</h3>
 }
 
-<h2>CompileSolution</h2>
+@if(!Model.IsAccepted)
+{
+    <h3 class="notAccepted">Not Accepted</h3>
+    <p>Your result: @Model.SolutionOutput</p>
+    <p>Expected result: @Model.ExpectedOutput</p>
+}
+
 
