@@ -23,15 +23,20 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             #region Security
-            string ID = null;
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
-            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
-                return RedirectToAction("Index", "Home");
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth:       User.Identity.IsAuthenticated,
+                    secLevel:   SecurityState.USER,
+                    userID:     User.Identity.GetUserId(),
+                    courseID:   0
+                );
+            if(redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
 
-            var viewModels = service.GetAllInfo(ID);
+            var viewModels = service.GetAllInfo(User.Identity.GetUserId());
             viewModels.Name = User.Identity.Name;
             return View(viewModels);
         }
@@ -39,23 +44,20 @@ namespace RipCore.Controllers
         public ActionResult StudentOverview(int id)
         {
             #region Security
-            string actualID = null;
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
-            if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
-                return RedirectToAction("Index", "Home");
-
-            if (!accountService.IsUserQualified("Teacher", actualID, id))
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.STUDENT,
+                    userID: User.Identity.GetUserId(),
+                    courseID: id
+                );
+            if (redirect.Redirect)
             {
-                if (!accountService.IsUserQualified("Student", actualID, id))
-                {
-                   // return RedirectToAction("Index", "User");
-                }
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
 
-            CourseViewModel viewModel = service.GetCoursesById(id, actualID);
+            CourseViewModel viewModel = service.GetCoursesById(id, User.Identity.GetUserId());
             viewModel.isTeacher = false;
             return View(viewModel);
         }
@@ -63,20 +65,20 @@ namespace RipCore.Controllers
         public ActionResult TeacherOverview(int id)
         {
             #region Security
-            string actualID = null;
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
-            if (!accountService.GetIdByUser(User.Identity.Name, ref actualID))
-                return RedirectToAction("Index", "Home");
-
-            if (!accountService.IsUserQualified("Teacher", actualID, id))
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: id
+                );
+            if (redirect.Redirect)
             {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
 
-            CourseViewModel viewModel = service.GetCoursesById(id, actualID);
+            CourseViewModel viewModel = service.GetCoursesById(id, User.Identity.GetUserId());
             viewModel.isTeacher = true;
             return View(viewModel);
         }
@@ -84,12 +86,10 @@ namespace RipCore.Controllers
         public ActionResult Create(int id)
         {
             #region Security
-            string ID = null;
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Home");
-
-            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
-                return RedirectToAction("Index", "Home");
+            if(!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             #endregion
 
             AssignmentViewModel viewModel = new AssignmentViewModel();
@@ -103,17 +103,16 @@ namespace RipCore.Controllers
         public ActionResult Create(AssignmentViewModel newData)
         {
             #region Security
-            string ID = null;
-            accountService.GetIdByUser(User.Identity.Name, ref ID);
-            if (!User.Identity.IsAuthenticated)
-            if (User.Identity.IsAuthenticated)
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: newData.CourseID
+                );
+            if (redirect.Redirect)
             {
-                return RedirectToAction("Index", "User");
-            }
-
-            if(!accountService.IsUserQualified("Teacher", ID, newData.CourseID))
-            {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
 
@@ -168,14 +167,16 @@ namespace RipCore.Controllers
         public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
         {
             #region Security
-            string ID = null;
-            if (User.Identity.IsAuthenticated)
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: model.CourseID
+                );
+            if (redirect.Redirect)
             {
-                accountService.GetIdByUser(User.Identity.Name, ref ID);
-            }
-            if (!accountService.IsUserQualified("Teacher", ID, model.CourseID))
-            {
-                return RedirectToAction("Index", "User");
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
 
