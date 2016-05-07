@@ -101,6 +101,8 @@ namespace RipCore.Services
             List<PersonViewModel> allUsers = GetAllPersons();
             List<PersonViewModel> courseTeachers = GetAllTeachers(courseID);
             List<PersonViewModel> courseStudents = GetAllStudents(courseID);
+            var teacherResult = allUsers.Where(a => !courseTeachers.Any(b => b.ID == a.ID)).ToList();
+            var result = teacherResult.Where(a => !courseStudents.Any(b => b.ID == a.ID)).ToList();
             //var noteachersallowedher = from c in db.Courses join cn in db.CoursesTeachers on c.ID equals cn.TeacherID select !c
             //for (int i = 0; i < allUsers.Count; i++)
             //{
@@ -127,7 +129,7 @@ namespace RipCore.Services
 
             //}
 
-            return allUsers;
+            return result;
         }
         public PersonViewModel GetPersonById(string PersonID)
         {
