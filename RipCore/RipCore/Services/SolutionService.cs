@@ -19,13 +19,18 @@ namespace RipCore.Services
         public List<Tuple<string, string>> GetExpectedData(int assgintmentID)
         {
             var data = (from a in db.Assignments where a.ID == assgintmentID select a.Input).FirstOrDefault().ToString();
-            string[] result = data.Split(new string[] { "QUIT" }, StringSplitOptions.None);
+            string[] tests = data.Split(new string[] { "\r\nTEST" }, StringSplitOptions.None);
             List<Tuple<string, string>> IOpairs = new List<Tuple<string, string>>();
-            for (int i = 0; i < result.Length; i=i+2)
+            foreach (var item in tests)
             {
-                var tmp = new Tuple<string, string>(result[i], result[i + 1]);
-                IOpairs.Add(tmp);
+                string[] testPairs = item.Split(new string[] { "QUIT" }, StringSplitOptions.None);
+                for (int i = 0; i < testPairs.Length; i = i + 2)
+                {
+                    var tmp = new Tuple<string, string>(testPairs[i], testPairs[i + 1]);
+                    IOpairs.Add(tmp);
+                }
             }
+
             return IOpairs;
         }
 
@@ -38,7 +43,8 @@ namespace RipCore.Services
         public List<Submission> GetUserSubmissions(int assignmentID, string userID)
         {
             List<Submission> submissions = (from s in db.Submission
-                               where s.AssignmentID == assignmentID && s.UserID == userID select s).ToList();
+                                            where s.AssignmentID == assignmentID && s.UserID == userID
+                                            select s).ToList();
             return submissions;
         }
 

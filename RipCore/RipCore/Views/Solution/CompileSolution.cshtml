@@ -2,6 +2,8 @@
 @if(Model.IsAccepted)
 {
     <h3 class="accepted">Accepted</h3>
+    <p>Your result: @Model.SolutionOutput</p>
+    <p>Expected result: @Model.ExpectedOutput</p>
 }
 
 @if(!Model.IsAccepted)

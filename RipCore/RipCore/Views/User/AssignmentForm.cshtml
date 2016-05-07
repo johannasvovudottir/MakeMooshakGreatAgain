@@ -88,6 +88,13 @@
                             @Html.HiddenFor(model => model.Milestones[i].Title)
                             @Html.HiddenFor(model => model.Milestones[i].Weight)
                             @Html.HiddenFor(model => model.Milestones[i].Description)
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Milestones[i].File, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.File, new { type = "file" })
+                                    @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
                     }
                 </div>

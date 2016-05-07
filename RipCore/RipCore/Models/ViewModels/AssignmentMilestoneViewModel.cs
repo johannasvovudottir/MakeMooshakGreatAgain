@@ -12,5 +12,6 @@ namespace RipCore.Models.ViewModels
         public string Description { get; set; }
         public int Weight { get; set; }
         public int AssignmentID { get; set; }
+        public HttpPostedFileBase File { get; set; }
     }
 }

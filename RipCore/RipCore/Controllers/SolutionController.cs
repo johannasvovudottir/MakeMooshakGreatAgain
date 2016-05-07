@@ -41,11 +41,11 @@ namespace RipCore.Controllers
                 }
             }
 
-            else if(!string.IsNullOrEmpty(viewModel.Solution))
+            else if (!string.IsNullOrEmpty(viewModel.Solution))
             {
-                 submission.SolutionOutput = viewModel.Solution;
+                submission.SolutionOutput = viewModel.Solution;
             }
-            
+
             return RedirectToAction("CompileSolution", submission);
         }
 
@@ -55,7 +55,7 @@ namespace RipCore.Controllers
         {
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
-            
+
             var code = data.SolutionOutput;
 
             // Set up our working folder, and the file names/paths.
@@ -76,7 +76,7 @@ namespace RipCore.Controllers
 
             var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + ".cpp"; // ---- Verkefnaheiti
             var exeFilePath = workingFolder + data.AssignmentName.Replace(" ", "").ToLower() + ".exe"; // ----- verkefnaheiti
-            
+
             // Write the code to a file, such that the compiler
             // can find it:
             System.IO.File.WriteAllText(workingFolder + cppFileName, code);
@@ -121,48 +121,57 @@ namespace RipCore.Controllers
             // we try to execute the code:
             if (System.IO.File.Exists(exeFilePath))
             {
+                data.SolutionOutput = "";
                 var processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 processInfoExe.UseShellExecute = false;
                 processInfoExe.RedirectStandardOutput = true;
+                processInfoExe.RedirectStandardInput = true;
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
-                using (var processExe = new Process())
+                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.AssignmentID);
+                for (int i = 0; i < excpectedData.Count; i++)
                 {
-                    processExe.StartInfo = processInfoExe;
-                    processExe.Start();
-                    // In this example, we don't try to pass any input
-                    // to the program, but that is of course also
-                    // necessary. We would do that here, using
-                    // processExe.StandardInput.WriteLine(), similar
-                    // to above.
-
-                    // We then read the output of the program:
-                    var lines = new List<string>();
-                    while (!processExe.StandardOutput.EndOfStream)
+                    using (var processExe = new Process())
                     {
-                        lines.Add(processExe.StandardOutput.ReadLine());
-                    }
+                        processExe.StartInfo = processInfoExe;
+                        processExe.Start();
+                        if (excpectedData[i].Item1 != "")
+                        {
+                            processExe.StandardInput.WriteLine(excpectedData[i].Item1);
+                        }
+                        // In this example, we don't try to pass any input
+                        // to the program, but that is of course also
+                        // necessary. We would do that here, using
+                        // processExe.StandardInput.WriteLine(), similar
+                        // to above.
 
-                    ViewBag.Output = lines;
+                        // We then read the output of the program:
+                        var lines = new List<string>();
+                        while (!processExe.StandardOutput.EndOfStream)
+                        {
+                            lines.Add(processExe.StandardOutput.ReadLine());
+                        }
 
-                    List<Tuple<string,string>> excpectedData = sService.GetExpectedData(data.AssignmentID);
-                    if (string.Equals(lines[0].ToString(),  excpectedData[0].Item2))
-                    {
-                        data.IsAccepted = true;
-                    }
-                    else
-                    {
-                        data.IsAccepted = false;
-                    }
-                    data.SolutionOutput = lines[0];
-                    data.ExpectedOutput = excpectedData[0].Item2;
-                    Submission submission = new Submission { AssignmentID = data.AssignmentID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
-                    db.Submission.Add(submission);
-                    db.SaveChanges();
-                    // ------ solutionOutput er allt sem er í skjalinu. ------
+                        ViewBag.Output = lines;
+                        data.SolutionOutput += lines[0] + '\n';
+                        data.ExpectedOutput += excpectedData[i].Item2 + '\n';
+                        if (string.Equals(lines[0].ToString(), excpectedData[i].Item2))
+                        {
+                            data.IsAccepted = true;
+                        }
+                        else
+                        {
+                            data.IsAccepted = false;
+                            break;
+                        }
+
                 }
-                
-            }
+               }
+                Submission submission = new Submission { AssignmentID = data.AssignmentID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
+                db.Submission.Add(submission);
+                db.SaveChanges();
+                // ------ solutionOutput er allt sem er í skjalinu. ------
+        }
 
             // TODO: We might want to clean up after the process, there
             // may be files we should delete etc.
