@@ -76,7 +76,10 @@
                         Kennari
                     </td>
                     <td>
-                        <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                        @Html.ActionLink("Eyða", "RemoveFromCourse", new { ID = item.ID, courseID = Model.CurrentCourse.ID, role = "Teacher" },
+                        htmlAttributes: new { @class = "deleteButton",
+                        @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
+                        })
                     </td>
                 </tr>
             }
@@ -90,7 +93,12 @@
                         Nemandi
                     </td>
                     <td>
-                        <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                        @Html.ActionLink("Eyða", "RemoveFromCourse", new { id = item.ID, courseid = Model.CurrentCourse.ID, role = "Student" },
+                        htmlAttributes: new
+                        {
+                            @class = "deleteButton",
+                            @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
+                        })
                     </td>
                 </tr>
             }
@@ -122,4 +130,9 @@
             return !~text.indexOf(val);
         }).hide();
     });
+</script>
+
+<script>
+    $(".deleteButton").wrapInner("<span class='glyphicon glyphicon-trash'  />");
+    //.append("<span class='label label-important'>" + data.nom_equipe + "</span>"); //.append("<span class="glyphicon glyphicon-trash">"+"</span>");
 </script>

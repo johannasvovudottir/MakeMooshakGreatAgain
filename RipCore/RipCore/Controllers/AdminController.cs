@@ -217,19 +217,29 @@ namespace RipCore.Controllers
             
             return RedirectToAction("Index");
         }
-        public ActionResult CourseOverview()
-        {
-            var viewModel = CourseService.GetAllCourses();
-            return View(viewModel);
-        }
-        public ActionResult PersonOverview()
-        {
-            var viewModel = PersonService.GetAllPersons();
-            return View(viewModel);
-        }
 
-      
-
+        public ActionResult RemoveFromCourse(string ID , int courseID, string role)
+        {
+            if (role == "Teacher")
+            {
+                Course_Teacher teacherToDelete = (from x in db.CoursesTeachers
+                                                  where x.TeacherID == ID &&
+                                                  x.CourseID == courseID
+                                                  select x).SingleOrDefault();
+                db.CoursesTeachers.Remove(teacherToDelete);
+                db.SaveChanges();
+            }
+            if (role == "Student")
+            {
+                Course_Student studentToDelete = (from x in db.CoursesStudents
+                                                  where x.UserID == ID &&
+                                                  x.CourseID == courseID
+                                                  select x).SingleOrDefault();
+                db.CoursesStudents.Remove(studentToDelete);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
 
         public ActionResult DeleteCourse(int id)
         {
