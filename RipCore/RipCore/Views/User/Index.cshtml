@@ -24,9 +24,12 @@
     </ul>
 </nav>
 <main class="assignments">
-    <h3>Assignments</h3>
+    <h3>Assignments due</h3>
     @foreach (var item in Model.assignments)
     {
-        <p>@item.Title</p>
+        if (item.DueDate > DateTime.Now)
+        {
+            <p>@item.Title</p>
+        }
     }
 </main>

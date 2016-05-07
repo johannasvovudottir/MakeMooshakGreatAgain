@@ -118,8 +118,21 @@ namespace RipCore.Controllers
             #endregion
 
             int tmp = newData.CourseID;
+            if (newData.File != null)
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    newData.File.InputStream.CopyTo(memoryStream);
+                    newData.Input = Encoding.ASCII.GetString(memoryStream.ToArray());
+                    /*string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine "QUIT" }, StringSplitOptions.None);
+                    for(int i = 0; i < result.Length; i=i+2)
+                    {
+                        assignment.Input = result[i];
+                        assignment.Output = result[i + 1];
+                    }*/
+                }
+            }
             Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output, ProgrammingLanguageID = newData.ProgrammingLanguageID };
-            UpdateModel(newAssignment);
             db.Assignments.Add(newAssignment);
             db.SaveChanges();
             return RedirectToAction("TeacherOverview", new { id = newData.CourseID });
@@ -201,10 +214,13 @@ namespace RipCore.Controllers
                         using (MemoryStream memoryStream = new MemoryStream())
                         {
                             model.File.InputStream.CopyTo(memoryStream);
-
-                            string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                            assignment.Input = result[0];
-                            assignment.Output = result[1];
+                            assignment.Input = Encoding.ASCII.GetString(memoryStream.ToArray());
+                            /*string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine "QUIT" }, StringSplitOptions.None);
+                            for(int i = 0; i < result.Length; i=i+2)
+                            {
+                                assignment.Input = result[i];
+                                assignment.Output = result[i + 1];
+                            }*/
                         }
                     }
                     db.SaveChanges();

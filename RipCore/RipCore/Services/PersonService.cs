@@ -56,6 +56,7 @@ namespace RipCore.Services
             db.SaveChanges();
             return;
         }
+       
         public List<PersonViewModel> GetAllTeachers(int courseID)
         {
             CourseService query = new CourseService();
@@ -101,34 +102,10 @@ namespace RipCore.Services
             List<PersonViewModel> allUsers = GetAllPersons();
             List<PersonViewModel> courseTeachers = GetAllTeachers(courseID);
             List<PersonViewModel> courseStudents = GetAllStudents(courseID);
-
-            //var noteachersallowedher = from c in db.Courses join cn in db.CoursesTeachers on c.ID equals cn.TeacherID select !c
-            //for (int i = 0; i < allUsers.Count; i++)
-            //{
-            //    for (int j = 0; j < courseTeachers.Count; j++)
-            //    {
-            //        if (allUsers[i].ID == courseTeachers[j].ID)
-            //        {
-            //            allUsers.RemoveAt(i);
-            //                i++;
-            //        }
-            //    }
-            //}
-            //for (int i = 0; i < allUsers.Count; i++)
-            //{
-            //        for (int j = 0; j < courseStudents.Count; j++)
-            //        {
-            //            if (allUsers[i].ID == courseStudents[j].ID)
-            //            {
-            //                allUsers.RemoveAt(i);
-            //                i++;
-            //            }
-
-            //    }
-
-            //}
-
-            return allUsers;
+            var teacherResult = allUsers.Where(a => !courseTeachers.Any(b => b.ID == a.ID)).ToList();
+            var result = teacherResult.Where(a => !courseStudents.Any(b => b.ID == a.ID)).ToList();
+            
+            return result;
         }
         public PersonViewModel GetPersonById(string PersonID)
         {

@@ -177,8 +177,8 @@ namespace RipCore.Controllers
         {
             if (courseID != 0)
             {
-                var PersonsToAppend = PersonService.GetAllPersons();
-                //var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
+                //var PersonsToAppend = PersonService.GetAllPersons();
+                var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
                 var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
                 var teachersToAppend = PersonService.GetAllTeachers(courseID);
                 var studentsToAppend = PersonService.GetAllStudents(courseID);
@@ -217,19 +217,29 @@ namespace RipCore.Controllers
             
             return RedirectToAction("Index");
         }
-        public ActionResult CourseOverview()
-        {
-            var viewModel = CourseService.GetAllCourses();
-            return View(viewModel);
-        }
-        public ActionResult PersonOverview()
-        {
-            var viewModel = PersonService.GetAllPersons();
-            return View(viewModel);
-        }
 
-      
-
+        public ActionResult RemoveFromCourse(string ID , int courseID, string role)
+        {
+            if (role == "Teacher")
+            {
+                Course_Teacher teacherToDelete = (from x in db.CoursesTeachers
+                                                  where x.TeacherID == ID &&
+                                                  x.CourseID == courseID
+                                                  select x).SingleOrDefault();
+                db.CoursesTeachers.Remove(teacherToDelete);
+                db.SaveChanges();
+            }
+            else if (role == "Student")
+            {
+                Course_Student studentToDelete = (from x in db.CoursesStudents
+                                                  where x.UserID == ID &&
+                                                  x.CourseID == courseID
+                                                  select x).SingleOrDefault();
+                db.CoursesStudents.Remove(studentToDelete);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
 
         public ActionResult DeleteCourse(int id)
         {

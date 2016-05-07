@@ -2,6 +2,7 @@
 using RipCore.Models;
 using RipCore.Models.Entities;
 using RipCore.Models.ViewModels;
+using RipCore.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,12 +11,14 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RipCore.Controllers
 {
     public class SolutionController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private SolutionService sService = new SolutionService();
         // GET: Solution
         public ActionResult Index()
         {
@@ -23,6 +26,7 @@ namespace RipCore.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
             SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, AssignmentID = viewModel.ID };
@@ -41,11 +45,12 @@ namespace RipCore.Controllers
             {
                  submission.SolutionOutput = viewModel.Solution;
             }
-
+            
             return RedirectToAction("CompileSolution", submission);
         }
 
         ///[HttpPost] // ??
+        [ValidateInput(false)]
         public ActionResult CompileSolution(SubmissionViewModel data)
         {
             // To simplify matters, we declare the code here.
@@ -59,11 +64,18 @@ namespace RipCore.Controllers
             // folders for each user/assignment/milestone.
             string user = User.Identity.GetUserId();
 
-            var workingFolder = "C:\\Users\\Olafur\\Desktop\\Solutions\\" + user + "\\"; //name; // eða ID
+            string smu = AppDomain.CurrentDomain.BaseDirectory;
+            //string smusmu = System.IO.Directory.GetCurrentDirectory();
+            //string smusmusmu = Environment.CurrentDirectory;
+            //string smusmusmusmu = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            //string smusmusmusmusmusmu = System.IO.Path.GetDirectoryName(
+            //System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            var workingFolder = smu + user + "\\"; //name; // eða ID
             System.IO.Directory.CreateDirectory(workingFolder);
 
-            var cppFileName = data.AssignmentName + ".cpp"; // ---- Verkefnaheiti
-            var exeFilePath = workingFolder + data.AssignmentName + ".exe"; // ----- verkefnaheiti
+            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + ".cpp"; // ---- Verkefnaheiti
+            var exeFilePath = workingFolder + data.AssignmentName.Replace(" ", "").ToLower() + ".exe"; // ----- verkefnaheiti
             
             // Write the code to a file, such that the compiler
             // can find it:
@@ -133,7 +145,20 @@ namespace RipCore.Controllers
 
                     ViewBag.Output = lines;
 
-                    data.IsAccepted = true;
+                    List<Tuple<string,string>> excpectedData = sService.GetExpectedData(data.AssignmentID);
+                    if (string.Equals(lines[0].ToString(),  excpectedData[0].Item2))
+                    {
+                        data.IsAccepted = true;
+                    }
+                    else
+                    {
+                        data.IsAccepted = false;
+                    }
+                    data.SolutionOutput = lines[0];
+                    data.ExpectedOutput = excpectedData[0].Item2;
+                    Submission submission = new Submission { AssignmentID = data.AssignmentID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
+                    db.Submission.Add(submission);
+                    db.SaveChanges();
                     // ------ solutionOutput er allt sem er í skjalinu. ------
                 }
                 
@@ -144,7 +169,7 @@ namespace RipCore.Controllers
 
             Directory.Delete(workingFolder, true); //Deletar moppunni sem vid gerdum adan
 
-            return View();
+            return View(data);
         }
     }
 }
