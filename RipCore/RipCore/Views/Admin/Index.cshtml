@@ -23,19 +23,19 @@
                 <tr>
                     <td class="col-md-10">
                         @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
-                        @Html.ActionLink("Delete Person", "DeletePerson", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+                        @Html.ActionLink("Delete Person", "DeletePerson", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
                     </td>
                 </tr>
             }
 
         </tbody>
     </table>
-    @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+    @Html.ActionLink("New Person", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
 
 </div>
 
 
-<div class="table-responsive col-md-6"">
+<div class="table-responsive col-md-6">
     <input type="text" id="searchcourses" placeholder="Skrifið til að leita">
     <table class="table table-striped" id="coursetable">
         <thead>
@@ -52,7 +52,7 @@
                 <tr>
                     <td class="col-md-10">
                         @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
-                        @Html.ActionLink("Delete Course", "DeleteCourse", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+                        @Html.ActionLink("Delete Course", "DeleteCourse", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
                     </td>
                 </tr>
 
@@ -60,7 +60,9 @@
 
         </tbody>
     </table>
-    @Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+    @Html.ActionLink("New Course", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
+
+
 </div>
 
 
