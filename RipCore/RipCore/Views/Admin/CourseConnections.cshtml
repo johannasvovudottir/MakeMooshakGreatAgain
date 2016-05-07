@@ -62,7 +62,8 @@
 <br />
 
 <div class="pull-right">
-    <table class="table-bordered" id="connectedusers">
+    <input type="text" id="searchcurrent" placeholder="Skrifið til að leita">
+    <table class="table-bordered" id="connectedusers" >
         <thead> </thead>
         <tbody>
             @foreach (var item in Model.Teachers)
@@ -102,13 +103,23 @@
 
 
 <script>
-    var $rows = $('#usertable tr');
+    var $myrows = $('#usertable tr');
     $('#searchusers').keyup(function () {
+        var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+        $myrows.show().filter(function () {
+            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(value);
+        }).hide();
+    });
+</script>
+
+<script>
+    var $rows = $('#connectedusers tr');
+    $('#searchcurrent').keyup(function () {
         var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
         $rows.show().filter(function () {
             var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
             return !~text.indexOf(val);
         }).hide();
     });
-
 </script>

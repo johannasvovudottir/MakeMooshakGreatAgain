@@ -101,6 +101,7 @@ namespace RipCore.Services
             List<PersonViewModel> allUsers = GetAllPersons();
             List<PersonViewModel> courseTeachers = GetAllTeachers(courseID);
             List<PersonViewModel> courseStudents = GetAllStudents(courseID);
+
             //var noteachersallowedher = from c in db.Courses join cn in db.CoursesTeachers on c.ID equals cn.TeacherID select !c
             //for (int i = 0; i < allUsers.Count; i++)
             //{
