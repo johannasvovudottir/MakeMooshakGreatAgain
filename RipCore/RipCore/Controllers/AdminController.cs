@@ -229,7 +229,7 @@ namespace RipCore.Controllers
                 db.CoursesTeachers.Remove(teacherToDelete);
                 db.SaveChanges();
             }
-            if (role == "Student")
+            else if (role == "Student")
             {
                 Course_Student studentToDelete = (from x in db.CoursesStudents
                                                   where x.UserID == ID &&

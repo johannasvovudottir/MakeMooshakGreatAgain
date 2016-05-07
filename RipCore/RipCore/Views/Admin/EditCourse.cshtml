@@ -4,11 +4,10 @@
     ViewBag.Title = "EditCourse";
 }
 
-<h2>EditCourse</h2>
 <p>@Model.ID</p>
 
 @{ Html.RenderPartial("CourseForm"); }
 
 
 
-@Html.ActionLink("Bæta notendun við áfangann", "CourseConnections", new { courseID = @Model.ID })
+@Html.ActionLink("Bæta notendum við áfangann", "CourseConnections", new { courseID = @Model.ID })
