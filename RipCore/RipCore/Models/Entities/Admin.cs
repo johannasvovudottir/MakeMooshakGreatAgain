@@ -7,5 +7,7 @@ namespace RipCore.Models.Entities
 {
     public class Admin
     {
+        public int ID { get; set; }
+        public string UserID { get; set; }
     }
 }

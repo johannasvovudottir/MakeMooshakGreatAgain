@@ -31,6 +31,7 @@ namespace RipCore.Models
         public DbSet<Solution> Solutions { get; set; }
         public DbSet<Submission> Submission { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Admin> Admins { get; set; }
        
 
 

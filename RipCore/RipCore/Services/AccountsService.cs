@@ -9,6 +9,7 @@ using System.Web;
 
 namespace RipCore.Services
 {
+ 
     public class AccountsService
     {
         private ApplicationDbContext db;
@@ -30,6 +31,68 @@ namespace RipCore.Services
             return true;
         }
 
+        public SecurityRedirect VerifySecurityLevel(bool auth, SecurityState secLevel, string userID, int courseID)
+        {
+            string[] roles = { "User", "Student", "Teacher", "Admin" };
+            SecurityRedirect redirect = new SecurityRedirect { Redirect = true };
+            //If user isnt logged in...
+            if (!auth)
+            {
+                redirect.ActionName = "Login";
+                redirect.ControllerName = "Account";
+                return redirect;
+            }
+
+            if(!(secLevel <= GetHighestUserPrivilege(userID, courseID)))
+            {
+                redirect.ActionName = "Index";
+                redirect.ControllerName = "User";
+                return redirect;
+            }
+            
+            //If it reaches this part of the code, it means we have no reason to deny entry.
+            redirect.Redirect = false;
+            return redirect;
+        }
+
+        public SecurityState GetHighestUserPrivilege(string userID, int courseID)
+        {
+            int securityLevel = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                if (db.Admins.Any(a => a.UserID == userID))
+                {
+                    int secId = Convert.ToInt32(SecurityState.ADMIN);
+                    if (securityLevel <= secId)
+                    {
+                        securityLevel = secId;
+                    }
+                }
+
+                if (db.CoursesTeachers.Any(u => u.TeacherID == userID && u.CourseID == courseID))
+                {
+
+                    int secId = Convert.ToInt32(SecurityState.TEACHER);
+                    if(securityLevel <= secId) 
+                    {
+                        securityLevel = secId;
+                    }
+                }
+
+                if(db.CoursesStudents.Any(x => x.UserID == userID && x.CourseID == courseID))
+                {
+                    int secId = Convert.ToInt32(SecurityState.STUDENT);
+                    if(securityLevel <= secId)
+                    {
+                        securityLevel = secId;
+                    }
+                }
+
+            }
+            SecurityState state = (SecurityState)Enum.ToObject(typeof(SecurityState), securityLevel);
+            return state;
+        }
+
         public bool IsUserQualified(string role, string userID, int courseID)
         {
             using (var db = new ApplicationDbContext())
@@ -39,10 +102,19 @@ namespace RipCore.Services
                     return db.CoursesTeachers.Any(u => u.TeacherID == userID
                         && u.CourseID == courseID);
                 }
-                else
+                else if(role.ToLower() == "student")
                 {
                     return db.CoursesStudents.Any(u => u.UserID == userID
                         && u.CourseID == courseID);
+                }
+                else if(role.ToLower() == "admin")
+                {
+                    return true;
+                }
+                else //In case of anonymous, or user that doesnt have any privileges
+                {
+                    
+                    return false;
                 }
             }
         }
