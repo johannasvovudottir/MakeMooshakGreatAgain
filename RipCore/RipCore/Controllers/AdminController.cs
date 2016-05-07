@@ -26,7 +26,6 @@ namespace RipCore.Controllers
         public AdminController()
         {
 
-
         }
 
         public AdminController(ApplicationUserManager userManager)
@@ -88,17 +87,23 @@ namespace RipCore.Controllers
 
         public ActionResult EditPerson(string id)
         {
-            var user = PersonService.GetPersonById(id);
-            RegisterViewModel viewModel = new RegisterViewModel {
-                ID = id,
-                UserName = user.Username,
-                FullName = user.Name,
-                Email = user.Email,
-                SSN = user.Ssn
-            };
-            if(viewModel != null)
+           
+            if (id != null)
+            {
+                var user = PersonService.GetPersonById(id);
+                RegisterViewModel viewModel = new RegisterViewModel {
+                    ID = id,
+                    UserName = user.Username,
+                    FullName = user.Name,
+                    Email = user.Email,
+                    SSN = user.Ssn
+                };
+                if (viewModel != null)
+                {
                 return View(viewModel);
-            return View();
+                }
+            }   
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpPost]
@@ -139,18 +144,20 @@ namespace RipCore.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult EditCourse(int id)
+        public ActionResult EditCourse(int? id)
         {
-
-            if (id != 0)
+            
+            if (id.HasValue)
             {
-                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
+                int ID = id.Value;
+            
+                AdminCourseOverView viewModel = CourseService.GetCourseByID(ID);
                 if (viewModel != null)
                 {
                     return View(viewModel);
                 }
             }
-            return View();
+            return RedirectToAction("Index");
         }
         [HttpPost]
         public ActionResult EditCourse(AdminCourseOverView newData)
@@ -173,15 +180,16 @@ namespace RipCore.Controllers
 
 
 
-        public ActionResult CourseConnections(int courseID)
+        public ActionResult CourseConnections(int? courseID)
         {
-            if (courseID != 0)
+            if (courseID.HasValue)
             {
+                int ID = courseID.Value;
                 //var PersonsToAppend = PersonService.GetAllPersons();
-                var PersonsToAppend = PersonService.GetAllNotConnected(courseID);
-                var courseToAppend = CourseService.GetCourseByID(courseID).toCourse();
-                var teachersToAppend = PersonService.GetAllTeachers(courseID);
-                var studentsToAppend = PersonService.GetAllStudents(courseID);
+                var PersonsToAppend = PersonService.GetAllNotConnected(ID);
+                var courseToAppend = CourseService.GetCourseByID(ID).toCourse();
+                var teachersToAppend = PersonService.GetAllTeachers(ID);
+                var studentsToAppend = PersonService.GetAllStudents(ID);
                 CourseConnectViewModel viewModel = new CourseConnectViewModel
                 {
                     UnConnectedUsers = PersonsToAppend,
@@ -214,8 +222,8 @@ namespace RipCore.Controllers
                     }
                 }
             }
-            
-            return RedirectToAction("Index");
+
+            return RedirectToAction("CourseConnections", new { courseID = newData.CurrentCourse.ID });
         }
 
         public ActionResult RemoveFromCourse(string ID , int courseID, string role)
@@ -238,20 +246,21 @@ namespace RipCore.Controllers
                 db.CoursesStudents.Remove(studentToDelete);
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("CourseConnections", new { courseID = courseID});
         }
 
-        public ActionResult DeleteCourse(int id)
+        public ActionResult DeleteCourse(int? id)
         {
-            if(id != 0)
+            if(id.HasValue)
             {
-                AdminCourseOverView viewModel = CourseService.GetCourseByID(id);
+                int ID = id.Value;
+                AdminCourseOverView viewModel = CourseService.GetCourseByID(ID);
                 if(viewModel != null)
                 {
                     return View(viewModel);
                }
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -283,7 +292,7 @@ namespace RipCore.Controllers
                 };
                 return View(viewModel);
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
