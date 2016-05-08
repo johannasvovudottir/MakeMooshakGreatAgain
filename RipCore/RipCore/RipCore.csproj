@@ -325,7 +325,7 @@
     <Content Include="Views\Admin\DeletePersonForm.cshtml" />
     <Content Include="Views\Solution\CompileSolution.cshtml" />
     <Content Include="Views\Solution\AllSubmissions.cshtml" />
-    <Content Include="Views\Solution\Submisssions.cshtml" />
+    <Content Include="Views\Solution\Submissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -96,7 +96,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RipCore\RipCore.csproj">
       <Project>{DB5C64A5-D944-4862-953A-13166ACEE0E6}</Project>
-      <Name>RipCore</Name>
+      <Name>RipCore2</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
