@@ -31,7 +31,7 @@ namespace RipCore.Services
             return true;
         }
 
-        public SecurityRedirect VerifySecurityLevel(bool auth, SecurityState secLevel, string userID, int courseID)
+        public SecurityRedirect VerifySecurityLevel(bool auth, SecurityState secLevel, string userID, int? courseID = null)
         {
             string[] roles = { "User", "Student", "Teacher", "Admin" };
             SecurityRedirect redirect = new SecurityRedirect { Redirect = true };
@@ -43,6 +43,7 @@ namespace RipCore.Services
                 return redirect;
             }
 
+            //Make sure the highest security level the user has is sufficient for the minimum security level.
             if(!(secLevel <= GetHighestUserPrivilege(userID, courseID)))
             {
                 redirect.ActionName = "Index";
@@ -55,7 +56,7 @@ namespace RipCore.Services
             return redirect;
         }
 
-        public SecurityState GetHighestUserPrivilege(string userID, int courseID)
+        public SecurityState GetHighestUserPrivilege(string userID, int? courseID)
         {
             int securityLevel = 0;
             using (var db = new ApplicationDbContext())
@@ -69,25 +70,27 @@ namespace RipCore.Services
                     }
                 }
 
-                if (db.CoursesTeachers.Any(u => u.TeacherID == userID && u.CourseID == courseID))
+                if (courseID.HasValue)
                 {
-
-                    int secId = Convert.ToInt32(SecurityState.TEACHER);
-                    if(securityLevel <= secId) 
+                    if (db.CoursesTeachers.Any(u => u.TeacherID == userID && u.CourseID == courseID))
                     {
-                        securityLevel = secId;
+
+                        int secId = Convert.ToInt32(SecurityState.TEACHER);
+                        if (securityLevel <= secId)
+                        {
+                            securityLevel = secId;
+                        }
+                    }
+
+                    if (db.CoursesStudents.Any(x => x.UserID == userID && x.CourseID == courseID))
+                    {
+                        int secId = Convert.ToInt32(SecurityState.STUDENT);
+                        if (securityLevel <= secId)
+                        {
+                            securityLevel = secId;
+                        }
                     }
                 }
-
-                if(db.CoursesStudents.Any(x => x.UserID == userID && x.CourseID == courseID))
-                {
-                    int secId = Convert.ToInt32(SecurityState.STUDENT);
-                    if(securityLevel <= secId)
-                    {
-                        securityLevel = secId;
-                    }
-                }
-
             }
             SecurityState state = (SecurityState)Enum.ToObject(typeof(SecurityState), securityLevel);
             return state;
