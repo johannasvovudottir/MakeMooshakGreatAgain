@@ -8,131 +8,139 @@
 
 @using (Html.BeginForm())
 {
+    <div class="col-xs-6">
+        <div class="table-responsive">
+            <input type="text" id="searchusers" placeholder="Skrifið til að leita">
+            <table class="teble table-striped" id="usertable">
+                <thead></thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.UnConnectedUsers.Count; i++)
+                    {
+
+
+
+                        <tr>
+                            <td class="col-md-3">
+                                @Model.UnConnectedUsers[i].Name
+                            </td>
+                            <td class="col-md-1">
+                                <div class="form-group">
+                                    @Html.CheckBoxFor(model => model.UnConnectedUsers[i].isChecked)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].Name)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].Username)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].PasswordHash)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].Email)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].ID)
+                                    @Html.HiddenFor(model => model.UnConnectedUsers[i].Ssn)
+                                </div>
+                            <td class="col-md-2">
+                                @Html.DropDownListFor(model => model.UnConnectedUsers[i].Role, new SelectList(
+                            new List<Object>{
+                                new { value = "Student" , text = "Nemandi"},
+                                new { value = "Teacher" , text = "Kennari" }
+                            }, "value", "Text", 0)
+                            )
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <div class="pull-right">
+                <input type="submit" value="Staðfesta" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.CurrentCourse.ID)
     @Html.HiddenFor(model => model.CurrentCourse.Name)
     @Html.HiddenFor(model => model.CurrentCourse.SchoolID)
     @Html.HiddenFor(model => model.CurrentCourse.Semester)
     @Html.HiddenFor(model => model.CurrentCourse.Year)
-    <div>
-        <input type="text" id="searchusers" placeholder="Skrifið til að leita">
-        <table class="table-bordered" id="usertable">
-            <thead></thead>
+
+}
+
+
+<div class="col-xs-6">
+    <div class="table-responsive">
+        <input type="text" id="searchcurrent" placeholder="Skrifið til að leita">
+        <table class="table table-striped" id="connectedusers">
+            <thead> </thead>
             <tbody>
-                
-             @for (int i = 0; i < Model.UnConnectedUsers.Count; i++) {
-
-
-
+                @foreach (var item in Model.Teachers)
+            {
                     <tr>
-                        <td>
-                                @Model.UnConnectedUsers[i].Name
+                        <td class="col-md-3">
+                            @item.Name
                         </td>
-                        <td>
-                            <div class="form-group">
-                                @Html.CheckBoxFor(model => model.UnConnectedUsers[i].isChecked)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Name)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Username)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].PasswordHash)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Email)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].ID)
-                                @Html.HiddenFor(model => model.UnConnectedUsers[i].Ssn)
-                            </div>
-                        <td>
-                            @Html.DropDownListFor(model => model.UnConnectedUsers[i].Role, new SelectList(
-                            new List<Object>{
-                                new { value = "Student" , text = "Nemandi"},
-                                new { value = "Teacher" , text = "Kennari" }
-                            },"value","Text",0)
-                            )
+                        <td class="col-md-2">
+                            Kennari
+                        </td>
+                        <td class="col-md-1">
+                            @Html.ActionLink(" ", "RemoveFromCourse", new { ID = item.ID, courseID = Model.CurrentCourse.ID, role = "Teacher" },
+                        htmlAttributes: new
+                        {
+                            @class = "deleteButton pull-right",
+                            @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
+                        })
+                        </td>
+                    </tr>
+                }
+                @foreach (var item in Model.Students)
+            {
+                    <tr>
+                        <td class="col-md-3">
+                            @item.Name
+                        </td>
+                        <td class="col-md-2">
+                            Nemandi
+                        </td>
+                        <td class="col-md-1">
+                            @Html.ActionLink(" ", "RemoveFromCourse", new { id = item.ID, courseid = Model.CurrentCourse.ID, role = "Student" },
+                        htmlAttributes: new
+                        {
+                            @class = "deleteButton pull-right",
+                            @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
+                        })
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Staðfesta" class="btn btn-default" />
-        </div>
     </div>
 
-}
-
-<br />
-
-<div class="pull-right">
-    <input type="text" id="searchcurrent" placeholder="Skrifið til að leita">
-    <table class="table-bordered" id="connectedusers" >
-        <thead> </thead>
-        <tbody>
-            @foreach (var item in Model.Teachers)
-            {
-                <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        Kennari
-                    </td>
-                    <td>
-                        @Html.ActionLink(" ", "RemoveFromCourse", new { ID = item.ID, courseID = Model.CurrentCourse.ID, role = "Teacher" },
-                        htmlAttributes: new { @class = "deleteButton",
-                        @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
-                        })
-                    </td>
-                </tr>
-            }
-            @foreach (var item in Model.Students)
-            {
-                <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        Nemandi
-                    </td>
-                    <td>
-                        @Html.ActionLink(" ", "RemoveFromCourse", new { id = item.ID, courseid = Model.CurrentCourse.ID, role = "Student" },
-                        htmlAttributes: new
-                        {
-                            @class = "deleteButton",
-                            @onclick = "return confirm('Ertu viss um að þú viljir fjarlægja þennan notanda?');"
-                        })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 
 
 
 
+    <script>
+        var $myrows = $('#usertable tr');
+        $('#searchusers').keyup(function () {
+            var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+            $myrows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(value);
+            }).hide();
+        });
+    </script>
 
-<script>
-    var $myrows = $('#usertable tr');
-    $('#searchusers').keyup(function () {
-        var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-        $myrows.show().filter(function () {
-            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(value);
-        }).hide();
-    });
-</script>
+    <script>
+        var $rows = $('#connectedusers tr');
+        $('#searchcurrent').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+    </script>
 
-<script>
-    var $rows = $('#connectedusers tr');
-    $('#searchcurrent').keyup(function () {
-        var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-        $rows.show().filter(function () {
-            var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(val);
-        }).hide();
-    });
-</script>
-
-<script>
-    $(".deleteButton").wrapInner("<span class='glyphicon glyphicon-trash'  />");
-    //.append("<span class='label label-important'>" + data.nom_equipe + "</span>"); //.append("<span class="glyphicon glyphicon-trash">"+"</span>");
-</script>
+    <script>
+        $(".deleteButton").wrapInner("<span class='glyphicon glyphicon-trash'  />");
+        //.append("<span class='label label-important'>" + data.nom_equipe + "</span>"); //.append("<span class="glyphicon glyphicon-trash">"+"</span>");
+    </script>
