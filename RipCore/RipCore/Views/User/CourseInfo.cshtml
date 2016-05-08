@@ -15,33 +15,91 @@
     }
 </nav>
 <main class="courseInfo">
-    <h3>Assignments</h3>
-    @foreach (var item in Model.Assignments)
-    {
-        <div class="col-md-4">
-            @if(item.DueDate >= DateTime.Now)
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Teachers
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Teachers)
             {
-                if(Model.isTeacher == true)
-                {
-                    <h4>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</h4>
-                }
-                if (Model.isTeacher == false)
-                {
-                    <h4>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</h4>
-                }
-
-                <p>
-                    @item.Description
-                </p>
-                if (Model.isTeacher == true)
-                {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID, @class = "btn btn-default" })
-                }
+                <tr>
+                    <td>
+                        @item.FullName
+                    </td>
+                    <td>
+                        //TODO Info
+                    </td>
+                </tr>
             }
-        </div>
-    }
-    
+        </tbody>
+    </table>
+    <h3>Assignments</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Projoect
+                </th>
+                <th>
+                    Due date
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th>
+                    @if (Model.isTeacher == true)
+                    {
+                        <p>All Submissions</p>
+                    }
+                    @if (Model.isTeacher == false)
+                    {
+                        <p>Status</p>
+                    }
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Assignments)
+            {
+                <tr>
+                    <td>
+                        @if (Model.isTeacher == true)
+                        {
+                            <h4>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</h4>
+                        }
+                        @if (Model.isTeacher == false)
+                        {
+                            <h4>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</h4>
+                        }
+                    </td>
+                    <td>
+                        @item.DueDate
+                    </td>
+                    <td>
+                        @item.Weight
+                    </td>
+                    <td>
+                        @if (Model.isTeacher == true)
+                        {
+                            <h4>@Html.ActionLink("See submissions", "AllSubmissions", "Solution", new { id = item.ID })</h4>
+                        }
+                        @if (Model.isTeacher == false)
+                        {
+                            <h4>//TODO Status</h4>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </main>
+
 @if (Model.isTeacher == true)
 {
     @Html.ActionLink("New Project", "Create", new { id = Model.ID })
@@ -57,14 +115,7 @@
             </li>
         }
     </ul>
-    <h3>All Teachers</h3>
-    <ul>
-        @foreach (var item in Model.Teachers)
-        {
-            <li>
-                @item.FullName
-            </li>
-        }
-    </ul>
+    
+
 </div>
 

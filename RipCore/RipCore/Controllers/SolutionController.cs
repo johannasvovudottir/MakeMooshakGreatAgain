@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using static System.Net.Mime.MediaTypeNames;
@@ -113,7 +115,7 @@ namespace RipCore.Controllers
             compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
             compiler.StandardInput.WriteLine("exit");
             string output = compiler.StandardOutput.ReadToEnd();
-            compiler.WaitForExit(); // <----- Setja tölu hér inn.. ----
+            //compiler.WaitForExit(); // <----- Setja tölu hér inn.. ----
             compiler.Close();
 
 
@@ -129,12 +131,21 @@ namespace RipCore.Controllers
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
                 List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.AssignmentID);
-                for (int i = 0; i < excpectedData.Count; i++)
+                using (var processExe = new Process())
                 {
-                    using (var processExe = new Process())
-                    {
-                        processExe.StartInfo = processInfoExe;
-                        processExe.Start();
+                    processExe.StartInfo = processInfoExe;
+                    processExe.Start();
+                    Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
+                    processExe.WaitForExit(10000);
+
+                    for (int i = 0; i < excpectedData.Count; i++)
+                        {
+                        if (processExe.HasExited)
+                        {
+                            data.SolutionOutput = "Compile Time Error!";
+                            break;
+                        }
+
                         if (excpectedData[i].Item1 != "")
                         {
                             processExe.StandardInput.WriteLine(excpectedData[i].Item1);
@@ -165,8 +176,8 @@ namespace RipCore.Controllers
                             break;
                         }
 
+                    }
                 }
-               }
                 Submission submission = new Submission { AssignmentID = data.AssignmentID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
                 db.Submission.Add(submission);
                 db.SaveChanges();
@@ -180,5 +191,13 @@ namespace RipCore.Controllers
 
             return View(data);
         }
+
+        public ActionResult AllSubmissions(int id)
+        {
+            List<Submission> submissions = sService.GetAllSubmissions(id);
+            return View(submissions);
+        }
+
+
     }
 }
