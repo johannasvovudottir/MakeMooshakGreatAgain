@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RipCore.Models;
 using RipCore.Services;
+
 namespace RipCore.Controllers
 {
     [Authorize]
