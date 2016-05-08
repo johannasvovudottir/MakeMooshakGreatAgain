@@ -4,15 +4,15 @@
     ViewBag.Title = "Index";
 }
 
-<h1 class="text-center">Yfirlit</h1>
+<h1 class="text-center">@Resources.Resources.Overview</h1>
 <br/ >
 <div class="table-responsive col-md-6">
-    <input type="text" id="searchpersons" placeholder="Skrifið til að leita">
+    <input type="text" id="searchpersons" placeholder="@Resources.Resources.SearchPlaceholder">
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="col-md-5">Heiti nemanda</th>
+                <th class="col-md-5">@Resources.Resources.UserTableName</th>
             </tr>
         </thead>
         <tbody id="persontable">
@@ -32,17 +32,17 @@
 
         </tbody>
     </table>
-    @Html.ActionLink("Bæta við notanda", "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
+    @Html.ActionLink(@Resources.Resources.Adduser, "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
 
 </div>
 
 
 <div class="table-responsive col-md-6">
-    <input type="text" placeholder="Skrifið til að leita" id="searchcourses">
+    <input type="text" placeholder="@Resources.Resources.SearchPlaceholder" id="searchcourses">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="col-md-5">Heiti áfanga</th>
+                <th class="col-md-5">@Resources.Resources.CourseTableName</th>
             </tr>
         </thead>
         <tbody id="coursetable">
@@ -62,7 +62,7 @@
 
         </tbody>
     </table>
-    @Html.ActionLink("Bæta við áfanga", "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
+    @Html.ActionLink(@Resources.Resources.Addcourse, "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
 
 
 </div>
@@ -102,4 +102,3 @@
 
 
     @*http://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table*@
-

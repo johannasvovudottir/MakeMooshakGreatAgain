@@ -13,7 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private CourseService CourseService = new CourseService();
         private PersonService PersonService = new PersonService();
