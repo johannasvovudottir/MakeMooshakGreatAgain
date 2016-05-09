@@ -194,10 +194,16 @@ namespace RipCore.Controllers
 
         public ActionResult AllSubmissions(int id)
         {
-            List<Submission> submissions = sService.GetAllSubmissions(id);
+            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
             return View(submissions);
         }
 
+        public ActionResult SubmissionDetails(int id)
+        {
+            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
+            return View(submissions);
+        }
 
     }
+    
 }

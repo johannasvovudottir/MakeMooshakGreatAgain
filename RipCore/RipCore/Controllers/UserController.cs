@@ -95,12 +95,15 @@ namespace RipCore.Controllers
             AssignmentViewModel viewModel = new AssignmentViewModel();
             viewModel.CourseID = id;
             viewModel.Milestones = new List<AssignmentMilestoneViewModel>();
+            AssignmentMilestoneViewModel milestone = new AssignmentMilestoneViewModel { Title = "", AssignmentID = id };
+            viewModel.Milestones.Add(milestone);
             viewModel.programmingLanguages = assignmentService.GetProgrammingLanguages();
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(AssignmentViewModel newData)
+        [ValidateInput(false)]
+        public ActionResult Create(AssignmentViewModel newData, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
         {
             #region Security
             SecurityRedirect redirect = accountService.VerifySecurityLevel
@@ -122,18 +125,46 @@ namespace RipCore.Controllers
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     newData.File.InputStream.CopyTo(memoryStream);
-                    newData.Input = Encoding.ASCII.GetString(memoryStream.ToArray());
-                    /*string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine "QUIT" }, StringSplitOptions.None);
-                    for(int i = 0; i < result.Length; i=i+2)
-                    {
-                        assignment.Input = result[i];
-                        assignment.Output = result[i + 1];
-                    }*/
+                    newData.TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
                 }
             }
-            Assignment newAssignment = new Assignment { Title = newData.Title, CourseID = newData.CourseID, Weight = newData.Weight, DueDate = newData.DueDate, DateCreated = newData.DateCreated, Description = newData.Description, Input = newData.Input, Output = newData.Output, ProgrammingLanguageID = newData.ProgrammingLanguageID };
-            db.Assignments.Add(newAssignment);
+
+            Assignment assignemnt = new Assignment { CourseID = newData.CourseID, DateCreated = newData.DateCreated, Description = newData.Description, DueDate = newData.DueDate, TestCases = newData.TestCases, ProgrammingLanguageID = newData.ProgrammingLanguageID, Title = newData.Title, Weight = newData.Weight };
+            db.Assignments.Add(assignemnt);
             db.SaveChanges();
+            string bla = collection["Milestones[" + 0 + "].ID"];
+            for (int i = 0; i < counter; i++)
+            {
+                //bool exists = collection["Milestones[" + i + "].ID"] != "0";
+                //if (!exists)
+                //{
+                    string title = collection["Milestones[" + i + "].Title"];
+                    int weight;
+                    Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
+                    string description = collection["Milestones[" + i + "].Description"];
+                    string testCases = collection["Milestones[" + i + "].TestCases"];
+                    int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
+                    if(assignmentID != 0)
+                    {
+                        Milestone milestone = new Milestone
+                        {
+                            Title = title,
+                            Weight = weight,
+                            Description = description,
+                            TestCases = testCases,
+                            AssignmentID = assignmentID,
+                            DateCreated = newData.DateCreated,
+                            DueDate = newData.DueDate,
+                            ProgrammingLanguageID = newData.ProgrammingLanguageID
+                        };
+                        db.Milestones.Add(milestone);
+                    }
+
+               //}
+            }
+            
+
+
             return RedirectToAction("TeacherOverview", new { id = newData.CourseID });
         }
 
@@ -215,7 +246,7 @@ namespace RipCore.Controllers
                         using (MemoryStream memoryStream = new MemoryStream())
                         {
                             model.File.InputStream.CopyTo(memoryStream);
-                            assignment.Input = Encoding.ASCII.GetString(memoryStream.ToArray());
+                            assignment.TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
                             /*string[] result = Encoding.ASCII.GetString(memoryStream.ToArray()).Split(new string[] { Environment.NewLine "QUIT" }, StringSplitOptions.None);
                             for(int i = 0; i < result.Length; i=i+2)
                             {
@@ -273,6 +304,26 @@ namespace RipCore.Controllers
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, true);
             viewModel.UserID = User.Identity.GetUserId();
             return View(viewModel);
+        }
+
+        public ActionResult AddMilestone(FormCollection collection, HttpPostedFileBase files)
+        {
+            var test = collection["files"];
+            var test2 = Request.Files["files"];
+            var test3 = files;
+            string TestCases;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                files.InputStream.CopyTo(memoryStream);
+                TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
+            }
+
+            if (String.IsNullOrEmpty(TestCases))
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+                //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
+            }
+            return Json(TestCases, JsonRequestBehavior.AllowGet);
         }
 
     }

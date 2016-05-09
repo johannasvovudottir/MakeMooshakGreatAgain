@@ -22,8 +22,7 @@ namespace RipCore.Models.ViewModels
         public bool IsTeacher { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }
-        public string Input { get; set; }
-        public string Output { get; set; }
+        public string TestCases { get; set; }
         public HttpPostedFileBase File { get; set; }
     }
 }

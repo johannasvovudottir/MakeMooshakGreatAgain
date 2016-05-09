@@ -90,10 +90,31 @@
         
     </div>
     <div id="tabs-3">
-        @foreach(var item in Model.Milestones)
+        @using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            <h4>@item.Title</h4>
-            <p>@item.Description</p>
+            for (int i = 0; i < Model.Milestones.Count; i++)
+            {
+                <h4>@Model.Milestones[i].Title</h4>
+                <p>@Model.Milestones[i].Description</p>
+                <div class="form-group">
+                    @Html.LabelFor(model => Model.Milestones[i].File, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => Model.Milestones[i].File, new { type = "file" })
+                        @Html.ValidationMessageFor(model => Model.Milestones[i].File, "", new { @class = "text-danger" })
+                    </div>
+                    @Html.HiddenFor(model => Model.Milestones[i].AssignmentID)
+                    @Html.HiddenFor(model => Model.Milestones[i].ID)
+                    @Html.HiddenFor(model => Model.Milestones[i].Title)
+                    @Html.HiddenFor(model => Model.Milestones[i].Weight)
+                </div>
+            }
+
+            @Html.HiddenFor(model => Model.Milestones)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
+            </div>
+        </div>
         }
    </div>
 </div>

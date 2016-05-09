@@ -87,7 +87,7 @@
                     <td>
                         @if (Model.isTeacher == true)
                         {
-                            <h4>@Html.ActionLink("See submissions", "AllSubmissions", "Solution", new { id = item.ID })</h4>
+                            <h4>@Html.ActionLink("See submissions", "AllSubmissions", "Solution", new { id = item.ID }, null)</h4>
                         }
                         @if (Model.isTeacher == false)
                         {

@@ -62,8 +62,7 @@ namespace RipCore.Services
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,
                 DueDate = assignment.DueDate,
-                Input = assignment.Input,
-                Output = assignment.Output,
+                TestCases = assignment.TestCases,
                 programmingLanguages = GetProgrammingLanguages()   
             };
             return viewModel;

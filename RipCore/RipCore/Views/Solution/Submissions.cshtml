@@ -1,14 +1,39 @@
-﻿@model RipCore.Models.ViewModels.SubmissionViewModel
+﻿@model RipCore.Models.ViewModels.SubmissionsOverViewModel
 <table>
     <thead>
-
+        <tr>
+            <th>
+                User
+            </th>
+            <th>
+                Submission
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                @Model.IsAccepted
-            </td>
-        </tr>
+        @foreach (var item in Model.submissions)
+        {
+            <tr>
+                <td>
+                    <h6>
+                        @item.UsersName
+                    </h6>
+                </td>
+                <td>
+                    <h6>
+                        @Html.ActionLink("See submission", "SubmissionDetails", new { id = item.ID })
+                    </h6>
+                </td>
+                <td>
+                    <h6>
+                        @item.IsAccepted
+                    </h6>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

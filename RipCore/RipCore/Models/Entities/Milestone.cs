@@ -15,5 +15,9 @@ namespace RipCore.Models.Entities
         public string Input { get; set; }
         public string Output { get; set; }
         public string Code { get; set; }
+        public string TestCases { get; set; }
+        public int ProgrammingLanguageID { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

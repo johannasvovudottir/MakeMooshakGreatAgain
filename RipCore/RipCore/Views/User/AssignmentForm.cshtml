@@ -1,5 +1,4 @@
-﻿
-@model RipCore.Models.ViewModels.AssignmentViewModel
+﻿@model RipCore.Models.ViewModels.AssignmentViewModel
 @{
     int counter = 0;
 }
@@ -20,7 +19,6 @@
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                 </div>
             </div>
-
           
             <div class="form-group">
                 @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -66,17 +64,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="addMilestone" class="control-label col-md-2">Add Milestone</label>
-                    <div class="col-md-10">
-                        <input type="text" id="addMilestoneTitle" class="form-control" />
-                        <input type="text" id="addMilestoneWeight" class="form-control" />
-                        <textarea id="addMilestoneDescription" class="form-control"></textarea>
-                        <input type="button" id="milestone" class="btn btn-default" value="Add" />
-                    </div>
-
-                </div>
-
 
                 <div id="milestoneContainer">
                     @for (int i = 0; i < Model.Milestones.Count; i++)
@@ -88,17 +75,11 @@
                             @Html.HiddenFor(model => model.Milestones[i].Title)
                             @Html.HiddenFor(model => model.Milestones[i].Weight)
                             @Html.HiddenFor(model => model.Milestones[i].Description)
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Milestones[i].File, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextBoxFor(model => model.File, new { type = "file" })
-                                    @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+                            @Html.HiddenFor(model => model.Milestones[i].TestCases)
                         </div>
                     }
-                </div>
                 <input type="hidden" name="counter" id="counter" value="@counter" />
+                </div>
             </div>
         </div>
         @Html.HiddenFor(model => model.CourseID)
@@ -125,6 +106,22 @@
 
 }
 
+@using (Html.BeginForm("AddMilestone", "User", FormMethod.Post, new { id = "milestone", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <label for="addMilestone" class="control-label col-md-2">Add Milestone</label>
+        <div class="col-md-10">
+            <input type="text" name="addMilestoneTitle" id="addMilestoneTitle" class="form-control" />
+            <input type="text" name="addMilestoneWeight" id="addMilestoneWeight" class="form-control" />
+            <textarea id="addMilestoneDescription" name="addMilestoneDescription" class="form-control"></textarea>
+            <input type="file" id="addMilestoneFile" name="files" class="form-control" />
+            <input type="hidden" id="milestoneAssignmentID" name="milestoneAssignmentID" value="@Model.ID" />
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+    @Html.ValidationSummary(false)
+}
+
 
 
 
@@ -140,6 +137,8 @@
         <input type="hidden" class="milestoneID addMilestoneDescription" />
     </div>
 </script>
+
+
 
 <script>var counter = @counter;</script>
 
