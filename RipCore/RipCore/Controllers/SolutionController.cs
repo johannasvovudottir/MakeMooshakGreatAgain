@@ -42,7 +42,6 @@ namespace RipCore.Controllers
                     submission.SolutionOutput = result;
                 }
             }
-
             else if (!string.IsNullOrEmpty(viewModel.Solution))
             {
                 submission.SolutionOutput = viewModel.Solution;
