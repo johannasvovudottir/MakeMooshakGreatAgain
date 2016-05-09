@@ -106,6 +106,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Óskiluð verkefni.
+        /// </summary>
+        internal static string AssignmentsDue {
+            get {
+                return ResourceManager.GetString("AssignmentsDue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Til baka.
         /// </summary>
         internal static string BackButton {
@@ -178,6 +187,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Halló.
+        /// </summary>
+        internal static string Greeting {
+            get {
+                return ResourceManager.GetString("Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yfirlit.
         /// </summary>
         internal static string Overview {
@@ -214,11 +232,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Áfangar sem nemandi.
+        /// </summary>
+        internal static string StudentCourses {
+            get {
+                return ResourceManager.GetString("StudentCourses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staðfesta.
         /// </summary>
         internal static string Submit {
             get {
                 return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Áfangar sem kennari.
+        /// </summary>
+        internal static string TeacherCourses {
+            get {
+                return ResourceManager.GetString("TeacherCourses", resourceCulture);
             }
         }
         
