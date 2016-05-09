@@ -45,7 +45,7 @@ namespace RipCore.Controllers
             {
                 submission.SolutionOutput = viewModel.Solution;
             }
-
+            submission.ProgrammingLanguage = ".java";
             return RedirectToAction("CompileSolution", submission);
         }
 
@@ -74,7 +74,7 @@ namespace RipCore.Controllers
             var workingFolder = smu + user + "\\"; //name; // eða ID
             System.IO.Directory.CreateDirectory(workingFolder);
 
-            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + ".cpp"; // ---- Verkefnaheiti
+            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + data.ProgrammingLanguage;//".cpp"; // ---- Verkefnaheiti
             var exeFilePath = workingFolder + data.AssignmentName.Replace(" ", "").ToLower() + ".exe"; // ----- verkefnaheiti
 
             // Write the code to a file, such that the compiler
@@ -192,6 +192,12 @@ namespace RipCore.Controllers
             return View(data);
         }
 
+        public ActionResult AllSolutions(int id)
+        {
+            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
+            return View(submissions);
+        }
+
         public ActionResult AllSubmissions(int id)
         {
             SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
@@ -200,8 +206,10 @@ namespace RipCore.Controllers
 
         public ActionResult SubmissionDetails(int id)
         {
-            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
-            return View(submissions);
+            SubmissionViewModel submission = sService.GetSubmissionForView(id);
+            string userID = User.Identity.GetUserId();
+            submission.UsersName = (from u in db.Users where u.Id == userID select u.UserName).FirstOrDefault().ToString();
+            return View(submission);
         }
 
     }

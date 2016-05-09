@@ -37,11 +37,12 @@ namespace RipCore.Services
 
         public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
-            List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
+            List<int> submissionsIDs = (from s in db.Solutions where s.MilestoneID == milestoneID select s.SubmissionID).ToList();
             List<SubmissionViewModel> submissionsViewModel = new List<SubmissionViewModel>();
-            foreach (var item in submissions)
+            foreach (var item in submissionsIDs)
             {
-                SubmissionViewModel tmp = new SubmissionViewModel { MilestoneID = item.MilestoneID, IsAccepted = item.IsAccepted, UsersName = (from n in db.Users where n.Id == item.UserID select n.UserName).FirstOrDefault() };
+                Submission submission = (from s in db.Submission where s.ID == item select s).FirstOrDefault();
+                SubmissionViewModel tmp = new SubmissionViewModel { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, UsersName = (from n in db.Users where n.Id == submission.UserID select n.UserName).FirstOrDefault() };
                 submissionsViewModel.Add(tmp);
             }
             return submissionsViewModel;
@@ -55,14 +56,24 @@ namespace RipCore.Services
             return submissions;
         }
 
-        public Submission GetSubmissionByID(int milestoneID, string userID) {
+        public Submission GetSubmissionByID(int milestoneID, string userID)
+        {
             var result = (from s in db.Submission
                           where s.MilestoneID == milestoneID && s.UserID == userID
                           select s).LastOrDefault();
             return result; 
         }
+
+        public SubmissionViewModel GetSubmissionForView(int id)
+        {
+            Submission submission = (from s in db.Submission
+                          where s.ID == id
+                          select s).FirstOrDefault();
+            SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted };
+            return viewModel;
+        }
         //spyrja valbjorn afh database uppfaerist ekki
-        
+
 
     }
 }

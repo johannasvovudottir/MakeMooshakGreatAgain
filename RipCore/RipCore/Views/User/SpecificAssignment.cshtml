@@ -42,7 +42,10 @@
     {
         using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-
+            @Html.HiddenFor(modelItem => Model.Description)
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.Title)
+            @Html.HiddenFor(model => model.CourseID)
             <div class="form-group">
                 @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
