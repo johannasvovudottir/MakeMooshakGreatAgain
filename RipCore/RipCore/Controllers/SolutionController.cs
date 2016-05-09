@@ -21,7 +21,6 @@ namespace RipCore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private SolutionService sService = new SolutionService();
-        // GET: Solution
         public ActionResult Index()
         {
             return View();
@@ -114,7 +113,7 @@ namespace RipCore.Controllers
             compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
             compiler.StandardInput.WriteLine("exit");
             string output = compiler.StandardOutput.ReadToEnd();
-            //compiler.WaitForExit(); // <----- Setja tölu hér inn.. ----
+            compiler.WaitForExit(10000); // <----- Setja tölu hér inn.. ----
             compiler.Close();
 
 
@@ -129,21 +128,21 @@ namespace RipCore.Controllers
                 processInfoExe.RedirectStandardInput = true;
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
-                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
+                List<Tuple<string, string>> excpectedData = new List<Tuple<string, string>>(); // = sService.GetExpectedData(data.MilestoneID);
                 using (var processExe = new Process())
                 {
                     processExe.StartInfo = processInfoExe;
                     processExe.Start();
-                    Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
-                    processExe.WaitForExit(10000);
-
+                    //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
+                    var test = processExe.WaitForExit(30000);
+                    if(!test)
+                    {
+                        data.SolutionOutput = "Compile Time Error!";
+                        processExe.Kill();
+                        return View(data);
+                    }
                     for (int i = 0; i < excpectedData.Count; i++)
                         {
-                        if (processExe.HasExited)
-                        {
-                            data.SolutionOutput = "Compile Time Error!";
-                            break;
-                        }
 
                         if (excpectedData[i].Item1 != "")
                         {
@@ -208,3 +207,4 @@ namespace RipCore.Controllers
     }
     
 }
+

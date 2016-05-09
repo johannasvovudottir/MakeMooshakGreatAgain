@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gera notanda að kerfisstjóra.
+        /// </summary>
+        internal static string MakeAdmin {
+            get {
+                return ResourceManager.GetString("MakeAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yfirlit.
         /// </summary>
         internal static string Overview {
@@ -210,6 +219,15 @@ namespace Resources {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taka kerfisstjóra réttindi af notanda.
+        /// </summary>
+        internal static string RemoveAdmin {
+            get {
+                return ResourceManager.GetString("RemoveAdmin", resourceCulture);
             }
         }
         

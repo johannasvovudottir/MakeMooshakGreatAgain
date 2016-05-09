@@ -195,4 +195,10 @@
   <data name="Teachers" xml:space="preserve">
     <value>Kennarar</value>
   </data>
+  <data name="MakeAdmin" xml:space="preserve">
+    <value>Gera notanda að kerfisstjóra</value>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Taka kerfisstjóra réttindi af notanda</value>
+  </data>
 </root>

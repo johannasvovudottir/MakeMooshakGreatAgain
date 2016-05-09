@@ -195,4 +195,10 @@
   <data name="Teachers" xml:space="preserve">
     <value>Teachers</value>
   </data>
+  <data name="MakeAdmin" xml:space="preserve">
+    <value>Give user admin rights</value>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Remove admin rights from user</value>
+  </data>
 </root>
