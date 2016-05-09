@@ -232,15 +232,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Áfangar sem nemandi.
         /// </summary>
         internal static string StudentCourses {
@@ -264,6 +255,15 @@ namespace Resources {
         internal static string TeacherCourses {
             get {
                 return ResourceManager.GetString("TeacherCourses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kennarar.
+        /// </summary>
+        internal static string Teachers {
+            get {
+                return ResourceManager.GetString("Teachers", resourceCulture);
             }
         }
         

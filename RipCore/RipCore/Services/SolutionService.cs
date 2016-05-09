@@ -56,5 +56,14 @@ namespace RipCore.Services
             return submissions;
         }
 
+        public Submission GetSubmissionByID(int milestoneID, string userID) {
+            var result = (from s in db.Submission
+                          where s.MilestoneID == milestoneID && s.UserID == userID
+                          select s).FirstOrDefault();
+            return result; 
+        }
+
+
+
     }
 }

@@ -186,13 +186,13 @@
   <data name="Greeting" xml:space="preserve">
     <value>Halló</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="StudentCourses" xml:space="preserve">
     <value>Áfangar sem nemandi</value>
   </data>
   <data name="TeacherCourses" xml:space="preserve">
     <value>Áfangar sem kennari</value>
+  </data>
+  <data name="Teachers" xml:space="preserve">
+    <value>Kennarar</value>
   </data>
 </root>

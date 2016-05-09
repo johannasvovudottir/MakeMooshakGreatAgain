@@ -192,4 +192,7 @@
   <data name="TeacherCourses" xml:space="preserve">
     <value>Courses as teacher</value>
   </data>
+  <data name="Teachers" xml:space="preserve">
+    <value>Teachers</value>
+  </data>
 </root>
