@@ -62,6 +62,8 @@
                         <p>Status</p>
                     }
                 </th>
+                <th>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -92,6 +94,12 @@
                         @if (Model.isTeacher == false)
                         {
                             <h4>//TODO Status</h4>
+                        }
+                    </td>
+                    <td>
+                        @if (Model.isTeacher == true)
+                        {
+                            <h4>@Html.ActionLink("Delete", "Delete", new { id = item.ID})</h4>
                         }
                     </td>
                 </tr>
