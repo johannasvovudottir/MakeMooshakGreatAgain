@@ -167,15 +167,15 @@ namespace RipCore.Controllers
                         if (string.Equals(lines[0].ToString(), excpectedData[i].Item2))
                         {
                             data.IsAccepted = true;
-
-
+                            Solution solution = new Solution { MilestoneID = data.MilestoneID, StudentID = User.Identity.GetUserId() };
+                            db.Solutions.Add(solution);
+                            db.SaveChanges();
                         }
                         else
                         {
                             data.IsAccepted = false;
                             break;
                         }
-
                     }
                 }
                 Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
