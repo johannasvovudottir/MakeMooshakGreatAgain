@@ -11,7 +11,7 @@
 
 @if (Model.isAdmin == true)
 {
-    @Html.ActionLink("Fjarlægja sem admin", "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin},
+    @Html.ActionLink(@Resources.Resources.RemoveAdmin, "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin},
                         htmlAttributes: new
                         {
                             @class = "btn btn-success",
@@ -20,7 +20,7 @@
 }
 @if (Model.isAdmin != true)
 {
-    @Html.ActionLink("Gera að admin", "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin },
+    @Html.ActionLink(@Resources.Resources.MakeAdmin, "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin },
                         htmlAttributes: new
                         {
                             @class = "btn btn-success",
