@@ -201,4 +201,10 @@
   <data name="RemoveAdmin" xml:space="preserve">
     <value>Taka kerfisstjóra réttindi af notanda</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Villa!</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Því miður kom upp villa við meðhöndlun  fyrirspurnarinnar þinnar. Við biðjumst forláts á þessu og þeim óþægindum sem að  þetta kann að hafa valdið þér</value>
+  </data>
 </root>
