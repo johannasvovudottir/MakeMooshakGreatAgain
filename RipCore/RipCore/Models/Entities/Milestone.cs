@@ -9,6 +9,7 @@ namespace RipCore.Models.Entities
     {
         public int ID { get; set; }
         public int AssignmentID { get; set; }
+        public int MilestoneID { get; set; }
         public int Weight { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

@@ -71,6 +71,7 @@ namespace RipCore.Services
         {
             AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
             viewModel.IsTeacher = teacher;
+            viewModel.milestoneNumber = GetMilestonesNumber(assignmentID);
             return viewModel;
         }
 
@@ -104,6 +105,18 @@ namespace RipCore.Services
             programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "Python" });
             programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Java" });
             return programmingLanguages;
+        }
+
+        public List<SelectListItem> GetMilestonesNumber(int assignmentID)
+        {
+            List<SelectListItem> milestonesNumber = new List<SelectListItem>();
+            List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == assignmentID select m).ToList();
+            for (int i = 0; i < milestones.Count; i++)
+            {
+                string value = milestones[i].ID.ToString();
+                milestonesNumber.Add(new SelectListItem() { Value = value, Text = milestones[i].Title });
+            }
+            return milestonesNumber;
         }
     }
 }

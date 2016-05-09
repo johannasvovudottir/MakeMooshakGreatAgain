@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RipCore.Models;
+using RipCore.Models.ViewModels;
 using RipCore.Services;
 
 namespace RipCore.Controllers
@@ -26,7 +27,7 @@ namespace RipCore.Controllers
             service = new AccountsService();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             service = new AccountsService();
             UserManager = userManager;
@@ -39,9 +40,9 @@ namespace RipCore.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -72,7 +73,7 @@ namespace RipCore.Controllers
         }
 
         // POST: /Account/Login
-        
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -100,7 +101,98 @@ namespace RipCore.Controllers
                     return View(model);
             }
         }
-        
+
+        [AllowAnonymous]
+        public ActionResult CentrisLogin(string returnUrl)
+        {
+            //If this is triggered, it means a logged in user is trying to access login page through non-standard ways - let's redirect.
+            if (HttpContext.Request.IsAuthenticated)
+            {
+                return RedirectToAction("", "User");
+            }
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CentrisLogin(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //Check if user exists // request centris
+            string json = null;
+            var isOk = service.RequestJson(model, ref json);
+            if (!isOk)
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+            var centrisModel = service.GetCentrisUser(json);
+            PersonService pServ = new PersonService();
+            string userID = null;
+            var id = service.GetIdByUser(centrisModel.UserName, ref userID);
+            try
+            {
+                PersonViewModel personModel = pServ.GetPersonById(userID);
+                if (personModel.ID != null)
+                {
+                    var result = await SignInManager.PasswordSignInAsync(model.Username, "Centris1#", model.RememberMe, false);
+                    switch (result)
+                    {
+                        case SignInStatus.Success:
+                            return RedirectToLocal(returnUrl);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
+                }
+            }
+            catch
+            {
+                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = 500 };
+                var result = await UserManager.CreateAsync(user, "Centris1#");
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+            }
+            //If exist -> sign user in
+                
+                return View(model);
+        }
+
+
+        /*d
+        // This doesn't count login failures towards account lockout
+        // To enable password failures to trigger account lockout, change to shouldLockout: true
+        var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+        switch (result)
+        {
+            case SignInStatus.Success:
+                return RedirectToLocal(returnUrl);
+            case SignInStatus.LockedOut:
+                return View("Lockout");
+            case SignInStatus.RequiresVerification:
+                return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            case SignInStatus.Failure:
+            default:
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+        }
+        */
+
+
         //
         // POST: /Account/LogOff
         [HttpPost]
