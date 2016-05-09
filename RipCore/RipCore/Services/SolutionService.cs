@@ -16,7 +16,6 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
-
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
