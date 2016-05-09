@@ -37,7 +37,7 @@ $(function () {
 
         var formData = new FormData($(this)[0]);
         $.ajax({
-        url: '/User/AddMilestone',
+        url: '/is/User/AddMilestone',
         data: formData,
         contentType: false,
         processData: false,
@@ -48,7 +48,9 @@ $(function () {
             //{
             console.log("smu");
 
-                var html = '<input type="hidden" class="milestoneID addMilestoneFile" name = "Milestones[' + counter + '].TestCases" id = "milestoneFile' + counter +'" value = "' +responseData + '"/>'
+            var html = '<input type="hidden" class="milestoneID addMilestoneFile" name = "Milestones[' + anotherCounter + '].TestCases" id = "milestoneFile' + anotherCounter + '" value = "' + responseData + '"/>'
+                $('#anotherCounter').val(++anotherCounter);
+                $('#addMilestoneFile').val('');
                 $('#milestoneContainer').append(html);
                // html += '<input type="hidden" ' + responseData[counter].Weight + '</p>';
                // <input type="hidden" id="milestoneAssignmentID" name="milestoneAssignmentID" value="@Model.ID" />
