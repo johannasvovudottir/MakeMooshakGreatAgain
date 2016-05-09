@@ -31,7 +31,7 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
-            SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, AssignmentID = viewModel.ID };
+            SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, MilestoneID = viewModel.ID };
             if (viewModel.File != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -42,7 +42,6 @@ namespace RipCore.Controllers
                     submission.SolutionOutput = result;
                 }
             }
-
             else if (!string.IsNullOrEmpty(viewModel.Solution))
             {
                 submission.SolutionOutput = viewModel.Solution;
@@ -130,7 +129,7 @@ namespace RipCore.Controllers
                 processInfoExe.RedirectStandardInput = true;
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
-                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.AssignmentID);
+                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
                 using (var processExe = new Process())
                 {
                     processExe.StartInfo = processInfoExe;
@@ -178,7 +177,7 @@ namespace RipCore.Controllers
 
                     }
                 }
-                Submission submission = new Submission { AssignmentID = data.AssignmentID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
                 db.Submission.Add(submission);
                 db.SaveChanges();
                 // ------ solutionOutput er allt sem er í skjalinu. ------
