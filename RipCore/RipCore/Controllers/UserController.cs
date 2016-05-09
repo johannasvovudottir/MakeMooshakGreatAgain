@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace RipCore.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private CourseService service = new CourseService();
         private AccountsService accountService = new AccountsService();
