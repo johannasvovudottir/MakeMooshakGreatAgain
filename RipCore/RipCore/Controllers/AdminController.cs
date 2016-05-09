@@ -19,7 +19,6 @@ namespace RipCore.Controllers
         private PersonService PersonService = new PersonService();
         private AccountsService accountService = new AccountsService();
         private ApplicationDbContext db = new ApplicationDbContext();
-        private EncryptionService encService = new EncryptionService();
         private ApplicationUserManager _userManager;
         // GET: Admin
 
