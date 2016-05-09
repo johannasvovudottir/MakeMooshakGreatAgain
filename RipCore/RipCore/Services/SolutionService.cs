@@ -16,15 +16,11 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
-<<<<<<< HEAD
+
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
-=======
-        public List<Tuple<string, string>> GetExpectedData(int assginmentID)
-        {
-            var data = (from a in db.Assignments where a.ID == assginmentID select a.TestCases).FirstOrDefault().ToString();
->>>>>>> 1fe65884b1add25099cc75ace2d1a543eb62fc1c
+
             string[] tests = data.Split(new string[] { "\r\nTEST" }, StringSplitOptions.None);
             List<Tuple<string, string>> IOpairs = new List<Tuple<string, string>>();
             foreach (var item in tests)
@@ -42,11 +38,7 @@ namespace RipCore.Services
 
         public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
-<<<<<<< HEAD
             List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
-=======
-            List<Submission> submissions = (from s in db.Submission where s.MilestoneID == assignmentID select s).ToList();
->>>>>>> 1fe65884b1add25099cc75ace2d1a543eb62fc1c
             List<SubmissionViewModel> submissionsViewModel = new List<SubmissionViewModel>();
             foreach (var item in submissions)
             {
