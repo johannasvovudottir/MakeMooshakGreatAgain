@@ -16,9 +16,9 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
-        public List<Tuple<string, string>> GetExpectedData(int assgintmentID)
+        public List<Tuple<string, string>> GetExpectedData(int milestoneID)
         {
-            var data = (from a in db.Assignments where a.ID == assgintmentID select a.TestCases).FirstOrDefault().ToString();
+            var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
             string[] tests = data.Split(new string[] { "\r\nTEST" }, StringSplitOptions.None);
             List<Tuple<string, string>> IOpairs = new List<Tuple<string, string>>();
             foreach (var item in tests)
@@ -34,13 +34,13 @@ namespace RipCore.Services
             return IOpairs;
         }
 
-        public List<SubmissionViewModel> GetAllSubmissions(int assignmentID)
+        public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
-            List<Submission> submissions = (from s in db.Submission where s.AssignmentID == assignmentID select s).ToList();
+            List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
             List<SubmissionViewModel> submissionsViewModel = new List<SubmissionViewModel>();
             foreach (var item in submissions)
             {
-                SubmissionViewModel tmp = new SubmissionViewModel { AssignmentID = item.AssignmentID, IsAccepted = item.IsAccepted, UsersName = (from n in db.Users where n.Id == item.UserID select n.UserName).FirstOrDefault() };
+                SubmissionViewModel tmp = new SubmissionViewModel { MilestoneID = item.MilestoneID, IsAccepted = item.IsAccepted, UsersName = (from n in db.Users where n.Id == item.UserID select n.UserName).FirstOrDefault() };
                 submissionsViewModel.Add(tmp);
             }
             return submissionsViewModel;
@@ -49,7 +49,7 @@ namespace RipCore.Services
         public List<Submission> GetUserSubmissions(int assignmentID, string userID)
         {
             List<Submission> submissions = (from s in db.Submission
-                                            where s.AssignmentID == assignmentID && s.UserID == userID
+                                            where s.MilestoneID == assignmentID && s.UserID == userID
                                             select s).ToList();
             return submissions;
         }
