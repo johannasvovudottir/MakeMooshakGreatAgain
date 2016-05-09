@@ -196,6 +196,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gera notanda að kerfisstjóra.
+        /// </summary>
+        internal static string MakeAdmin {
+            get {
+                return ResourceManager.GetString("MakeAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yfirlit.
         /// </summary>
         internal static string Overview {
@@ -214,6 +223,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taka kerfisstjóra réttindi af notanda.
+        /// </summary>
+        internal static string RemoveAdmin {
+            get {
+                return ResourceManager.GetString("RemoveAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skrifið til að leita.
         /// </summary>
         internal static string SearchPlaceholder {
@@ -228,15 +246,6 @@ namespace Resources {
         internal static string SSN {
             get {
                 return ResourceManager.GetString("SSN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
@@ -264,6 +273,15 @@ namespace Resources {
         internal static string TeacherCourses {
             get {
                 return ResourceManager.GetString("TeacherCourses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kennarar.
+        /// </summary>
+        internal static string Teachers {
+            get {
+                return ResourceManager.GetString("Teachers", resourceCulture);
             }
         }
         

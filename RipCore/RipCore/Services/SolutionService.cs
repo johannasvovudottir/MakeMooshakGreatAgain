@@ -38,7 +38,6 @@ namespace RipCore.Services
         public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
             List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
-
             List<SubmissionViewModel> submissionsViewModel = new List<SubmissionViewModel>();
             foreach (var item in submissions)
             {
@@ -55,6 +54,15 @@ namespace RipCore.Services
                                             select s).ToList();
             return submissions;
         }
+
+        public Submission GetSubmissionByID(int milestoneID, string userID) {
+            var result = (from s in db.Submission
+                          where s.MilestoneID == milestoneID && s.UserID == userID
+                          select s).LastOrDefault();
+            return result; 
+        }
+        //spyrja valbjorn afh database uppfaerist ekki
+        
 
     }
 }

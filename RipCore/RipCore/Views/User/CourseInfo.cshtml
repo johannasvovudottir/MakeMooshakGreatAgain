@@ -1,25 +1,32 @@
 ﻿@model RipCore.Models.ViewModels.CourseViewModel
 <h2>Hello @Model.UserName</h2>
+<<<<<<< HEAD
+
+<nav class="courses col-md-3">
+    <h3>Courses as Student</h3>
+=======
 <h2>@Model.Name</h2>
 <nav class="courses">
-    <h3>Courses as Student</h3>
+    <h3>@Resources.Resources.StudentCourses</h3>
+>>>>>>> b979992ca7ed23794b36120aafbae0e69e0822d8
     @foreach (var item in Model.CoursesAsStudent)
     {
         <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })</p>
     }
-    <h3>Courses as Teacher</h3>
+    <h3>@Resources.Resources.TeacherCourses</h3>
 
     @foreach (var item in Model.CoursesAsTeacher)
     {
         <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })</p>
     }
 </nav>
-<main class="courseInfo">
-    <table>
+<main class="table-responsive col-md-6">
+    <h2 class="text-center">@Model.Name</h2>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>
-                    Teachers
+                    @Resources.Resources.Teachers
                 </th>
                 <th>
                 </th>
@@ -40,7 +47,7 @@
         </tbody>
     </table>
     <h3>Assignments</h3>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>
@@ -106,24 +113,25 @@
             }
         </tbody>
     </table>
+
+
+    @if (Model.isTeacher == true)
+    {
+        @Html.ActionLink("New Project", "Create", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+    }
 </main>
 
-@if (Model.isTeacher == true)
-{
-    @Html.ActionLink("New Project", "Create", new { id = Model.ID })
-}
+    <div class="list-unstyled col-md-3">
+        <h3>All Students</h3>
+        <ul>
+            @foreach (var item in Model.Students)
+            {
+                <li>
+                    @item.FullName
+                </li>
+            }
+        </ul>
 
-<div class="lists">
-    <h3>All Students</h3>
-    <ul>
-        @foreach (var item in Model.Students)
-        {
-            <li>
-                @item.FullName
-            </li>
-        }
-    </ul>
-    
 
-</div>
+    </div>
 

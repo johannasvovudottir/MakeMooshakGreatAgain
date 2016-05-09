@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using Newtonsoft;
+using Newtonsoft.Json;
+using System.Net;
+using System.IO;
 
 namespace RipCore.Services
 {
@@ -13,21 +16,21 @@ namespace RipCore.Services
     public class AccountsService
     {
         private ApplicationDbContext db;
-        private EncryptionService encService;
         public AccountsService()
         {
             db = new ApplicationDbContext();
-            encService = new EncryptionService();
         }
 
         public bool GetIdByUser(string name, ref string userID)
         {
-            string id = db.Users.First(u => u.UserName == name).Id;
-            if (id == null)
+            try
+            {
+                userID = db.Users.First(u => u.UserName == name).Id;
+            }
+            catch
             {
                 return false;
             }
-            userID = id;
             return true;
         }
 
@@ -122,7 +125,44 @@ namespace RipCore.Services
             }
         }
 
+        public bool RequestJson(LoginViewModel login, ref string json)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(@"http://centris.dev.nem.ru.is/api/api/v1/login");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string jsonconn = "{\"user\":\"" + login.Username + "\"," +
+                              "\"pass\":\"" + login.Password + "\"}";
 
+                streamWriter.Write(jsonconn);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            HttpWebResponse httpResponse = null;
+            try
+            {
+                httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    json = streamReader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public CentrisViewModel GetCentrisUser(string json)
+        {
+
+            CentrisViewModel model = JsonConvert.DeserializeObject<CentrisViewModel>(json);
+            return model;
+        }
 
         /*
         public List<string> GetRoles(int userID)

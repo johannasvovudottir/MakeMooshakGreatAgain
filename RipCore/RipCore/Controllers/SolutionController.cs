@@ -167,6 +167,8 @@ namespace RipCore.Controllers
                         if (string.Equals(lines[0].ToString(), excpectedData[i].Item2))
                         {
                             data.IsAccepted = true;
+
+
                         }
                         else
                         {
