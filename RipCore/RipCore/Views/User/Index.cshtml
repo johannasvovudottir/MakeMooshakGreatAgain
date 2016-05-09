@@ -2,9 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2>Hello @Model.Name</h2>
+<h2>@Resources.Resources.Greeting @Model.Name</h2>
 <nav class="courese">
-    <h3>Courses as Student</h3>
+    <h3>@Resources.Resources.StudentCourses</h3>
     <ul class="unorderedCourses">
         @foreach (var item in Model.whereStudent)
         {
@@ -13,7 +13,7 @@
             </li>
         }
     </ul>
-    <h3>Courses as Teacher</h3>
+    <h3>@Resources.Resources.TeacherCourses</h3>
     <ul class="unorderedCourses">
         @foreach (var item in Model.whereTeacher)
         {
@@ -24,7 +24,7 @@
     </ul>
 </nav>
 <main class="assignments">
-    <h3>Assignments due</h3>
+    <h3>@Resources.Resources.AssignmentsDue</h3>
     @foreach (var item in Model.assignments)
     {
         if (item.DueDate > DateTime.Now)

@@ -180,4 +180,16 @@
   <data name="UserTableName" xml:space="preserve">
     <value>Name of course</value>
   </data>
+  <data name="AssignmentsDue" xml:space="preserve">
+    <value>Assignments due</value>
+  </data>
+  <data name="Greeting" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="StudentCourses" xml:space="preserve">
+    <value>Courses as student</value>
+  </data>
+  <data name="TeacherCourses" xml:space="preserve">
+    <value>Courses as teacher</value>
+  </data>
 </root>

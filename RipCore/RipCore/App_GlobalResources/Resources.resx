@@ -180,4 +180,19 @@
   <data name="UserTableName" xml:space="preserve">
     <value>Heiti notanda</value>
   </data>
+  <data name="AssignmentsDue" xml:space="preserve">
+    <value>Óskiluð verkefni</value>
+  </data>
+  <data name="Greeting" xml:space="preserve">
+    <value>Halló</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StudentCourses" xml:space="preserve">
+    <value>Áfangar sem nemandi</value>
+  </data>
+  <data name="TeacherCourses" xml:space="preserve">
+    <value>Áfangar sem kennari</value>
+  </data>
 </root>
