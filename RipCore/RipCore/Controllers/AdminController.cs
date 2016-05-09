@@ -91,12 +91,14 @@ namespace RipCore.Controllers
             if (id != null)
             {
                 var user = PersonService.GetPersonById(id);
+                bool Admin = PersonService.checkIfAdmin(id);
                 RegisterViewModel viewModel = new RegisterViewModel {
                     ID = id,
                     UserName = user.Username,
                     FullName = user.Name,
                     Email = user.Email,
-                    SSN = user.Ssn
+                    SSN = user.Ssn,
+                    isAdmin = Admin
                 };
                 if (viewModel != null)
                 {
@@ -178,7 +180,20 @@ namespace RipCore.Controllers
 
         }
 
+        public ActionResult ChangeAdminStatus(string userID, bool isAdmin)
+        {
+            if (isAdmin == true)
+            {
+                PersonService.removeAdmin(userID);
+            }
+            else
+            {
+                PersonService.makeAdmin(userID);
+            }
 
+
+            return RedirectToAction("EditPerson", new { id = userID });
+        }
 
         public ActionResult CourseConnections(int? courseID)
         {

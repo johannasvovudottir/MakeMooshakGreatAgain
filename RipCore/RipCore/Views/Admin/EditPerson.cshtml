@@ -6,3 +6,26 @@
 <h2>@Model.FullName</h2>
 
 @{ Html.RenderPartial("PersonForm"); }
+
+
+
+@if (Model.isAdmin == true)
+{
+    @Html.ActionLink("Fjarlægja sem admin", "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin},
+                        htmlAttributes: new
+                        {
+                            @class = "btn btn-success",
+                            @role = "button"
+                        })
+}
+@if (Model.isAdmin != true)
+{
+    @Html.ActionLink("Gera að admin", "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin },
+                        htmlAttributes: new
+                        {
+                            @class = "btn btn-success",
+                            @role = "button"
+                        })
+}
+
+
