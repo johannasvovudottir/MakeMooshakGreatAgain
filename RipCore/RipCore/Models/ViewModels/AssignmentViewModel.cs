@@ -19,6 +19,8 @@ namespace RipCore.Models.ViewModels
         public string Solution { get; set; }
         public List<AssignmentMilestoneViewModel> Milestones;
         public List<SelectListItem> programmingLanguages;
+        public List<SelectListItem> milestoneNumber;
+        public int milestoneSubmissionID;
         public bool IsTeacher { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DueDate { get; set; }

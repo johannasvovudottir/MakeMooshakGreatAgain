@@ -98,6 +98,8 @@ namespace RipCore.Controllers
             AssignmentMilestoneViewModel milestone = new AssignmentMilestoneViewModel { Title = "", AssignmentID = id };
             viewModel.Milestones.Add(milestone);
             viewModel.programmingLanguages = assignmentService.GetProgrammingLanguages();
+            viewModel.DueDate = DateTime.Now;
+            viewModel.DateCreated = DateTime.Now;
             return View(viewModel);
         }
 
@@ -120,18 +122,30 @@ namespace RipCore.Controllers
             #endregion
 
             int tmp = newData.CourseID;
-            if (newData.File != null)
-            {
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    newData.File.InputStream.CopyTo(memoryStream);
-                    newData.TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
-                }
-            }
-
             Assignment assignemnt = new Assignment { CourseID = newData.CourseID, DateCreated = newData.DateCreated, Description = newData.Description, DueDate = newData.DueDate, TestCases = newData.TestCases, ProgrammingLanguageID = newData.ProgrammingLanguageID, Title = newData.Title, Weight = newData.Weight };
             db.Assignments.Add(assignemnt);
             db.SaveChanges();
+            int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
+            if (newData.File != null)
+            {
+                string testCases = collection["Milestones[" + 0 + "].TestCases"];
+                if (assignmentID != 0)
+                {
+                    Milestone milestone = new Milestone
+                    {
+                        Title = newData.Title,
+                        Weight = newData.Weight,
+                        Description = newData.Description,
+                        TestCases = testCases,
+                        AssignmentID = assignmentID,
+                        DateCreated = newData.DateCreated,
+                        DueDate = newData.DueDate,
+                        ProgrammingLanguageID = newData.ProgrammingLanguageID
+                    };
+                    db.Milestones.Add(milestone);
+                    db.SaveChanges();
+                }
+            }
             string bla = collection["Milestones[" + 0 + "].ID"];
             for (int i = 0; i < counter; i++)
             {
@@ -143,7 +157,6 @@ namespace RipCore.Controllers
                     Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
                     string description = collection["Milestones[" + i + "].Description"];
                     string testCases = collection["Milestones[" + i + "].TestCases"];
-                    int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
                     if(assignmentID != 0)
                     {
                         Milestone milestone = new Milestone
@@ -158,6 +171,7 @@ namespace RipCore.Controllers
                             ProgrammingLanguageID = newData.ProgrammingLanguageID
                         };
                         db.Milestones.Add(milestone);
+                        db.SaveChanges();
                     }
 
                //}
