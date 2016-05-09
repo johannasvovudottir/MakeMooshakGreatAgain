@@ -44,6 +44,8 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("User", "Index", /*new { id = 1 }, */"User")</li>
                     <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                    <li>@Html.ActionLink("English", @ViewContext.RouteData.Values["Action"].ToString(), new { lang = "en" })</li>
+                    <li>@Html.ActionLink("Íslenska", @ViewContext.RouteData.Values["Action"].ToString(), new { lang = "is" })</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -58,7 +60,6 @@
     </div>
 
     @RenderSection("scripts", required: false)
-
 
 </body>
 </html>

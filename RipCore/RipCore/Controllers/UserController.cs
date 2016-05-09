@@ -28,7 +28,7 @@ namespace RipCore.Controllers
                     auth:       User.Identity.IsAuthenticated,
                     secLevel:   SecurityState.USER,
                     userID:     User.Identity.GetUserId(),
-                    courseID:   0
+                    courseID:   null
                 );
             if(redirect.Redirect)
             {
