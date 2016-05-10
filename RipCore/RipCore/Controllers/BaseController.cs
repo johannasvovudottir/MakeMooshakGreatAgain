@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace RipCore.Controllers
 {
+    [HandleError]
     public class BaseController : Controller
     {
         protected string Language { get; set; }
