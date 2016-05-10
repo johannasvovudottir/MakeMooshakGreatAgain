@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Haustönn.
+        /// </summary>
+        internal static string Autumn {
+            get {
+                return ResourceManager.GetString("Autumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Til baka.
         /// </summary>
         internal static string BackButton {
@@ -142,6 +151,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Áfangi verður að hafa nafn.
+        /// </summary>
+        internal static string CourseNameRequired {
+            get {
+                return ResourceManager.GetString("CourseNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Önn:.
         /// </summary>
         internal static string CourseSemester {
@@ -165,6 +183,24 @@ namespace Resources {
         internal static string CourseYear {
             get {
                 return ResourceManager.GetString("CourseYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nemandi.
+        /// </summary>
+        internal static string DropDownStudent {
+            get {
+                return ResourceManager.GetString("DropDownStudent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kennari.
+        /// </summary>
+        internal static string DropDownTeacher {
+            get {
+                return ResourceManager.GetString("DropDownTeacher", resourceCulture);
             }
         }
         
@@ -214,7 +250,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gera notanda að kerfisstjóra.
+        ///   Looks up a localized string similar to Gera Notanda að kerfisstjóra.
         /// </summary>
         internal static string MakeAdmin {
             get {
@@ -241,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Taka kerfisstjóra réttindi af notanda.
+        ///   Looks up a localized string similar to Kerfisstjóraréttindi fjarlægð.
         /// </summary>
         internal static string RemoveAdmin {
             get {
@@ -255,6 +291,15 @@ namespace Resources {
         internal static string SearchPlaceholder {
             get {
                 return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vorönn.
+        /// </summary>
+        internal static string Spring {
+            get {
+                return ResourceManager.GetString("Spring", resourceCulture);
             }
         }
         
@@ -282,6 +327,15 @@ namespace Resources {
         internal static string Submit {
             get {
                 return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sumarönn.
+        /// </summary>
+        internal static string Summer {
+            get {
+                return ResourceManager.GetString("Summer", resourceCulture);
             }
         }
         

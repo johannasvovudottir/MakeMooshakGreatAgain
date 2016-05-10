@@ -56,6 +56,7 @@ namespace RipCore.Services
             return submissions;
         }
 
+<<<<<<< HEAD
         public Submission GetSubmissionByID(int milestoneID, string userID)
         {
             var result = (from s in db.Submission
@@ -74,6 +75,27 @@ namespace RipCore.Services
         }
         //spyrja valbjorn afh database uppfaerist ekki
 
+=======
+        public Solution GetBestSubmissionByID(int milestoneID, string StudentID) {
+            var result = (from s in db.Solutions
+                          where s.MilestoneID == milestoneID && s.StudentID == StudentID
+                          orderby s.ID descending
+                          select s).FirstOrDefault();
+
+            return result; 
+        }
+
+        public Submission GetSubmissionByID(int submissionID)
+        {
+            var result = (from s in db.Submission
+                          where s.ID == submissionID
+                          orderby s.ID descending
+                          select s).FirstOrDefault();
+
+            return result;
+        }
+        //spyrja valbjorn afh database uppfaerist ekki
+>>>>>>> 5b866b70930d72ca957efa3d880b1e1d0085505c
 
     }
 }
