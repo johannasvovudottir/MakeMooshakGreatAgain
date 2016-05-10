@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
+    [HandleError]
     public class AdminController : BaseController
     {
         private CourseService CourseService = new CourseService();
@@ -97,7 +98,10 @@ namespace RipCore.Controllers
                     FullName = user.Name,
                     Email = user.Email,
                     SSN = user.Ssn,
-                    isAdmin = Admin
+                    isAdmin = Admin,
+                    Password = "Dummy123!",
+                    ConfirmPassword = "Dummy123!"
+
                 };
                 if (viewModel != null)
                 {

@@ -74,7 +74,7 @@ namespace RipCore.Controllers
             var workingFolder = smu + user + "\\"; //name; // eða ID
             System.IO.Directory.CreateDirectory(workingFolder);
 
-            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + data.ProgrammingLanguage;//".cpp"; // ---- Verkefnaheiti
+            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + ".cpp"; // ---- Verkefnaheiti
             var exeFilePath = workingFolder + data.AssignmentName.Replace(" ", "").ToLower() + ".exe"; // ----- verkefnaheiti
 
             // Write the code to a file, such that the compiler

@@ -119,5 +119,43 @@ namespace RipCore.Services
             }
             return milestonesNumber;
         }
+
+        public void deleteMilestone(Milestone milestone)
+        {
+            if (milestone != null)
+            {
+                List<Solution> solutions = (from s in db.Solutions where s.MilestoneID == milestone.ID select s).ToList();
+                List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestone.ID select s).ToList();
+                if (solutions.Count != 0)
+                {
+                    IEnumerable<Solution> solutionsToDelete = solutions;
+                    db.Solutions.RemoveRange(solutionsToDelete);
+                    db.SaveChanges();
+                }
+
+                if (submissions.Count != 0)
+                {
+                    IEnumerable<Submission> submissionsToDelete = submissions;
+                    db.Submission.RemoveRange(submissionsToDelete);
+                    db.SaveChanges();
+                }
+                db.Milestones.Remove(milestone);
+                db.SaveChanges();
+            }
+        }
+
+        public void deleteAssignment(Assignment assignment)
+        {
+            if (assignment != null)
+            {
+                List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == assignment.ID select m).ToList();
+                foreach(var item in milestones)
+                {
+                    deleteMilestone(item);
+                }
+                db.Assignments.Remove(assignment);
+                db.SaveChanges();
+            }
+        }
     }
 }

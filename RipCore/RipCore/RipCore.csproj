@@ -226,6 +226,8 @@
     <Compile Include="Services\SolutionService.cs" />
     <Compile Include="Startup.cs" />
     <Content Include="Views\Solution\SubmissionDetails.cshtml" />
+    <Content Include="Views\Admin\EditPersonForm.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

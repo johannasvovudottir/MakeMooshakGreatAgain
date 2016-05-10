@@ -99,18 +99,19 @@ namespace RipCore.Controllers
                 return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
-            if (assignment != null)
-            {
-                List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == id select m).ToList();
-                if(milestones.Count != 0)
-                {
-                    IEnumerable<Milestone> milestonesToDelete = milestones;
-                    db.Milestones.RemoveRange(milestonesToDelete);
-                    db.SaveChanges();
-                }
-                db.Assignments.Remove(assignment);
-                db.SaveChanges();
-            }
+            assignmentService.deleteAssignment(assignment);
+            //if (assignment != null)
+            //{
+            //    List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == id select m).ToList();
+            //    if(milestones.Count != 0)
+            //    {
+            //        IEnumerable<Milestone> milestonesToDelete = milestones;
+            //        db.Milestones.RemoveRange(milestonesToDelete);
+            //        db.SaveChanges();
+            //    }
+            //    db.Assignments.Remove(assignment);
+            //    db.SaveChanges();
+            //}
             return RedirectToAction("TeacherOverview", new { id = courseID });
          }
 
@@ -132,26 +133,27 @@ namespace RipCore.Controllers
                 return RedirectToAction(redirect.ActionName, redirect.ControllerName);
             }
             #endregion
-            if (milestone != null)
-            {
-                List<Solution> solutions = (from s in db.Solutions where s.MilestoneID == id select s).ToList();
-                List<Submission> submissions = (from s in db.Submission where s.MilestoneID == id select s).ToList();
-                if (solutions.Count != 0)
-                {
-                    IEnumerable<Solution> solutionsToDelete = solutions;
-                    db.Solutions.RemoveRange(solutionsToDelete);
-                    db.SaveChanges();
-                }
+            assignmentService.deleteMilestone(milestone);
+            //if (milestone != null)
+            //{
+            //    List<Solution> solutions = (from s in db.Solutions where s.MilestoneID == id select s).ToList();
+            //    List<Submission> submissions = (from s in db.Submission where s.MilestoneID == id select s).ToList();
+            //    if (solutions.Count != 0)
+            //    {
+            //        IEnumerable<Solution> solutionsToDelete = solutions;
+            //        db.Solutions.RemoveRange(solutionsToDelete);
+            //        db.SaveChanges();
+            //    }
 
-                if (submissions.Count != 0)
-                {
-                    IEnumerable<Submission> submissionsToDelete = submissions;
-                    db.Submission.RemoveRange(submissionsToDelete);
-                    db.SaveChanges();
-                }
-                db.Milestones.Remove(milestone);
-                db.SaveChanges();
-            }
+            //    if (submissions.Count != 0)
+            //    {
+            //        IEnumerable<Submission> submissionsToDelete = submissions;
+            //        db.Submission.RemoveRange(submissionsToDelete);
+            //        db.SaveChanges();
+            //    }
+            //    db.Milestones.Remove(milestone);
+            //    db.SaveChanges();
+            //}
             return RedirectToAction("TeacherAssignmentView", new { id = assignmentID });
         }
         
@@ -200,9 +202,9 @@ namespace RipCore.Controllers
                 db.Assignments.Add(assignemnt);
                 db.SaveChanges();
                 int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
-                if (newData.File != null)
-                {
-                    string testCases = collection["Milestones[" + 0 + "].TestCases"];
+                //if (newData.File != null || newData.Milestones.Count <= 1)
+                //{
+                    string milestoneZeroTestCases = collection["Milestones[" + 0 + "].TestCases"];
                     if (assignmentID != 0)
                     {
                         Milestone milestone = new Milestone
@@ -210,7 +212,7 @@ namespace RipCore.Controllers
                             Title = newData.Title,
                             Weight = newData.Weight,
                             Description = newData.Description,
-                            TestCases = testCases,
+                            TestCases = milestoneZeroTestCases,
                             AssignmentID = assignmentID,
                             DateCreated = newData.DateCreated,
                             DueDate = newData.DueDate,
@@ -219,9 +221,9 @@ namespace RipCore.Controllers
                         db.Milestones.Add(milestone);
                         db.SaveChanges();
                     }
-                }
+                //}
                 string bla = collection["Milestones[" + 0 + "].ID"];
-                for (int i = 0; i < counter; i++)
+                for (int i = 1; i < counter; i++)
                 {
                     //bool exists = collection["Milestones[" + i + "].ID"] != "0";
                     //if (!exists)
@@ -462,12 +464,12 @@ namespace RipCore.Controllers
             var test2 = Request.Files["files"];
             var test3 = files;
             string TestCases;
-                        if (String.IsNullOrEmpty(collection["addMilestoneTitle"]))
-            {
-                ModelState.AddModelError("name", "Name is required");
-                return Json("bla", JsonRequestBehavior.AllowGet);
-                //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
-            }
+            //if (String.IsNullOrEmpty(collection["addMilestoneTitle"]))
+            //{
+            //    ModelState.AddModelError("name", "Name is required");
+            //    return Json("bla", JsonRequestBehavior.AllowGet);
+            //    //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
+            //}
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -475,24 +477,24 @@ namespace RipCore.Controllers
                 TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
             }
 
-            if (String.IsNullOrEmpty(TestCases))
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-                //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
-            }
+            //if (String.IsNullOrEmpty(TestCases))
+            //{
+            //    return Json("", JsonRequestBehavior.AllowGet);
+            //    //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
+            //}
 
-            if (String.IsNullOrEmpty(collection["addMilestoneTitle"]))
-            {
-                ModelState.AddModelError("name", "Name is required");
-                return Json("bla", JsonRequestBehavior.AllowGet);
-                //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
-            }
+            //if (String.IsNullOrEmpty(collection["addMilestoneTitle"]))
+            //{
+            //    ModelState.AddModelError("name", "Name is required");
+            //    return Json("bla", JsonRequestBehavior.AllowGet);
+            //    //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
+            //}
 
-            if (String.IsNullOrEmpty(TestCases))
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-                //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
-            }
+            //if (String.IsNullOrEmpty(TestCases))
+            //{
+            //    return Json("", JsonRequestBehavior.AllowGet);
+            //    //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
+            //}
             return Json(TestCases, JsonRequestBehavior.AllowGet);
         }
 

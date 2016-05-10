@@ -16,6 +16,17 @@ namespace RipCore
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
         }
+        protected void Application_Error()
+        {
+            Exception ex =
+            HttpContext.Current.Server.GetLastError();
+            // TODO: handle the error!
+            Console.WriteLine("TeStSmU");
+        }
+
+
+
     }
 }
