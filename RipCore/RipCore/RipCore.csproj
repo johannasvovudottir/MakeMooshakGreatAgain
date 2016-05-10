@@ -218,7 +218,6 @@
     <Compile Include="Models\ViewModels\SubmissionsOverViewModel.cs" />
     <Compile Include="Models\ViewModels\SubmissionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Resources\resources.designer.cs" />
     <Compile Include="Services\AccountsService.cs" />
     <Compile Include="Services\AssignmentsService.cs" />
     <Compile Include="Services\CourseService.cs" />
@@ -356,9 +355,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\resources.resx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Resources.en.resx">
