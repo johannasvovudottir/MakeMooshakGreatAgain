@@ -24,16 +24,15 @@
 
                 <tr>
                     <td class="col-md-10">
-                        @Html.ActionLink(item.Name, "EditPerson", new { id = item.ID })
-                        @Html.ActionLink(" ", "DeletePerson", new { id = item.ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
+                        @Html.ActionLink(item.Name, "EditPerson", new { ID = item.ID })
+                        @Html.ActionLink(" ", "DeletePerson", new { ID = item.ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
                     </td>
                 </tr>
             }
 
         </tbody>
     </table>
-    @Html.ActionLink(@Resources.Resources.Adduser, "AddPerson", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
-
+    @Html.ActionLink(@Resources.Resources.Adduser, "AddPerson", new { ID = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
 </div>
 
 
@@ -53,8 +52,8 @@
 
                 <tr>
                     <td class="col-md-10">
-                        @Html.ActionLink(item.Name, "EditCourse", new { id = item.ID })
-                        @Html.ActionLink(" ", "DeleteCourse", new { id = item.ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
+                        @Html.ActionLink(item.Name, "EditCourse", new { ID = item.ID })
+                        @Html.ActionLink(" ", "DeleteCourse", new { ID = item.ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
                     </td>
                 </tr>
 
@@ -62,7 +61,7 @@
 
         </tbody>
     </table>
-    @Html.ActionLink(@Resources.Resources.Addcourse, "AddCourse", new { id = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
+    @Html.ActionLink(@Resources.Resources.Addcourse, "AddCourse", new { ID = 0 }, htmlAttributes: new { @class = "btn btn-success pull-right", @role = "button" })
 
 
 </div>

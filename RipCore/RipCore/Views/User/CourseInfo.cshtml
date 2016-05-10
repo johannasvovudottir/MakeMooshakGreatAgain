@@ -4,7 +4,6 @@
 
 <nav class="courses col-md-3">
     <h3>@Resources.Resources.StudentCourses</h3>
-
     @foreach (var item in Model.CoursesAsStudent)
     {
         <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })</p>

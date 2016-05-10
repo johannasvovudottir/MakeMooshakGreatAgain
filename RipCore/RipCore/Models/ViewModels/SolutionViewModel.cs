@@ -13,6 +13,6 @@ namespace RipCore.Models.ViewModels
         public string StudentID { get; set; }
         public List<Solution> UserSubmissions;
         public List<Solution> AllSubmissions;
-
+        public Submission CurrentBest { get; set; }
     }
 }

@@ -73,6 +73,7 @@ namespace RipCore.Models
         public string FullName { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
