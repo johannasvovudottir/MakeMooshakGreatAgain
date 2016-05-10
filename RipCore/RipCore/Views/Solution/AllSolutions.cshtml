@@ -1,0 +1,49 @@
+﻿@model RipCore.Models.ViewModels.SolutionOverViewModel
+
+@{
+    ViewBag.Title = "AllSolutions";
+}
+<h2>AllSolutions</h2>
+@for (int i = 0; i < Model.MilestoneNames.Count; i++)
+{
+    <h2>@Model.MilestoneNames[i]</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    User
+                </th>
+                <th>
+                    Submission
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var item in Model.AssignmentSolutions[i])
+            {
+                <tr>
+                    <td>
+                        <h6>
+                            @item.StudentID
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            @Html.ActionLink("See submission", "SubmissionDetails", new { id = item.CurrentBestID })
+                        </h6>
+                    </td>
+                    <td>
+                        <h6>
+                            //TODO isAccepted
+                        </h6>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}

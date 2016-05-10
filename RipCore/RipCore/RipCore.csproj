@@ -214,6 +214,7 @@
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CentrisViewModel.cs" />
     <Compile Include="Models\ViewModels\PersonViewModel.cs" />
+    <Compile Include="Models\ViewModels\SolutionOverViewModel.cs" />
     <Compile Include="Models\ViewModels\SolutionViewModel.cs" />
     <Compile Include="Models\ViewModels\SubmissionsOverViewModel.cs" />
     <Compile Include="Models\ViewModels\SubmissionViewModel.cs" />
@@ -226,7 +227,6 @@
     <Compile Include="Startup.cs" />
     <Content Include="Views\Solution\SubmissionDetails.cshtml" />
     <Content Include="Views\Admin\EditPersonForm.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -342,6 +342,7 @@
     <Content Include="Views\Solution\CompileSolution.cshtml" />
     <Content Include="Views\Solution\AllSubmissions.cshtml" />
     <Content Include="Views\Solution\Submissions.cshtml" />
+    <Content Include="Views\Solution\AllSolutions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

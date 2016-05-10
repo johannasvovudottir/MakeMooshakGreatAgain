@@ -20,7 +20,7 @@ namespace RipCore.Services
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
 
-            string[] tests = data.Split(new string[] { "\r\nTEST" }, StringSplitOptions.None);
+            string[] tests = data.Split(new string[] { "\r\nTEST\r\n" }, StringSplitOptions.None);
             List<Tuple<string, string>> IOpairs = new List<Tuple<string, string>>();
             foreach (var item in tests)
             {
@@ -56,15 +56,6 @@ namespace RipCore.Services
             return submissions;
         }
 
-<<<<<<< HEAD
-        public Submission GetSubmissionByID(int milestoneID, string userID)
-        {
-            var result = (from s in db.Submission
-                          where s.MilestoneID == milestoneID && s.UserID == userID
-                          select s).LastOrDefault();
-            return result; 
-        }
-
         public SubmissionViewModel GetSubmissionForView(int id)
         {
             Submission submission = (from s in db.Submission
@@ -73,10 +64,35 @@ namespace RipCore.Services
             SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted };
             return viewModel;
         }
-        //spyrja valbjorn afh database uppfaerist ekki
 
-=======
-        public Solution GetBestSubmissionByID(int milestoneID, string StudentID) {
+        public List<string> GetMilestoneNames(int id)
+        {
+            List<string> names = (from m in db.Milestones
+                                     where m.AssignmentID == id
+                                     select m.Title).ToList();
+            return names;
+        }
+
+        public List<List<SolutionViewModel>> GetSolutionsForView(int id)
+        {
+            List<int> milestoneIDs = (from m in db.Milestones where m.AssignmentID == id select m.ID).ToList();
+            List<List<SolutionViewModel>> solutions = new List<List<SolutionViewModel>>();
+            foreach (var item in milestoneIDs)
+            {
+                List<Solution> tmp = (from s in db.Solutions where s.MilestoneID == item select s).ToList();
+                List<SolutionViewModel> solutionsList = new List<SolutionViewModel>();
+                foreach(var i in tmp)
+                {
+                    SolutionViewModel newViewModel = new SolutionViewModel { ID = i.ID, CurrentBestID = i.SubmissionID, Grade = i.Grade, MilestoneID = i.MilestoneID, StudentID = i.StudentID };
+                    solutionsList.Add(newViewModel);
+                }
+                solutions.Add(solutionsList);
+            }
+            return solutions;
+        }
+
+        public Solution GetBestSubmissionByID(int milestoneID, string StudentID)
+        {
             var result = (from s in db.Solutions
                           where s.MilestoneID == milestoneID && s.StudentID == StudentID
                           orderby s.ID descending
@@ -94,8 +110,7 @@ namespace RipCore.Services
 
             return result;
         }
-        //spyrja valbjorn afh database uppfaerist ekki
->>>>>>> 5b866b70930d72ca957efa3d880b1e1d0085505c
+        
 
     }
 }

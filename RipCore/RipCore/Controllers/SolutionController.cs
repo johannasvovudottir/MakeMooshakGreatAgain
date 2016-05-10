@@ -113,7 +113,7 @@ namespace RipCore.Controllers
             compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
             compiler.StandardInput.WriteLine("exit");
             string output = compiler.StandardOutput.ReadToEnd();
-            compiler.WaitForExit(10000); // <----- Setja tölu hér inn.. ----
+            //compiler.WaitForExit(10000); // <----- Setja tölu hér inn.. ----
             compiler.Close();
 
 
@@ -129,10 +129,8 @@ namespace RipCore.Controllers
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
                 List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
-                using (var processExe = new Process())
+                for (int i = 0; i < excpectedData.Count; i++)
                 {
-                    processExe.StartInfo = processInfoExe;
-                    processExe.Start();
                     //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
                     /*var test = processExe.WaitForExit(50000);
                     if(!test)
@@ -141,9 +139,10 @@ namespace RipCore.Controllers
                         processExe.Kill();
                         return View(data);
                     }*/
-                    for (int i = 0; i < excpectedData.Count; i++)
+                    using (var processExe = new Process())
                     {
-
+                        processExe.StartInfo = processInfoExe;
+                        processExe.Start();
                         if (excpectedData[i].Item1 != "")
                         {
                             processExe.StandardInput.WriteLine(excpectedData[i].Item1);
@@ -180,31 +179,24 @@ namespace RipCore.Controllers
                 db.Submission.Add(submission);
                 db.SaveChanges();
 
-                Solution solution = new Solution { MilestoneID = data.MilestoneID, StudentID = User.Identity.GetUserId(), SubmissionID = submission.ID};
-
-                Solution soliholm = sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
-
-                if(soliholm == null)
+                Solution solution = (from s in db.Solutions where s.MilestoneID == submission.MilestoneID && s.StudentID == submission.UserID select s).FirstOrDefault();
+                if(solution == null)
                 {
+                    Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID }; //sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
                     db.Solutions.Add(solution);
                     db.SaveChanges();
                 }
                 else
                 {
-                    Submission bestSubmission = sService.GetSubmissionByID(soliholm.SubmissionID);
-                    if (bestSubmission == null || bestSubmission.IsAccepted == false)
+                    Submission bestSubmission = sService.GetSubmissionByID(solution.SubmissionID);
+                    if (!bestSubmission.IsAccepted || (bestSubmission.IsAccepted && submission.IsAccepted))
                     {
-                        db.Solutions.Add(solution);
+                        solution.SubmissionID = submission.ID;
                         db.SaveChanges();
-                    }
-                    else if(bestSubmission.IsAccepted == true && submission.IsAccepted == false)
-                    {
-                        // do nothing
                     }
                     else
                     {
-                        db.Solutions.Add(solution);
-                        db.SaveChanges();
+                        // do nothing
                     }
                 } 
             }
@@ -219,7 +211,7 @@ namespace RipCore.Controllers
 
         public ActionResult AllSolutions(int id)
         {
-            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
+            SolutionOverViewModel submissions = new SolutionOverViewModel { AssignmentSolutions = sService.GetSolutionsForView(id), MilestoneNames = sService.GetMilestoneNames(id) };
             return View(submissions);
         }
 

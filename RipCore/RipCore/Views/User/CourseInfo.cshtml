@@ -1,11 +1,5 @@
 ﻿@model RipCore.Models.ViewModels.CourseViewModel
-<<<<<<< HEAD
 <h2>Hello @Model.UserName</h2>
-=======
-
-<h2>Hello @Model.UserName</h2>
-
->>>>>>> 5b866b70930d72ca957efa3d880b1e1d0085505c
 <nav class="courses col-md-3">
     <h3>@Resources.Resources.StudentCourses</h3>
     @foreach (var item in Model.CoursesAsStudent)
@@ -95,7 +89,7 @@
                     <td>
                         @if (Model.isTeacher == true)
                         {
-                            <h4>@Html.ActionLink("See submissions", "AllSubmissions", "Solution", new { id = item.ID }, null)</h4>
+                            <h4>@Html.ActionLink("See submissions", "AllSolutions", "Solution", new { id = item.ID }, null)</h4>
                         }
                         @if (Model.isTeacher == false)
                         {
