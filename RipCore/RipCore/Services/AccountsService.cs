@@ -59,7 +59,7 @@ namespace RipCore.Services
             return redirect;
         }
 
-        public SecurityState GetHighestUserPrivilege(string userID, int? courseID)
+        private SecurityState GetHighestUserPrivilege(string userID, int? courseID)
         {
             int securityLevel = 0;
             using (var db = new ApplicationDbContext())
@@ -99,31 +99,6 @@ namespace RipCore.Services
             return state;
         }
 
-        public bool IsUserQualified(string role, string userID, int courseID)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                if (role.ToLower() == "teacher")
-                {
-                    return db.CoursesTeachers.Any(u => u.TeacherID == userID
-                        && u.CourseID == courseID);
-                }
-                else if(role.ToLower() == "student")
-                {
-                    return db.CoursesStudents.Any(u => u.UserID == userID
-                        && u.CourseID == courseID);
-                }
-                else if(role.ToLower() == "admin")
-                {
-                    return true;
-                }
-                else //In case of anonymous, or user that doesnt have any privileges
-                {
-                    
-                    return false;
-                }
-            }
-        }
 
         public bool RequestJson(LoginViewModel login, ref string json)
         {
@@ -157,24 +132,12 @@ namespace RipCore.Services
 
             return true;
         }
+
         public CentrisViewModel GetCentrisUser(string json)
         {
 
             CentrisViewModel model = JsonConvert.DeserializeObject<CentrisViewModel>(json);
             return model;
         }
-
-        /*
-        public List<string> GetRoles(int userID)
-        {
-            List<string> result = (from c in db.CoursesStudents
-                                   join cn in db.Courses on c.CourseID equals cn.ID
-                                   join ct in db.Users on c.UserID equals ct.ID
-                                   where (ct.ID == userID)
-                                   select cn.Name).ToList();
-
-            return result;
-        }
-        */
     }
 }
