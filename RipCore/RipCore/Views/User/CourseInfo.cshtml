@@ -1,16 +1,8 @@
 ﻿@model RipCore.Models.ViewModels.CourseViewModel
-<<<<<<< HEAD
 
-=======
 <h2>Hello @Model.UserName</h2>
->>>>>>> f1bc7356136f72cb39f05f19c9b10423eb1f1a93
-<h2>@Model.Name</h2>
 <nav class="courses col-md-3">
     <h3>@Resources.Resources.StudentCourses</h3>
-<<<<<<< HEAD
-
-=======
->>>>>>> f1bc7356136f72cb39f05f19c9b10423eb1f1a93
     @foreach (var item in Model.CoursesAsStudent)
     {
         <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })</p>
