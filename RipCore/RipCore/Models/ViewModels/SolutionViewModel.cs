@@ -11,11 +11,10 @@ namespace RipCore.Models.ViewModels
         public int ID { get; set; }
         public int MilestoneID { get; set; }
         public string StudentID { get; set; }
-<<<<<<< HEAD
-=======
+
         public List<Solution> UserSubmissions;
         public List<Solution> AllSubmissions;
->>>>>>> 5b866b70930d72ca957efa3d880b1e1d0085505c
+
         public Submission CurrentBest { get; set; }
     }
 }

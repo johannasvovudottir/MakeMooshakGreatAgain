@@ -56,15 +56,6 @@ namespace RipCore.Services
             return submissions;
         }
 
-<<<<<<< HEAD
-        public Submission GetSubmissionByID(int milestoneID, string userID)
-        {
-            var result = (from s in db.Submission
-                          where s.MilestoneID == milestoneID && s.UserID == userID
-                          select s).LastOrDefault();
-            return result; 
-        }
-
         public SubmissionViewModel GetSubmissionForView(int id)
         {
             Submission submission = (from s in db.Submission
@@ -75,7 +66,7 @@ namespace RipCore.Services
         }
         //spyrja valbjorn afh database uppfaerist ekki
 
-=======
+
         public Solution GetBestSubmissionByID(int milestoneID, string StudentID) {
             var result = (from s in db.Solutions
                           where s.MilestoneID == milestoneID && s.StudentID == StudentID
@@ -95,7 +86,7 @@ namespace RipCore.Services
             return result;
         }
         //spyrja valbjorn afh database uppfaerist ekki
->>>>>>> 5b866b70930d72ca957efa3d880b1e1d0085505c
+
 
     }
 }
