@@ -219,6 +219,9 @@
   <data name="DropDownTeacher" xml:space="preserve">
     <value>Kennari</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>prufa</value>
+  </data>
   <data name="Spring" xml:space="preserve">
     <value>Vorönn</value>
   </data>

@@ -110,7 +110,7 @@ namespace RipCore.Services
 
             return result;
         }
-        
+        //spyrja valbjorn afh database uppfaerist ekki
 
     }
 }

@@ -219,6 +219,9 @@
   <data name="ErrorMessage" xml:space="preserve">
     <value>An error occurred while processing your request , we are terribly sorry for this inconvenience</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>test</value>
+  </data>
   <data name="Spring" xml:space="preserve">
     <value>Spring semester</value>
   </data>

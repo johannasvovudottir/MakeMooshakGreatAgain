@@ -13,9 +13,17 @@ namespace RipCore.Models.ViewModels
         public int MilestoneID { get; set; }
         public decimal? Grade { get; set; }
         public string StudentID { get; set; }
+<<<<<<< HEAD
         //public List<Solution> UserSubmissions;
         //public List<Solution> AllSubmissions;
         //public Submission CurrentBest { get; set; }
 
+=======
+
+        public List<Solution> UserSubmissions;
+        public List<Solution> AllSubmissions;
+
+        public Submission CurrentBest { get; set; }
+>>>>>>> 77512343010e2b5818de28c9403cb36c19fd7b4f
     }
 }
