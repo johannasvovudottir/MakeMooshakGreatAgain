@@ -128,21 +128,21 @@ namespace RipCore.Controllers
                 processInfoExe.RedirectStandardInput = true;
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
-                List<Tuple<string, string>> excpectedData = new List<Tuple<string, string>>(); // = sService.GetExpectedData(data.MilestoneID);
+                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
                 using (var processExe = new Process())
                 {
                     processExe.StartInfo = processInfoExe;
                     processExe.Start();
                     //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
-                    var test = processExe.WaitForExit(30000);
+                    /*var test = processExe.WaitForExit(50000);
                     if(!test)
                     {
                         data.SolutionOutput = "Compile Time Error!";
                         processExe.Kill();
                         return View(data);
-                    }
+                    }*/
                     for (int i = 0; i < excpectedData.Count; i++)
-                        {
+                    {
 
                         if (excpectedData[i].Item1 != "")
                         {
@@ -183,23 +183,30 @@ namespace RipCore.Controllers
                 Solution solution = new Solution { MilestoneID = data.MilestoneID, StudentID = User.Identity.GetUserId(), SubmissionID = submission.ID};
 
                 Solution soliholm = sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
-                Submission bestSubmission = sService.GetSubmissionByID(soliholm.SubmissionID);
 
-                if (bestSubmission == null || bestSubmission.IsAccepted == false)
+                if(soliholm == null)
                 {
                     db.Solutions.Add(solution);
                     db.SaveChanges();
-                }
-                else if(bestSubmission.IsAccepted == true && submission.IsAccepted == false)
-                {
-                    // do nothing
                 }
                 else
                 {
-                    db.Solutions.Add(solution);
-                    db.SaveChanges();
-                }
-                
+                    Submission bestSubmission = sService.GetSubmissionByID(soliholm.SubmissionID);
+                    if (bestSubmission == null || bestSubmission.IsAccepted == false)
+                    {
+                        db.Solutions.Add(solution);
+                        db.SaveChanges();
+                    }
+                    else if(bestSubmission.IsAccepted == true && submission.IsAccepted == false)
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        db.Solutions.Add(solution);
+                        db.SaveChanges();
+                    }
+                } 
             }
 
             // TODO: We might want to clean up after the process, there

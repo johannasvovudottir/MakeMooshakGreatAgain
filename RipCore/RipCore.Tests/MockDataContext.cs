@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿/*
+using System.Data.Entity;
 using RipCore.Models;
 
 namespace RipCore.Tests
@@ -32,3 +33,4 @@ namespace RipCore.Tests
         }
     }
 }
+*/

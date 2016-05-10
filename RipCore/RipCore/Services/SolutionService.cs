@@ -58,7 +58,8 @@ namespace RipCore.Services
         public Solution GetBestSubmissionByID(int milestoneID, string StudentID) {
             var result = (from s in db.Solutions
                           where s.MilestoneID == milestoneID && s.StudentID == StudentID
-                          select s).LastOrDefault();
+                          orderby s.ID descending
+                          select s).FirstOrDefault();
 
             return result; 
         }
@@ -67,7 +68,8 @@ namespace RipCore.Services
         {
             var result = (from s in db.Submission
                           where s.ID == submissionID
-                          select s).LastOrDefault();
+                          orderby s.ID descending
+                          select s).FirstOrDefault();
 
             return result;
         }
