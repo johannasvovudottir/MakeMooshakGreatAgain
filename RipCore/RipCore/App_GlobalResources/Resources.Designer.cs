@@ -196,7 +196,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gera notanda að kerfisstjóra.
+        ///   Looks up a localized string similar to Gera Notanda að kerfisstjóra.
         /// </summary>
         internal static string MakeAdmin {
             get {
@@ -223,7 +223,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Taka kerfisstjóra réttindi af notanda.
+        ///   Looks up a localized string similar to Kerfisstjóraréttindi fjarlægð.
         /// </summary>
         internal static string RemoveAdmin {
             get {

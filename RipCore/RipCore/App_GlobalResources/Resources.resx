@@ -196,9 +196,9 @@
     <value>Kennarar</value>
   </data>
   <data name="MakeAdmin" xml:space="preserve">
-    <value>Gera notanda að kerfisstjóra</value>
+    <value>Gera Notanda að kerfisstjóra</value>
   </data>
   <data name="RemoveAdmin" xml:space="preserve">
-    <value>Taka kerfisstjóra réttindi af notanda</value>
+    <value>Kerfisstjóraréttindi fjarlægð</value>
   </data>
 </root>
