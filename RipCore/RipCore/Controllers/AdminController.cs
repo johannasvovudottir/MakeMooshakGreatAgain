@@ -13,7 +13,6 @@ using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
-    [HandleError]
     public class AdminController : BaseController
     {
         private CourseService CourseService = new CourseService();
