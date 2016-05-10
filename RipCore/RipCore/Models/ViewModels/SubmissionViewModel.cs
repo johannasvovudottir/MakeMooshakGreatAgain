@@ -9,6 +9,7 @@ namespace RipCore.Models.ViewModels
     {
         public int ID { get; set; }
         public string UsersName { get; set; }
+        public string UsersID { get; set; }
         public string AssignmentName { get; set; }
         public string MilestoneName { get; set; }
         public int MilestoneID { get; set; }

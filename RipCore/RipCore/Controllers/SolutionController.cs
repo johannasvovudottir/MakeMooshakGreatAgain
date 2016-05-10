@@ -175,7 +175,7 @@ namespace RipCore.Controllers
                     }
                 }
 
-                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code };
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput= data.ExpectedOutput };
                 db.Submission.Add(submission);
                 db.SaveChanges();
 
@@ -218,7 +218,8 @@ namespace RipCore.Controllers
 
         public ActionResult AllSubmissions(int id)
         {
-            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { submissions = sService.GetAllSubmissions(id) };
+            string userID = User.Identity.GetUserId();
+            SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { otherSubmissions = sService.GetAllNotConnected(id, userID), usersSubmissions = sService.GetSubmissionsForUser(id, userID), MilestoneNames = sService.GetMilestoneNames(id) };
             return View(submissions);
         }
 

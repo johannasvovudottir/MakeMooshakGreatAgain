@@ -7,6 +7,8 @@ namespace RipCore.Models.ViewModels
 {
     public class SubmissionsOverViewModel
     {
-        public List<SubmissionViewModel> submissions;
+        public List<List<SubmissionViewModel>> otherSubmissions;
+        public List<List<SubmissionViewModel>> usersSubmissions;
+        public List<string> MilestoneNames;
     }
 }

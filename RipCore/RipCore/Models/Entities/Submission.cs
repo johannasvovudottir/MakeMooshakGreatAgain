@@ -12,6 +12,7 @@ namespace RipCore.Models.Entities
         public int MilestoneID { get; set; }
         public bool IsAccepted { get; set; }
         public string SolutionOutput { get; set; }
+        public string ExpectedOutput { get; set; }
         public string Code { get; set; }
     }
 }
