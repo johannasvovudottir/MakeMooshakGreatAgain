@@ -38,12 +38,12 @@ namespace RipCore.Controllers
                     viewModel.File.InputStream.CopyTo(memoryStream);
 
                     string result = Encoding.ASCII.GetString(memoryStream.ToArray());
-                    submission.SolutionOutput = result;
+                    submission.Code = result;
                 }
             }
             else if (!string.IsNullOrEmpty(viewModel.Solution))
             {
-                submission.SolutionOutput = viewModel.Solution;
+                submission.Code = viewModel.Solution;
             }
             submission.ProgrammingLanguage = ".java";
             return RedirectToAction("CompileSolution", submission);
@@ -56,7 +56,7 @@ namespace RipCore.Controllers
             // To simplify matters, we declare the code here.
             // The code would of course come from the student!
 
-            var code = data.SolutionOutput;
+            var code = data.Code;
 
             // Set up our working folder, and the file names/paths.
             // In this example, this is all hardcoded, but in a
@@ -175,14 +175,14 @@ namespace RipCore.Controllers
                     }
                 }
 
-                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId() };
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code };
                 db.Submission.Add(submission);
                 db.SaveChanges();
 
                 Solution solution = (from s in db.Solutions where s.MilestoneID == submission.MilestoneID && s.StudentID == submission.UserID select s).FirstOrDefault();
                 if(solution == null)
                 {
-                    Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID }; //sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
+                    Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID, Code = data.Code }; //sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
                     db.Solutions.Add(solution);
                     db.SaveChanges();
                 }
@@ -192,6 +192,7 @@ namespace RipCore.Controllers
                     if (!bestSubmission.IsAccepted || (bestSubmission.IsAccepted && submission.IsAccepted))
                     {
                         solution.SubmissionID = submission.ID;
+                        solution.Code = data.Code;
                         db.SaveChanges();
                     }
                     else
