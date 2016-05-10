@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Haustönn.
+        /// </summary>
+        internal static string Autumn {
+            get {
+                return ResourceManager.GetString("Autumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Til baka.
         /// </summary>
         internal static string BackButton {
@@ -174,6 +183,24 @@ namespace Resources {
         internal static string CourseYear {
             get {
                 return ResourceManager.GetString("CourseYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nemandi.
+        /// </summary>
+        internal static string DropDownStudent {
+            get {
+                return ResourceManager.GetString("DropDownStudent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kennari.
+        /// </summary>
+        internal static string DropDownTeacher {
+            get {
+                return ResourceManager.GetString("DropDownTeacher", resourceCulture);
             }
         }
         
@@ -268,6 +295,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vorönn.
+        /// </summary>
+        internal static string Spring {
+            get {
+                return ResourceManager.GetString("Spring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kennitala:.
         /// </summary>
         internal static string SSN {
@@ -291,6 +327,15 @@ namespace Resources {
         internal static string Submit {
             get {
                 return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sumarönn.
+        /// </summary>
+        internal static string Summer {
+            get {
+                return ResourceManager.GetString("Summer", resourceCulture);
             }
         }
         

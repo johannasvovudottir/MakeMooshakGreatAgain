@@ -207,7 +207,22 @@
   <data name="ErrorMessage" xml:space="preserve">
     <value>Því miður kom upp villa við meðhöndlun  fyrirspurnarinnar þinnar. Við biðjumst forláts á þessu og þeim óþægindum sem að  þetta kann að hafa valdið þér</value>
   </data>
+  <data name="Autumn" xml:space="preserve">
+    <value>Haustönn</value>
+  </data>
   <data name="CourseNameRequired" xml:space="preserve">
     <value>Áfangi verður að hafa nafn</value>
+  </data>
+  <data name="DropDownStudent" xml:space="preserve">
+    <value>Nemandi</value>
+  </data>
+  <data name="DropDownTeacher" xml:space="preserve">
+    <value>Kennari</value>
+  </data>
+  <data name="Spring" xml:space="preserve">
+    <value>Vorönn</value>
+  </data>
+  <data name="Summer" xml:space="preserve">
+    <value>Sumarönn</value>
   </data>
 </root>

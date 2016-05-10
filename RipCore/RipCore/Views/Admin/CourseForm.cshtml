@@ -28,9 +28,9 @@
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Semester, new SelectList(
                             new List<Object>{
-                                new { value = "Autumn" , text = "Haust"},
-                                new { value = "Spring" , text = "Vor"},
-                                new { value = "Summer" , text = "Sumar"},
+                                new { value = "Autumn" , text = @Resources.Resources.Autumn},
+                                new { value = "Spring" , text = @Resources.Resources.Spring},
+                                new { value = "Summer" , text = @Resources.Resources.Summer},
                             }, "value", "Text", 0)
                             )
             </div>
