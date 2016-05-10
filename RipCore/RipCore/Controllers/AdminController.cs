@@ -97,7 +97,10 @@ namespace RipCore.Controllers
                     FullName = user.Name,
                     Email = user.Email,
                     SSN = user.Ssn,
-                    isAdmin = Admin
+                    isAdmin = Admin,
+                    Password = "Dummy123!",
+                    ConfirmPassword = "Dummy123!"
+
                 };
                 if (viewModel != null)
                 {

@@ -5,27 +5,10 @@
 
 <h2>@Model.FullName</h2>
 
-@{ Html.RenderPartial("PersonForm"); }
+@{ Html.RenderPartial("EditPersonForm"); }
 
 
 
-@if (Model.isAdmin == true)
-{
-    @Html.ActionLink(@Resources.Resources.RemoveAdmin, "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin},
-                        htmlAttributes: new
-                        {
-                            @class = "btn btn-success",
-                            @role = "button"
-                        })
-}
-@if (Model.isAdmin != true)
-{
-    @Html.ActionLink(@Resources.Resources.MakeAdmin, "ChangeAdminStatus", new { userID = Model.ID, isAdmin = Model.isAdmin },
-                        htmlAttributes: new
-                        {
-                            @class = "btn btn-success",
-                            @role = "button"
-                        })
-}
+
 
 
