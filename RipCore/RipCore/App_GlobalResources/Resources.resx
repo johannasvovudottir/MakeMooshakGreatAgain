@@ -207,4 +207,7 @@
   <data name="ErrorMessage" xml:space="preserve">
     <value>Því miður kom upp villa við meðhöndlun  fyrirspurnarinnar þinnar. Við biðjumst forláts á þessu og þeim óþægindum sem að  þetta kann að hafa valdið þér</value>
   </data>
+  <data name="CourseNameRequired" xml:space="preserve">
+    <value>Áfangi verður að hafa nafn</value>
+  </data>
 </root>

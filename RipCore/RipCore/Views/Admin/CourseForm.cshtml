@@ -26,8 +26,13 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Semester, @Resources.Resources.CourseSemester, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Semester, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Semester, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Semester, new SelectList(
+                            new List<Object>{
+                                new { value = "Autumn" , text = "Haust"},
+                                new { value = "Spring" , text = "Vor"},
+                                new { value = "Summer" , text = "Sumar"},
+                            }, "value", "Text", 0)
+                            )
             </div>
         </div>
 

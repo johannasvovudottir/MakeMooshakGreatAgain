@@ -201,6 +201,9 @@
   <data name="RemoveAdmin" xml:space="preserve">
     <value>Remove admin rights from user</value>
   </data>
+  <data name="CourseNameRequired" xml:space="preserve">
+    <value>A course name is required</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error!</value>
   </data>

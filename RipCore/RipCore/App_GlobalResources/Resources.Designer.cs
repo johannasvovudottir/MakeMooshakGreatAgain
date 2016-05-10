@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Áfangi verður að hafa nafn.
+        /// </summary>
+        internal static string CourseNameRequired {
+            get {
+                return ResourceManager.GetString("CourseNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Önn:.
         /// </summary>
         internal static string CourseSemester {
