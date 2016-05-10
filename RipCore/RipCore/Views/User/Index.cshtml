@@ -24,12 +24,31 @@
     </ul>
 </nav>
 <main class="table-responsive col-md-9">
-    <h3>@Resources.Resources.AssignmentsDue</h3>
-    @foreach (var item in Model.assignments)
-    {
-        if (item.DueDate > DateTime.Now)
-        {
-            <p>@item.Title</p>
-        }
-    }
+        <h3>@Resources.Resources.AssignmentsDue</h3>
+    <table>
+        <thead>
+            <th>Námskeið</th>
+            <th>Verkefni</th>
+            <th>Vægi</th>
+            <th>Skiladagur</th>
+            <th>Skilað</th>
+            <th>Óskilað</th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.assignments)
+            {
+                if (item.DueDate > DateTime.Now)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.DueDate</td>
+                        <td>@item.Weight</td>
+                        <td>gera course query</td>
+                        <td>gera fjolda query</td>
+                        <td>gera fjolda query</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </main>
