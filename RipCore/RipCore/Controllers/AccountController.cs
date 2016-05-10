@@ -21,10 +21,12 @@ namespace RipCore.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private AccountsService service;
+        private PersonService personService;
 
         public AccountController()
         {
             service = new AccountsService();
+            personService = new PersonService();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -86,11 +88,27 @@ namespace RipCore.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
+            string userID = null;
+            if (service.GetIdByUser(model.Username, ref userID))
+            {
+                var user = personService.GetPersonById(userID);
+                if(user.CentrisUser)
+                {
+                    ModelState.AddModelError("", "Ïnvalid login attempt");
+                    return View(model);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ïnvalid login attempt");
+                return View(model);
+            }
+           
             var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "User");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -146,7 +164,7 @@ namespace RipCore.Controllers
                     switch (result)
                     {
                         case SignInStatus.Success:
-                            return RedirectToLocal(returnUrl);
+                            return RedirectToAction("Index", "User");
                         case SignInStatus.LockedOut:
                             return View("Lockout");
                         case SignInStatus.RequiresVerification:
@@ -160,11 +178,12 @@ namespace RipCore.Controllers
             }
             catch
             {
-                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = 500 };
+                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = 500, CentrisUser=true };
                 var result = await UserManager.CreateAsync(user, "Centris1#");
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Index", "User");
                 }
             }
             //If exist -> sign user in

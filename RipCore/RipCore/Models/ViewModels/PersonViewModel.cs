@@ -15,6 +15,7 @@ namespace RipCore.Models.ViewModels
         public string ID { get; set; }
         public int Ssn { get; set; }
         public bool isChecked { get; set; }
+        public bool CentrisUser { get; set; }
         public string Role { get; set; }
     }
 }

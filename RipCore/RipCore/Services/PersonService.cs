@@ -126,7 +126,8 @@ namespace RipCore.Services
                 Ssn = result.Ssn,
                 PasswordHash = result.PasswordHash,
                 Email = result.Email,
-                Username = result.UserName
+                Username = result.UserName,
+                CentrisUser = result.CentrisUser
             };
 
             return viewModel;
