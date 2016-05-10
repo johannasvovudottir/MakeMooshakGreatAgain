@@ -225,6 +225,7 @@
     <Compile Include="Services\PersonService.cs" />
     <Compile Include="Services\SolutionService.cs" />
     <Compile Include="Startup.cs" />
+    <Content Include="Views\Admin\EditPersonForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -363,12 +364,14 @@
     <Content Include="App_GlobalResources\Resources.en.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Resources.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <PropertyGroup>

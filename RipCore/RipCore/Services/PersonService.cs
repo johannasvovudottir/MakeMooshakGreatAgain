@@ -107,6 +107,32 @@ namespace RipCore.Services
             
             return result;
         }
+        public bool checkIfAdmin(string userID)
+        {
+            var result = (from x in db.Admins
+                          where x.UserID == userID
+                          select x).SingleOrDefault();
+            if (result != null)
+            {
+                return true;
+            }             
+
+            return false;
+        }
+        public void makeAdmin(string userID)
+        {
+            Admin newAdmin = new Admin { UserID = userID };
+            db.Admins.Add(newAdmin);
+            db.SaveChanges();
+        }
+        public void removeAdmin(string userID)
+        {
+            Admin adminToRemove = (from x in db.Admins
+                                   where x.UserID == userID
+                                   select x).SingleOrDefault();
+            db.Admins.Remove(adminToRemove);
+            db.SaveChanges();
+        }
         public PersonViewModel GetPersonById(string PersonID)
         {
             var result = (from x in db.Users

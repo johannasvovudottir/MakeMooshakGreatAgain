@@ -32,13 +32,29 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-2">
                 <input type="submit" value="@Resources.Resources.Submit" class="btn btn-default" />
             </div>
         </div>
+
+        
+            <div class="col-md-offset-2 col-md-1">
+            @Html.ActionLink(@Resources.Resources.AddToCourse, "CourseConnections", new { courseID = @Model.ID },
+            htmlAttributes: new
+            {
+                @class = "btn btn-success",
+                @role = "button"
+            }
+            )
+            </div>
+        
+
+
+
+
     </div>
 }
 
 <div>
-    @Html.ActionLink(@Resources.Resources.BackButton, "Index")
+    @Html.ActionLink(@Resources.Resources.BackButton, "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
 </div>

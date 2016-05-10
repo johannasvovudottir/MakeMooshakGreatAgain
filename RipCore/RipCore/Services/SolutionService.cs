@@ -16,7 +16,6 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }
 
-
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
@@ -56,14 +55,23 @@ namespace RipCore.Services
             return submissions;
         }
 
-        public Submission GetSubmissionByID(int milestoneID, string userID) {
-            var result = (from s in db.Submission
-                          where s.MilestoneID == milestoneID && s.UserID == userID
-                          select s).FirstOrDefault();
+        public Solution GetBestSubmissionByID(int milestoneID, string StudentID) {
+            var result = (from s in db.Solutions
+                          where s.MilestoneID == milestoneID && s.StudentID == StudentID
+                          select s).LastOrDefault();
+
             return result; 
         }
 
+        public Submission GetSubmissionByID(int submissionID)
+        {
+            var result = (from s in db.Submission
+                          where s.ID == submissionID
+                          select s).LastOrDefault();
 
+            return result;
+        }
+        //spyrja valbjorn afh database uppfaerist ekki
 
     }
 }

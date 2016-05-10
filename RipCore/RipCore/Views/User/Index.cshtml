@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
 }
 <h2>@Resources.Resources.Greeting @Model.Name</h2>
-<nav class="courese">
+<nav class="courses col-md-3">
     <h3>@Resources.Resources.StudentCourses</h3>
     <ul class="unorderedCourses">
         @foreach (var item in Model.whereStudent)
@@ -23,7 +23,7 @@
         }
     </ul>
 </nav>
-<main class="assignments">
+<main class="table-responsive col-md-9">
     <h3>@Resources.Resources.AssignmentsDue</h3>
     @foreach (var item in Model.assignments)
     {

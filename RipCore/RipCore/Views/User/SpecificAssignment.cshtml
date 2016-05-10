@@ -12,7 +12,10 @@
         </tr>
     </tbody>
 </table>
-
+@if (Model.IsTeacher == true)
+{
+    <h4>@Html.ActionLink("Edit", "Edit", new { id = Model.ID, @class = "btn btn-default" })</h4>
+}
 @Styles.Render("~/Content/tabs.css")
 
 <div id="tabs">
@@ -25,24 +28,23 @@
     <div id="tabs-1">
     <h4>Project Description</h4>
     @Html.DisplayFor(modelItem => Model.Description)
-    @if (Model.IsTeacher)
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.Title)
+    @Html.HiddenFor(model => model.CourseID)
+
+    @for (int i = 1; i < Model.Milestones.Count; i++)
     {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+        <h4>@i. @Html.DisplayFor(model => model.Milestones[i].Title) (@Html.DisplayFor(model => model.Milestones[i].Weight)%)</h4>
+        <p>@Html.DisplayFor(model => model.Milestones[i].Description)</p>
+        
     }
     @if (!Model.IsTeacher)
     {
         using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-                @Html.HiddenFor(model => model.ID)
-                @Html.HiddenFor(model => model.Title)
-                @Html.HiddenFor(model => model.CourseID)
-                
-            for (int i = 0; i < Model.Milestones.Count; i++)
-            {
-                @Html.DisplayFor(model => model.Milestones[i].Title)
-                @Html.DisplayFor(model => model.Milestones[i].Description)
-                @Html.DisplayFor(model => model.Milestones[i].Weight)
-            }
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.Title)
+            @Html.HiddenFor(model => model.CourseID)
             <div class="form-group">
                 @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -103,21 +105,18 @@
     <div id="tabs-3">
         @using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            for (int i = 0; i < Model.Milestones.Count; i++)
+            for (int i = 1; i < Model.Milestones.Count; i++)
             {
-                <h4>@Model.Milestones[i].Title</h4>
-                <p>@Model.Milestones[i].Description</p>
                 <div class="form-group">
-                    @Html.LabelFor(model => Model.Milestones[i].File, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => Model.Milestones[i].File, new { type = "file" })
-                        @Html.ValidationMessageFor(model => Model.Milestones[i].File, "", new { @class = "text-danger" })
-                    </div>
                     @Html.HiddenFor(model => Model.Milestones[i].AssignmentID)
                     @Html.HiddenFor(model => Model.Milestones[i].ID)
                     @Html.HiddenFor(model => Model.Milestones[i].Title)
                     @Html.HiddenFor(model => Model.Milestones[i].Weight)
+                    <h4>@Model.Milestones[i].Title</h4>
+                    @Html.ActionLink("Delete", "DeleteMilestone", new { id = Model.Milestones[i].ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
                 </div>
+
+                <p>@Model.Milestones[i].Description</p>
             }
 
             @Html.HiddenFor(model => Model.Milestones)

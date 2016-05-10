@@ -195,4 +195,16 @@
   <data name="Teachers" xml:space="preserve">
     <value>Teachers</value>
   </data>
+  <data name="MakeAdmin" xml:space="preserve">
+    <value>Give user admin rights</value>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Remove admin rights from user</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error!</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>An error occurred while processing your request , we are terribly sorry for this inconvenience</value>
+  </data>
 </root>

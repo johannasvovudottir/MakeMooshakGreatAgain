@@ -88,7 +88,8 @@ namespace RipCore.Services
                     Title = item.Title,
                     Weight = item.Weight,
                     Description = item.Description,
-                    AssignmentID = item.AssignmentID
+                    AssignmentID = item.AssignmentID,
+                    ID = item.ID
                 };
                 milestoneViewModel.Add(tmp);
             }

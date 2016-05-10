@@ -178,6 +178,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Villa!.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Því miður kom upp villa við meðhöndlun  fyrirspurnarinnar þinnar. Við biðjumst forláts á þessu og þeim óþægindum sem að  þetta kann að hafa valdið þér.
+        /// </summary>
+        internal static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fullt nafn:.
         /// </summary>
         internal static string FullName {
@@ -196,6 +214,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gera Notanda að kerfisstjóra.
+        /// </summary>
+        internal static string MakeAdmin {
+            get {
+                return ResourceManager.GetString("MakeAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yfirlit.
         /// </summary>
         internal static string Overview {
@@ -210,6 +237,15 @@ namespace Resources {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kerfisstjóraréttindi fjarlægð.
+        /// </summary>
+        internal static string RemoveAdmin {
+            get {
+                return ResourceManager.GetString("RemoveAdmin", resourceCulture);
             }
         }
         
