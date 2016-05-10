@@ -4,3 +4,13 @@
 <p>@Model.SolutionOutput</p>
 <p>@Model.ExpectedOutput</p>
 <p>@Model.IsAccepted</p>
+<section>
+    <div id="editor">
+        @Model.Code
+    </div>
+</section>
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    //editor.setTheme("ace/theme/twilight");
+   // editor.getSession().setMode("ace/mode/c#");
+</script>
