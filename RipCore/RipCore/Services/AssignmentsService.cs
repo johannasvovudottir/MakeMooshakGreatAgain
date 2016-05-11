@@ -163,8 +163,12 @@ namespace RipCore.Services
                     db.Submission.RemoveRange(submissionsToDelete);
                     db.SaveChanges();
                 }
-                db.Milestones.Remove(milestone);
+                Milestone milestoneToDelete = db.Milestones.Where(x => x.ID == milestone.ID).SingleOrDefault();
+                db.Milestones.Remove(milestoneToDelete);
                 db.SaveChanges();
+
+               // db.Milestones.Remove(milestone);
+               // db.SaveChanges();
             }
         }
 
