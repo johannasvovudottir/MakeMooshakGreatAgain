@@ -23,7 +23,6 @@ namespace RipCore.Controllers
         private AccountsService accountService = new AccountsService();
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
-        // GET: Admin
 
         public AdminController()
         {
@@ -62,7 +61,6 @@ namespace RipCore.Controllers
             }
             #endregion
 
-            //int id = accountService.GetIdByUser(User.Identity.Name);
             var CoursesToAppend = CourseService.GetAllCourses();
             var PersonsToAppend = PersonService.GetAllPersons();
 
@@ -122,7 +120,6 @@ namespace RipCore.Controllers
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -196,7 +193,6 @@ namespace RipCore.Controllers
                 }
                 return RedirectToAction("Index", "Admin");
             }
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -383,8 +379,6 @@ namespace RipCore.Controllers
             #endregion
 
             List<PersonViewModel> persons = newData.UnConnectedUsers;
-            //gera selectorFor a nytt eigindi i personview sem heitir isTeacher
-            //gera sidan if setningu i lykkjuna og nytt query
 
             foreach (PersonViewModel item in persons) {
                 if (item.isChecked) {
@@ -548,7 +542,6 @@ namespace RipCore.Controllers
                 }
                 return RedirectToAction("Index", "Admin");
             }
-        // If we got this far, something failed, redisplay form
             return RedirectToAction("Index", "fdsfsda");
         }
         
