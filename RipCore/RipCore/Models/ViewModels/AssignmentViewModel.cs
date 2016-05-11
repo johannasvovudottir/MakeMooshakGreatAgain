@@ -31,6 +31,6 @@ namespace RipCore.Models.ViewModels
         public string TestCases { get; set; }
         public HttpPostedFileBase File { get; set; }
         public int NumberOfHandins { get; set; }
-        public int NumberOfStudents { get; set; }
+        public int NumberOfNotHandedIn { get; set; }
     }
 }

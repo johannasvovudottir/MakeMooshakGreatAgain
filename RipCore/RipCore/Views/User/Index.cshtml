@@ -41,11 +41,12 @@
                 {
                     <tr>
                         <td>@item.CourseName</td>
-                        <td>@item.Title</td>
-                        <td>@item.Weight</td>
+                        @*<td>@item.Title</td>*@
+                        <td>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</td>
+                        <td>@item.Weight %</td>
                         <td>@item.DueDate</td>
-                        <td>number of students  = @item.NumberOfStudents</td>
-                        <td>number of handins  = @item.NumberOfHandins</td>
+                        <td>@item.NumberOfHandins</td>
+                        <td>@item.NumberOfNotHandedIn </td>
                     </tr>
                 }
             }
