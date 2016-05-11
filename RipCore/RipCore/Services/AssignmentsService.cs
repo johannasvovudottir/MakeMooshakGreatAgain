@@ -12,6 +12,7 @@ namespace RipCore.Services
     public class AssignmentsService
     {
         private ApplicationDbContext db;
+        private CourseService CourseService = new CourseService();
         public AssignmentsService()
         {
             db = new ApplicationDbContext();
@@ -58,6 +59,7 @@ namespace RipCore.Services
                 Description = assignment.Description,
                 ID = assignment.ID,
                 CourseID = assignment.CourseID,
+                CourseName = CourseService.getCourseNameByID(assignment.CourseID),
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,

@@ -12,6 +12,7 @@ namespace RipCore.Models.ViewModels
         public int ID { get; set; }
         public string UserID { get; set; }
         public int CourseID { get; set; }
+        public string CourseName { get; set; }
         [Range(0, 100, ErrorMessage = "Project weight must be in range 0-100")]
         public int Weight { get; set; }
         public int ProgrammingLanguageID { get; set; }

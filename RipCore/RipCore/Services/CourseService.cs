@@ -121,6 +121,13 @@ namespace RipCore.Services
                                    select ct).ToList();
             return result;
         }
+        public string getCourseNameByID(int courseID)
+        {
+            Course result = (from c in db.Courses
+                          where c.ID == courseID
+                          select c).SingleOrDefault();
+            return (result.Name);
+        }
         public CourseViewModel GetCoursesById(int courseID, string userID)
         {
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);
