@@ -201,6 +201,13 @@ namespace RipCore.Controllers
                     }
                 } 
             }
+            else
+            {
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput = data.ExpectedOutput };
+                db.Submission.Add(submission);
+                db.SaveChanges();
+                data.SolutionOutput = "Please add an executable file!";
+            }
 
             // TODO: We might want to clean up after the process, there
             // may be files we should delete etc.
