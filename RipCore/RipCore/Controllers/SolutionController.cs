@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -37,7 +38,6 @@ namespace RipCore.Controllers
                                     select s).FirstOrDefault();
 
             submission.ProgrammingLanguage = aAssignment.GetProgrammingLanguageByID(assigment.ProgrammingLanguageID);
-
             if (viewModel.File != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -52,7 +52,15 @@ namespace RipCore.Controllers
             {
                 submission.Code = viewModel.Solution;
             }
-
+            submission.ProgrammingLanguage = "html";
+            if (submission.ProgrammingLanguage == "regex")
+            {
+                return RedirectToAction("RegexTest", submission);
+            }
+            if (submission.ProgrammingLanguage == "html")
+            {
+                return RedirectToAction("HtmlCode", submission);
+            }
             return RedirectToAction("CompileSolution", submission);
         }
 
@@ -270,7 +278,46 @@ namespace RipCore.Controllers
             return RedirectToAction("AllSolutions", assignmentID);
         }
 
+        public ActionResult RegexTest(SubmissionViewModel submission)
+        {
+            Regex passPattern = new Regex(submission.Code);
+            List<List<string>> excpectedData = sService.GetExpectedRegex(submission.MilestoneID);
+            submission.SolutionOutput = "Accepted strings:\n";
+            submission.ExpectedOutput = "Accepted strings:\n";
+            foreach (var item in excpectedData[0])
+            {
+                submission.SolutionOutput += item + '\n';
+                if (!passPattern.IsMatch(item))
+                {
+                    submission.ExpectedOutput += "Your regex does not accept the string " + item;
+                    submission.IsAccepted = false;
+                    return View(submission);
+                }
+                submission.ExpectedOutput += item + '\n';
+            }
+            submission.SolutionOutput += "Not accepted strings:\n";
+            foreach (var item in excpectedData[1])
+            {
+                submission.SolutionOutput += item + '\n';
+                if (passPattern.IsMatch(item))
+                {
+                    submission.ExpectedOutput += "Your regex accepts the string " + item;
+                    submission.IsAccepted = false;
+                    return View(submission);
+                }
+                submission.ExpectedOutput += item + '\n';
+            }
+            submission.IsAccepted = true;
+            return View(submission);
+        }
+
+        [ValidateInput(false)]
+        public ActionResult HtmlCode(SubmissionViewModel submission)
+        {
+            return View(submission);
+        }
+
     }
-    
+
 }
 
