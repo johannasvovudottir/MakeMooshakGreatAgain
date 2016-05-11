@@ -3,11 +3,11 @@
 <table>
     <tbody>
         <tr>
-            <td>Date Created: @Model.DateCreated</td>
-            <td>Weight: @Model.Weight</td>
+            <td class="topRow">Date Created: @Model.DateCreated</td>
+            <td class="topRow">Weight: @Model.Weight</td>
         </tr>
         <tr>
-            <td>Due Date: @Model.DueDate</td>
+            <td class="bottomRow">Due Date: @Model.DueDate</td>
             <td></td>
         </tr>
     </tbody>
@@ -18,122 +18,102 @@
 }
 @Styles.Render("~/Content/tabs.css")
 
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1"><span>Project</span></a></li>
-        <li><a href="#tabs-2"><span>Submit in Code Editor</span></a></li>
-        <li><a href="#tabs-3"><span>Milestones</span></a></li>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Project Description</a></li>
+        <li><a data-toggle="tab" href="#menu1">Submit in Code Editor</a></li>
     </ul>
 
-    <div id="tabs-1">
-    <h4>Project Description</h4>
-    @Html.DisplayFor(modelItem => Model.Description)
-    @Html.HiddenFor(model => model.ID)
-    @Html.HiddenFor(model => model.Title)
-    @Html.HiddenFor(model => model.CourseID)
-
-    @for (int i = 1; i < Model.Milestones.Count; i++)
-    {
-        <h4>@i. @Html.DisplayFor(model => model.Milestones[i].Title) (@Html.DisplayFor(model => model.Milestones[i].Weight)%)</h4>
-        <p>@Html.DisplayFor(model => model.Milestones[i].Description)</p>
-        
-    }
-    @if (!Model.IsTeacher)
-    {
-        using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.HiddenFor(modelItem => Model.Description)
-            @Html.HiddenFor(model => model.ID)
-            @Html.HiddenFor(model => model.Title)
-            @Html.HiddenFor(model => model.CourseID)
-            <div class="form-group">
-                @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.File, new { type = "file" })
-                    @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
-                </div>
-            </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
-                    </div>
-                </div>
-        }
-    }
-    </div>
-    <div id="tabs-2">
-        @if (!Model.IsTeacher)
-        {
-            using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                <section>
-                    <div id="editor">
-                        function foo(items) {
-                        var x = "All this is syntax highlighted";
-                        return x;
-                        }
-                    </div>
-                </section>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>Project Description</h3>
+            <div id="description">
+                @Html.DisplayFor(modelItem => Model.Description)
                 @Html.HiddenFor(model => model.ID)
                 @Html.HiddenFor(model => model.Title)
                 @Html.HiddenFor(model => model.CourseID)
-                @Html.HiddenFor(model => model.Solution)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" id="solutionButton" class="btn btn-default" />
-                    </div>
-                </div>
-            }
 
-        }
-        
-    </div>
-    <div id="tabs-3">
-        @using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            for (int i = 1; i < Model.Milestones.Count; i++)
-            {
-                <div class="form-group">
-                    @Html.HiddenFor(model => Model.Milestones[i].AssignmentID)
-                    @Html.HiddenFor(model => Model.Milestones[i].ID)
-                    @Html.HiddenFor(model => Model.Milestones[i].Title)
-                    @Html.HiddenFor(model => Model.Milestones[i].Weight)
-                    <h4>@Model.Milestones[i].Title</h4>
-                    @Html.ActionLink("Delete", "DeleteMilestone", new { id = Model.Milestones[i].ID }, htmlAttributes: new { @class = "deleteButton pull-right", @role = "button" })
-                </div>
+                @for (int i = 1; i < Model.Milestones.Count; i++)
+                {
+                    <h4>@i. @Html.DisplayFor(model => model.Milestones[i].Title) (@Html.DisplayFor(model => model.Milestones[i].Weight)%)</h4>
+                    <p>@Html.DisplayFor(model => model.Milestones[i].Description)</p>
 
-                <p>@Model.Milestones[i].Description</p>
-            }
-
-            @Html.HiddenFor(model => Model.Milestones)
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
+                }
             </div>
+            @if (!Model.IsTeacher)
+            {
+                using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(modelItem => Model.Description)
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.HiddenFor(model => model.CourseID)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.File, new { type = "file" })
+                            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            }
         </div>
-        }
-   </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Menu 2</h3>
+            @if (!Model.IsTeacher)
+            {
+                using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <section>
+                        <div id="editor">
+                            function foo(items) {
+                            var x = "All this is syntax highlighted";
+                            return x;
+                            }
+                        </div>
+                    </section>
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.HiddenFor(model => model.CourseID)
+                    @Html.HiddenFor(model => model.Solution)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" id="solutionButton" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
 </div>
+
+
 
 <script type="text/javascript">
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/java");
+    var ccppMode = require("ace/mode/c_cpp").Mode;
+    editor.getSession().setMode(new ccppMode());
 </script>
 
 <script type="text/javascript">
