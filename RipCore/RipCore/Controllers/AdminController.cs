@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 
+//<customErrors mode = "On" >
+  //  </ customErrors >
+
 namespace RipCore.Controllers
 {
     public class AdminController : BaseController
