@@ -61,6 +61,8 @@ namespace RipCore.Services
                 CourseID = assignment.CourseID,
                 CourseName = CourseService.getCourseNameByID(assignment.CourseID),
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
+                NumberOfStudents = CourseService.GetAllStudents(assignment.CourseID).Count,
+                NumberOfHandins = getNumberOfHandIns(assignment.ID),
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,
                 DueDate = assignment.DueDate,
@@ -158,6 +160,17 @@ namespace RipCore.Services
                 db.Assignments.Remove(assignment);
                 db.SaveChanges();
             }
+        }
+
+        public int getNumberOfHandIns(int assignmentID)
+        {
+            var result = (from c in db.Solutions
+                          join cn in db.Milestones on c.MilestoneID equals cn.ID
+                          join ct in db.Assignments on cn.AssignmentID equals ct.ID
+                          join cp in db.Submission on c.SubmissionID equals cp.ID
+                          where (cn.AssignmentID == assignmentID)
+                          select cp).Count();
+            return result;
         }
     }
 }
