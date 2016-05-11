@@ -349,7 +349,8 @@ namespace RipCore.Controllers
            }*/
 
         [HttpPost]
-        public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
+        [ValidateInput(false)]
+        public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
         {
             #region Security
             SecurityRedirect redirect = accountService.VerifySecurityLevel

@@ -2,9 +2,19 @@
 @{
     int counter = 0;
     int anotherCounter = 0;
+    string userFunction;
 }
 
-@using (Html.BeginForm("Create", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@if (Model.ID == 0)
+{
+    userFunction = "Create";
+}
+else
+{
+    userFunction = "Edit";
+}
+
+@using (Html.BeginForm(userFunction, "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -91,6 +101,10 @@
         @Html.HiddenFor(model => model.Description)
         <section>
             <div id="editor">
+                @if(Model != null)
+                {
+                    @Html.DisplayFor(model => model.Description)
+                }
             </div>
         </section>
 
