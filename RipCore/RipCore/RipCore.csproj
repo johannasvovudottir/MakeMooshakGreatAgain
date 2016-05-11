@@ -344,7 +344,9 @@
     <Content Include="Views\Solution\Submissions.cshtml" />
     <Content Include="Views\Solution\AllSolutions.cshtml" />
     <Content Include="Views\Solution\RegexTest.cshtml" />
-    <Content Include="Views\Solution\HtmlCode.cshtml" />
+    <Content Include="Views\Solution\Other.cshtml" />
+    <Content Include="Views\Solution\TestResults.cshtml" />
+    <Content Include="Views\Solution\OtherWithTests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

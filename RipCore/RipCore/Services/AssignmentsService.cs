@@ -107,8 +107,9 @@ namespace RipCore.Services
             programmingLanguages.Add(new SelectListItem() { Value = "1", Text = "C++" });
             programmingLanguages.Add(new SelectListItem() { Value = "2", Text = "C#" });
             programmingLanguages.Add(new SelectListItem() { Value = "3", Text = "C" });
-            programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "Python" });
-            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Java" });
+            programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "RegEx" });
+            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Other (with tests)" });
+            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Other (without tests)" });
             return programmingLanguages;
         }
 
@@ -126,7 +127,7 @@ namespace RipCore.Services
         }
         public string GetProgrammingLanguageByID(int languageID)
         {
-            string[] languages = { ".cpp", ".cs", ".c", ".py", ".java" };
+            string[] languages = { ".cpp", ".cs", ".c", "regex", "other", "otherNotTests" };
             if (languageID > 5 || languageID <= 0)
                 languageID = 1;
             return languages[languageID-1];

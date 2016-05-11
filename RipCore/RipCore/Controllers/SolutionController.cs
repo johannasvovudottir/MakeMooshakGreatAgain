@@ -52,14 +52,20 @@ namespace RipCore.Controllers
             {
                 submission.Code = viewModel.Solution;
             }
-            submission.ProgrammingLanguage = "html";
+
             if (submission.ProgrammingLanguage == "regex")
             {
                 return RedirectToAction("RegexTest", submission);
             }
-            if (submission.ProgrammingLanguage == "html")
+
+            if (submission.ProgrammingLanguage == "other")
             {
-                return RedirectToAction("HtmlCode", submission);
+                return RedirectToAction("Other", submission);
+            }
+
+            if (submission.ProgrammingLanguage == "otherNotTests")
+            {
+                return RedirectToAction("OtherWithTests", submission);
             }
             return RedirectToAction("CompileSolution", submission);
         }
@@ -312,8 +318,15 @@ namespace RipCore.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult HtmlCode(SubmissionViewModel submission)
+        public ActionResult Other(SubmissionViewModel submission)
         {
+            return View(submission);
+        }
+
+        [ValidateInput(false)]
+        public ActionResult OtherWithTests(SubmissionViewModel submission)
+        {
+            submission.ExpectedOutput = sService.GetTestCase(submission.MilestoneID);
             return View(submission);
         }
 

@@ -177,7 +177,11 @@ namespace RipCore.Services
             strings.Add(temp);
             return strings;
         }
-        //spyrja valbjorn afh database uppfaerist ekki
 
+        public string GetTestCase(int milestoneID)
+        {
+            string expectedOutput = (from m in db.Milestones where m.ID == milestoneID select m.TestCases).ToString();
+            return expectedOutput;
+        }
     }
 }
