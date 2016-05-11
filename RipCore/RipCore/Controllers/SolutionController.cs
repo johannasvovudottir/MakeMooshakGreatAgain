@@ -230,12 +230,22 @@ namespace RipCore.Controllers
             return View(submissions);
         }
 
-        public ActionResult SubmissionDetails(int id)
+        public ActionResult SubmissionDetails(int id, bool isTeacher)
         {
             SubmissionViewModel submission = sService.GetSubmissionForView(id);
             string userID = User.Identity.GetUserId();
             submission.UsersName = (from u in db.Users where u.Id == userID select u.UserName).FirstOrDefault().ToString();
+            submission.IsTeacher = isTeacher;
             return View(submission);
+        }
+
+        [HttpPost]
+        public ActionResult SubmitGrade(SubmissionViewModel submission)
+        {
+            Solution solution = (from s in db.Solutions where s.SubmissionID == submission.ID select s).FirstOrDefault();
+            solution.Grade = submission.Grade;
+            int assignmentID = (from m in db.Milestones where m.ID == submission.MilestoneID select m.AssignmentID).FirstOrDefault();
+            return RedirectToAction("AllSolutions", submission);
         }
 
     }

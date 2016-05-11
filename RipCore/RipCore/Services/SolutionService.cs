@@ -52,7 +52,7 @@ namespace RipCore.Services
             Submission submission = (from s in db.Submission
                           where s.ID == id
                           select s).FirstOrDefault();
-            SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted, Code = submission.Code };
+            SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted, Code = submission.Code, SolutionOutput = submission.SolutionOutput, ExpectedOutput = submission.ExpectedOutput };
             return viewModel;
         }
 
@@ -89,7 +89,7 @@ namespace RipCore.Services
             foreach (var item in milestoneIDs)
             {
                 List<SubmissionViewModel> allUserSubmissions = GetUsersSubmissions(item, userID);
-                List<SubmissionViewModel> allSubmissions = GetAllSubmissions(assignmentID);
+                List<SubmissionViewModel> allSubmissions = GetAllSubmissions(item);
                 List<SubmissionViewModel> result = allSubmissions.Where(a => !allUserSubmissions.Any(b => b.ID == a.ID)).ToList();
                 otherStudents.Add(result);
             }
