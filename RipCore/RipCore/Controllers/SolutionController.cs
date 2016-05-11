@@ -21,6 +21,7 @@ namespace RipCore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private SolutionService sService = new SolutionService();
+        private AssignmentsService aAssignment = new AssignmentsService();
         public ActionResult Index()
         {
             return View();
@@ -31,6 +32,12 @@ namespace RipCore.Controllers
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
             SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, MilestoneID = viewModel.milestoneSubmissionID };
+            Assignment assigment = (from s in db.Assignments
+                                    where s.ID == viewModel.ID
+                                    select s).FirstOrDefault();
+
+            submission.ProgrammingLanguage = aAssignment.GetProgrammingLanguageByID(assigment.ProgrammingLanguageID);
+
             if (viewModel.File != null)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -45,7 +52,7 @@ namespace RipCore.Controllers
             {
                 submission.Code = viewModel.Solution;
             }
-            submission.ProgrammingLanguage = ".java";
+
             return RedirectToAction("CompileSolution", submission);
         }
 
@@ -74,7 +81,7 @@ namespace RipCore.Controllers
             var workingFolder = smu + user + "\\"; //name; // eða ID
             System.IO.Directory.CreateDirectory(workingFolder);
 
-            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + ".cpp"; // ---- Verkefnaheiti
+            var cppFileName = data.AssignmentName.Replace(" ", "").ToLower() + data.ProgrammingLanguage; // ---- Verkefnaheiti
             var exeFilePath = workingFolder + data.AssignmentName.Replace(" ", "").ToLower() + ".exe"; // ----- verkefnaheiti
 
             // Write the code to a file, such that the compiler
@@ -113,7 +120,13 @@ namespace RipCore.Controllers
             compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
             compiler.StandardInput.WriteLine("exit");
             string output = compiler.StandardOutput.ReadToEnd();
-            //compiler.WaitForExit(10000); // <----- Setja tölu hér inn.. ----
+            var compilerTest = compiler.WaitForExit(10000);
+            if (!compilerTest)
+            {
+                data.SolutionOutput = "Compile Time Error!";
+                compiler.Kill();
+                return View(data);
+            }
             compiler.Close();
 
 
@@ -132,17 +145,11 @@ namespace RipCore.Controllers
                 for (int i = 0; i < excpectedData.Count; i++)
                 {
                     //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
-                    /*var test = processExe.WaitForExit(50000);
-                    if(!test)
-                    {
-                        data.SolutionOutput = "Compile Time Error!";
-                        processExe.Kill();
-                        return View(data);
-                    }*/
                     using (var processExe = new Process())
                     {
                         processExe.StartInfo = processInfoExe;
                         processExe.Start();
+
                         if (excpectedData[i].Item1 != "")
                         {
                             processExe.StandardInput.WriteLine(excpectedData[i].Item1);
@@ -152,6 +159,13 @@ namespace RipCore.Controllers
                         // necessary. We would do that here, using
                         // processExe.StandardInput.WriteLine(), similar
                         // to above.
+                        var RunTimeTest = processExe.WaitForExit(5000);
+                        if (!RunTimeTest)
+                        {
+                            data.SolutionOutput = "Run Time Error!";
+                            processExe.Kill();
+                            return View(data);
+                        }
 
                         // We then read the output of the program:
                         var lines = new List<string>();
@@ -159,6 +173,7 @@ namespace RipCore.Controllers
                         {
                             lines.Add(processExe.StandardOutput.ReadLine());
                         }
+
 
                         ViewBag.Output = lines;
                         data.SolutionOutput += lines[0] + '\n';
@@ -183,7 +198,7 @@ namespace RipCore.Controllers
                 if(solution == null)
                 {
                     Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID, Code = data.Code }; //sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
-                    db.Solutions.Add(solution);
+                    db.Solutions.Add(soliholm);
                     db.SaveChanges();
                 }
                 else
