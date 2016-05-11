@@ -42,7 +42,14 @@
                     <tr>
                         <td>@item.CourseName</td>
                         @*<td>@item.Title</td>*@
-                        <td>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</td>
+                        @if (item.IsTeacher == true)
+                        {
+                            <td>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</td>
+                        }
+                        @if (item.IsTeacher == false)
+                        {
+                            <td>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</td>
+                        }
                         <td>@item.Weight %</td>
                         <td>@item.DueDate</td>
                         <td>@item.NumberOfHandins</td>
