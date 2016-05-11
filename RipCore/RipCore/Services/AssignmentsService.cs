@@ -108,6 +108,14 @@ namespace RipCore.Services
             return programmingLanguages;
         }
 
+        public string GetProgrammingLanguageByID(int languageID)
+        {
+            string[] languages = { ".cpp", ".cs", ".c", ".py", ".java" };
+            if (languageID > 5 || languageID <= 0)
+                languageID = 1;
+            return languages[languageID-1];
+        }
+
         public List<SelectListItem> GetMilestonesNumber(int assignmentID)
         {
             List<SelectListItem> milestonesNumber = new List<SelectListItem>();
