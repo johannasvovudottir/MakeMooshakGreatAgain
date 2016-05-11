@@ -36,12 +36,22 @@ namespace RipCore.Services
 
         public List<AssignmentViewModel> GetAllUserAssignments(string userID)
         {
-            var allCourses = GetCoursesWhereStudent(userID);
+            var allStudentCourses = GetCoursesWhereStudent(userID);
+            var allTeacherCourses = GetCoursesWhereTeacher(userID);
             List <AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
             AssignmentsService tmp = new AssignmentsService();
-            foreach(var item in allCourses)
+            foreach(var item in allStudentCourses)
             {
                 allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
+            }
+            foreach (var item in allTeacherCourses)
+            {
+                var teacherAssignments = tmp.GetAssignmentsInCourse(item.ID);
+                foreach (var entry in teacherAssignments)
+                {
+                    entry.IsTeacher = true;
+                }
+                allAssignments.AddRange(teacherAssignments);
             }
             return allAssignments;
         }

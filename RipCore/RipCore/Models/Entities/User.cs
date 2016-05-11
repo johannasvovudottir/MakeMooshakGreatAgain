@@ -13,7 +13,7 @@ namespace RipCore.Models.Entities
         // public int Field { get; set; }
         public string FullName { get; set; }
         public string UserName { get; set; }
-        public int Ssn { get; set; }
+        public string Ssn { get; set; }
         // public School schoolName { get; set; }
         //public List<Course> courses; //{ get; set; }
         public string Email { get; set; }

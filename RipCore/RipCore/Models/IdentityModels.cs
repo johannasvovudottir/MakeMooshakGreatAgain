@@ -11,7 +11,7 @@ namespace RipCore.Models
     public class ApplicationUser : IdentityUser
     {
         public string FullName { get; set; }
-        public int Ssn { get; set; }
+        public string Ssn { get; set; }
         public bool CentrisUser { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

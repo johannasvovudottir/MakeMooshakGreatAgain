@@ -165,7 +165,11 @@ namespace RipCore.Services
                 {
                     deleteMilestone(item);
                 }
-                db.Assignments.Remove(assignment);
+                /*db.Assignments.Remove(assignment);
+                db.SaveChanges();*/
+
+                Assignment assignmentToDelete = db.Assignments.Where(x => x.ID == assignment.ID).SingleOrDefault();
+                db.Assignments.Remove(assignmentToDelete);
                 db.SaveChanges();
             }
         }

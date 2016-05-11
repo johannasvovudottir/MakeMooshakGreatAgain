@@ -174,7 +174,7 @@ namespace RipCore.Controllers
             }
             catch
             {
-                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = 500, CentrisUser=true };
+                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = centrisModel.Ssn, CentrisUser=true };
                 var result = await UserManager.CreateAsync(user, "Centris1#");
                 if (result.Succeeded)
                 {

@@ -79,7 +79,7 @@ namespace RipCore.Models
 
         [Required]
         [Display(Name = "SSN")]
-        public int SSN { get; set; }
+        public string SSN { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
