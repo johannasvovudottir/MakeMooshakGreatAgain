@@ -120,9 +120,33 @@ namespace RipCore.Services
             return modelToAddTo;
         }
 
+        public List<Solution> GetSolutionsById(string userID, int assignmentID)
+        {
+            var result = (from c in db.Milestones
+                          join cn in db.Solutions on userID equals cn.StudentID
+                          where (assignmentID == c.AssignmentID)
+                          select cn).ToList();
+            return result;
+        }
+
         public double GetGradeByAssignment(string userID, int assignmentID)
         {
-            return 0;
+            List<Solution> userSolutions = GetSolutionsById(userID, assignmentID);
+            double totalGrade = 0;
+            foreach (var item in userSolutions)
+            {
+                Milestone currentMilestone = GetMilestoneBySolution(item);
+                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight * 0.01);
+            }
+            return totalGrade;
+        }
+
+        public Milestone GetMilestoneBySolution(Solution userSolution)
+        {
+            var result = (from c in db.Milestones
+                          where c.ID == userSolution.MilestoneID
+                          select c).SingleOrDefault();
+            return result; 
         }
         public string GetProgrammingLanguageByID(int languageID)
         {

@@ -119,6 +119,8 @@ namespace RipCore.Services
 
             return false;
         }
+
+       
         public void makeAdmin(string userID)
         {
             Admin newAdmin = new Admin { UserID = userID };
