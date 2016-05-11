@@ -30,6 +30,16 @@
                 @Html.ValidationMessageFor(model => model.SolutionOutput, "", new { @class = "text-danger" })
             </div>
         </div>
+        if (Model.Grade != 0)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Grade, "Grade", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.Grade)
+                    @Html.ValidationMessageFor(model => model.Grade, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
     }
     @if (Model.IsTeacher)
     {

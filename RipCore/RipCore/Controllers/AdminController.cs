@@ -104,7 +104,7 @@ namespace RipCore.Controllers
                 };
                 if (viewModel != null)
                 {
-                return View(viewModel);
+                    return View(viewModel);
                 }
             }   
             return RedirectToAction("Index", "Admin");
