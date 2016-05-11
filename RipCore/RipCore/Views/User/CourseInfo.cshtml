@@ -55,15 +55,19 @@
                 <th>
                     @if (Model.isTeacher == true)
                     {
-                        <p>All Submissions</p>
+                        <th>All Submissions</th>
                     }
                     @if (Model.isTeacher == false)
                     {
-                        <p>Status</p>
+                        <th>Status</th>
                     }
                 </th>
-                <th>
-                </th>
+                @if (Model.isTeacher == false)
+                {
+                    <th>
+                        Grade
+                    </th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -102,6 +106,11 @@
                             <h4>@Html.ActionLink("Delete", "Delete", new { id = item.ID})</h4>
                         }
                     </td>
+                    @if (Model.isTeacher == false)
+                    {
+                        <td>@item.Grade</td>
+                    }
+
                 </tr>
             }
         </tbody>
