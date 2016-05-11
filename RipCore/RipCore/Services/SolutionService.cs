@@ -155,7 +155,33 @@ namespace RipCore.Services
 
             return result;
         }
-        //spyrja valbjorn afh database uppfaerist ekki
 
+        public List<List<string>> GetExpectedRegex(int milestoneID)
+        {
+            var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
+            string[] tests = data.Split(new string[] { "\r\nNOT\r\n" }, StringSplitOptions.None);
+            List<List<string>> strings = new List<List<string>>();
+            string[] acceptingStrings = tests[0].Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            List<string> tmp = new List<string>();
+            foreach (var item in acceptingStrings)
+            {
+                tmp.Add(item);
+            }
+            string[] nonAcceptingStrings = tests[1].Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            List<string> temp = new List<string>();
+            foreach (var item in nonAcceptingStrings)
+            {
+                temp.Add(item);
+            }
+            strings.Add(tmp);
+            strings.Add(temp);
+            return strings;
+        }
+
+        public string GetTestCase(int milestoneID)
+        {
+            string expectedOutput = (from m in db.Milestones where m.ID == milestoneID select m.TestCases).ToString();
+            return expectedOutput;
+        }
     }
 }
