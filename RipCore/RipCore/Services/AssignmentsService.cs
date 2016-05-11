@@ -107,8 +107,9 @@ namespace RipCore.Services
             programmingLanguages.Add(new SelectListItem() { Value = "1", Text = "C++" });
             programmingLanguages.Add(new SelectListItem() { Value = "2", Text = "C#" });
             programmingLanguages.Add(new SelectListItem() { Value = "3", Text = "C" });
-            programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "Python" });
-            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Java" });
+            programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "RegEx" });
+            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Other (with tests)" });
+            programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Other (without tests)" });
             return programmingLanguages;
         }
 
@@ -120,13 +121,37 @@ namespace RipCore.Services
             return modelToAddTo;
         }
 
+        public List<Solution> GetSolutionsById(string userID, int assignmentID)
+        {
+            var result = (from c in db.Milestones
+                          join cn in db.Solutions on userID equals cn.StudentID
+                          where (assignmentID == c.AssignmentID)
+                          select cn).ToList();
+            return result;
+        }
+
         public double GetGradeByAssignment(string userID, int assignmentID)
         {
-            return 0;
+            List<Solution> userSolutions = GetSolutionsById(userID, assignmentID);
+            double totalGrade = 0;
+            foreach (var item in userSolutions)
+            {
+                Milestone currentMilestone = GetMilestoneBySolution(item);
+                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight * 0.01);
+            }
+            return totalGrade;
+        }
+
+        public Milestone GetMilestoneBySolution(Solution userSolution)
+        {
+            var result = (from c in db.Milestones
+                          where c.ID == userSolution.MilestoneID
+                          select c).SingleOrDefault();
+            return result; 
         }
         public string GetProgrammingLanguageByID(int languageID)
         {
-            string[] languages = { ".cpp", ".cs", ".c", ".py", ".java" };
+            string[] languages = { ".cpp", ".cs", ".c", "regex", "other", "otherNotTests" };
             if (languageID > 5 || languageID <= 0)
                 languageID = 1;
             return languages[languageID-1];

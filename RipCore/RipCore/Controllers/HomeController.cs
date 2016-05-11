@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RipCore.Models;
+using RipCore.Models.Entities;
+using RipCore.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +11,7 @@ namespace RipCore.Controllers
 {
     public class HomeController : BaseController
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
             return View();
@@ -15,9 +19,9 @@ namespace RipCore.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            AssignmentViewModel tmp = new AssignmentViewModel { ID = 1, CourseID = 1, CourseName = "Test", DateCreated = DateTime.Now, Description = "Eg er litil verkefnalysing", DueDate = DateTime.Now, IsTeacher = false, Title = "eg er litill titill", Milestones = new List<AssignmentMilestoneViewModel>() };
+            tmp.milestoneNumber = GetMilestonesNumber(66);
+            return View(tmp);
         }
 
         public ActionResult Contact()
@@ -25,6 +29,18 @@ namespace RipCore.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public List<SelectListItem> GetMilestonesNumber(int assignmentID)
+        {
+            List<SelectListItem> milestonesNumber = new List<SelectListItem>();
+            List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == assignmentID select m).ToList();
+            for (int i = 0; i < milestones.Count; i++)
+            {
+                string value = milestones[i].ID.ToString();
+                milestonesNumber.Add(new SelectListItem() { Value = value, Text = milestones[i].Title });
+            }
+            return milestonesNumber;
         }
     }
 }

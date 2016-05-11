@@ -69,3 +69,20 @@ footer{
     left: 0;
     height: 300px;
 }
+
+#description
+{
+    border: 1px solid #dddddd;
+    padding: 1em;
+}
+
+.topRow
+{
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+.bottomRow
+{
+    padding-bottom: 1em;
+}

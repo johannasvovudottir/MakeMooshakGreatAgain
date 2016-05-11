@@ -1,7 +1,124 @@
-﻿@{
+﻿@model RipCore.Models.ViewModels.AssignmentViewModel
+<h3>@Html.DisplayFor(modelItem => Model.Title)</h3>
+@{
     ViewBag.Title = "About";
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
+<div class="container">
+    <h2>Dynamic Tabs</h2>
+    <p><strong>Tip:</strong> Change data-toggle="tab" to data-toggle="pill" to make pills toggable.</p>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+        <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+        <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+    </ul>
 
-<p>Use this area to provide additional information.</p>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>Project Description</h3>
+            @Html.DisplayFor(modelItem => Model.Description)
+            @Html.HiddenFor(model => model.ID)
+            @Html.HiddenFor(model => model.Title)
+            @Html.HiddenFor(model => model.CourseID)
+
+            @for (int i = 1; i < Model.Milestones.Count; i++)
+            {
+                <h4>@i. @Html.DisplayFor(model => model.Milestones[i].Title) (@Html.DisplayFor(model => model.Milestones[i].Weight)%)</h4>
+                <p>@Html.DisplayFor(model => model.Milestones[i].Description)</p>
+
+            }
+            @if (!Model.IsTeacher)
+            {
+                using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(modelItem => Model.Description)
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.HiddenFor(model => model.CourseID)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.File, new { type = "file" })
+                            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            }       </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Menu 2</h3>
+            @if (!Model.IsTeacher)
+            {
+                using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <section>
+                        <div id="editor">
+                            function foo(items) {
+                            var x = "All this is syntax highlighted";
+                            return x;
+                            }
+                        </div>
+                    </section>
+                    @Html.HiddenFor(model => model.ID)
+                    @Html.HiddenFor(model => model.Title)
+                    @Html.HiddenFor(model => model.CourseID)
+                    @Html.HiddenFor(model => model.Solution)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" id="solutionButton" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+
+            }        </div>
+        <div id="menu3" class="tab-pane fade">
+            <h3>Menu 3</h3>
+            <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/java");
+</script>
+
+<script type="text/javascript">
+    $('#solutionButton').click(function () {
+        $('#File').val("");
+    }
+    );
+</script>
+
+<script type="text/javascript">
+    $('#fileButton').click(function () {
+        $('#Solution').val("");
+    }
+    );
+</script>
