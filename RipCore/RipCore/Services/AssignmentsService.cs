@@ -12,6 +12,7 @@ namespace RipCore.Services
     public class AssignmentsService
     {
         private ApplicationDbContext db;
+        private CourseService CourseService = new CourseService();
         public AssignmentsService()
         {
             db = new ApplicationDbContext();
@@ -58,6 +59,7 @@ namespace RipCore.Services
                 Description = assignment.Description,
                 ID = assignment.ID,
                 CourseID = assignment.CourseID,
+                CourseName = CourseService.getCourseNameByID(assignment.CourseID),
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,
@@ -106,6 +108,14 @@ namespace RipCore.Services
             programmingLanguages.Add(new SelectListItem() { Value = "4", Text = "Python" });
             programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Java" });
             return programmingLanguages;
+        }
+
+        public string GetProgrammingLanguageByID(int languageID)
+        {
+            string[] languages = { ".cpp", ".cs", ".c", ".py", ".java" };
+            if (languageID > 5 || languageID <= 0)
+                languageID = 1;
+            return languages[languageID-1];
         }
 
         public List<SelectListItem> GetMilestonesNumber(int assignmentID)
