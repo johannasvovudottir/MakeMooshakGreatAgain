@@ -112,6 +112,18 @@ namespace RipCore.Services
             return programmingLanguages;
         }
 
+        public CourseViewModel GetGrades(string userID, CourseViewModel modelToAddTo)
+        {
+            foreach (var item in modelToAddTo.Assignments) {
+                item.Grade = GetGradeByAssignment(userID,item.ID);
+            }
+            return modelToAddTo;
+        }
+
+        public double GetGradeByAssignment(string userID, int assignmentID)
+        {
+            return 0;
+        }
         public string GetProgrammingLanguageByID(int languageID)
         {
             string[] languages = { ".cpp", ".cs", ".c", ".py", ".java" };

@@ -57,6 +57,8 @@ namespace RipCore.Controllers
             #endregion
 
             CourseViewModel viewModel = service.GetCoursesById(id, User.Identity.GetUserId());
+            string userID = User.Identity.GetUserId();
+            viewModel = assignmentService.GetGrades(userID, viewModel); 
             viewModel.isTeacher = false;
             return View(viewModel);
         }
