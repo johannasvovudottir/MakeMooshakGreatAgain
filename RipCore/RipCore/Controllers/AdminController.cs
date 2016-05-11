@@ -89,7 +89,6 @@ namespace RipCore.Controllers
 
         public ActionResult EditPerson(string ID)
         {
-            
             if (ID != null)
             {
                 var user = PersonService.GetPersonById(ID);
@@ -133,7 +132,6 @@ namespace RipCore.Controllers
                 }
                 return RedirectToAction("Index", "Admin");
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -157,11 +155,9 @@ namespace RipCore.Controllers
 
         public ActionResult EditCourse(int? ID)
         {
-            
             if (ID.HasValue)
             {
-                int notNullID = ID.Value;
-            
+                int notNullID = ID.Value;      
                 AdminCourseOverView viewModel = CourseService.GetCourseByID(notNullID);
                 if (viewModel != null)
                 {
@@ -191,7 +187,7 @@ namespace RipCore.Controllers
 
         public ActionResult ChangeAdminStatus(string userID, bool isAdmin)
         {
-            if (isAdmin == true)
+            if (isAdmin)
             {
                 PersonService.removeAdmin(userID);
             }
@@ -235,7 +231,7 @@ namespace RipCore.Controllers
             //gera sidan if setningu i lykkjuna og nytt query
 
             foreach (PersonViewModel item in persons) {
-                if (item.isChecked == true) {
+                if (item.isChecked) {
                     if (item.Role == "Student")
                     {
                         PersonService.ConnectStudents(item.ID, (newData.CurrentCourse.ID));
