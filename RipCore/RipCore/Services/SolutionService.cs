@@ -37,23 +37,14 @@ namespace RipCore.Services
 
         public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
-            List<int> submissionsIDs = (from s in db.Solutions where s.MilestoneID == milestoneID select s.SubmissionID).ToList();
+            List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
             List<SubmissionViewModel> submissionsViewModel = new List<SubmissionViewModel>();
-            foreach (var item in submissionsIDs)
+            foreach (var item in submissions)
             {
-                Submission submission = (from s in db.Submission where s.ID == item select s).FirstOrDefault();
-                SubmissionViewModel tmp = new SubmissionViewModel { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, UsersName = (from n in db.Users where n.Id == submission.UserID select n.UserName).FirstOrDefault() };
+                SubmissionViewModel tmp = new SubmissionViewModel { MilestoneID = item.MilestoneID, IsAccepted = item.IsAccepted, UsersName = (from n in db.Users where n.Id == item.UserID select n.UserName).FirstOrDefault() };
                 submissionsViewModel.Add(tmp);
             }
             return submissionsViewModel;
-        }
-
-        public List<Submission> GetUserSubmissions(int assignmentID, string userID)
-        {
-            List<Submission> submissions = (from s in db.Submission
-                                            where s.MilestoneID == assignmentID && s.UserID == userID
-                                            select s).ToList();
-            return submissions;
         }
 
         public SubmissionViewModel GetSubmissionForView(int id)
@@ -65,12 +56,45 @@ namespace RipCore.Services
             return viewModel;
         }
 
+        public List<List<SubmissionViewModel>> GetSubmissionsForUser(int id, string userID)
+        {
+            List<int> milestoneIDs = (from m in db.Milestones where m.AssignmentID == id select m.ID).ToList();
+            List<List<SubmissionViewModel>> submissions = new List<List<SubmissionViewModel>>();
+            foreach (var item in milestoneIDs)
+            {
+                List<Submission> tmp = (from s in db.Submission where s.MilestoneID == item && s.UserID == userID select s).ToList();
+                List<SubmissionViewModel> submissionsList = new List<SubmissionViewModel>();
+                foreach (var i in tmp)
+                {
+                    SubmissionViewModel newViewModel = new SubmissionViewModel { ID = i.ID, MilestoneID = i.MilestoneID, UsersID = i.UserID, UsersName = (from u in db.Users where u.Id == userID select u.UserName).FirstOrDefault() };
+                    submissionsList.Add(newViewModel);
+                }
+                submissions.Add(submissionsList);
+            }
+            return submissions;
+        }
+
         public List<string> GetMilestoneNames(int id)
         {
             List<string> names = (from m in db.Milestones
                                      where m.AssignmentID == id
                                      select m.Title).ToList();
             return names;
+        }
+
+        public List<List<SubmissionViewModel>> GetAllNotConnected(int assignmentID, string userID)
+        {
+            List<List<SubmissionViewModel>> otherStudents = new List<List<SubmissionViewModel>>();
+            List<int> milestoneIDs = (from m in db.Milestones where m.AssignmentID == assignmentID select m.ID).ToList();
+            foreach (var item in milestoneIDs)
+            {
+                List<SubmissionViewModel> allUserSubmissions = GetUsersSubmissions(item, userID);
+                List<SubmissionViewModel> allSubmissions = GetAllSubmissions(assignmentID);
+                List<SubmissionViewModel> result = allSubmissions.Where(a => !allUserSubmissions.Any(b => b.ID == a.ID)).ToList();
+                otherStudents.Add(result);
+            }
+
+            return otherStudents;
         }
 
         public List<List<SolutionViewModel>> GetSolutionsForView(int id)
@@ -90,6 +114,27 @@ namespace RipCore.Services
             }
             return solutions;
         }
+
+        public List<SubmissionViewModel> GetUsersSubmissions(int milestoneID, string userID)
+        {
+            List<Submission> allUserSubmissions = (from m in db.Submission where m.MilestoneID == milestoneID && m.UserID == userID select m).ToList();
+            List<SubmissionViewModel> viewModel = new List<SubmissionViewModel>();
+            foreach (var item in allUserSubmissions)
+            {
+                SubmissionViewModel tmp = new SubmissionViewModel { ID = item.ID, IsAccepted = item.IsAccepted, Code = item.Code, ExpectedOutput = item.ExpectedOutput, MilestoneID = item.MilestoneID, SolutionOutput = item.SolutionOutput, UsersName = (from u in db.Users where u.Id == item.UserID select u.UserName).FirstOrDefault(), MilestoneName = (from m in db.Milestones where m.ID == item.MilestoneID select m.Title).FirstOrDefault() };
+                viewModel.Add(tmp);
+            }
+            return viewModel;
+        }
+
+        public List<Submission> GetUserSubmissions(int assignmentID, string userID)
+        {
+            List<Submission> submissions = (from s in db.Submission
+                                            where s.MilestoneID == assignmentID && s.UserID == userID
+                                            select s).ToList();
+            return submissions;
+        }
+
 
         public Solution GetBestSubmissionByID(int milestoneID, string StudentID)
         {

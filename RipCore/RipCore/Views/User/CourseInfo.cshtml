@@ -93,7 +93,7 @@
                         }
                         @if (Model.isTeacher == false)
                         {
-                            <h4>//TODO Status</h4>
+                            <h4>@Html.ActionLink("See submissions", "AllSubmissions", "Solution", new { id = item.ID }, null)</h4>
                         }
                     </td>
                     <td>
