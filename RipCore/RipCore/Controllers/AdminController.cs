@@ -50,16 +50,8 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             //int id = accountService.GetIdByUser(User.Identity.Name);
@@ -78,16 +70,8 @@ namespace RipCore.Controllers
         public ActionResult AddPerson()
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             return View();
@@ -98,16 +82,8 @@ namespace RipCore.Controllers
         public async Task<ActionResult> AddPerson(RegisterViewModel model)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ModelState.IsValid)
@@ -129,17 +105,10 @@ namespace RipCore.Controllers
         public ActionResult EditPerson(string ID)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
+
             if (ID != null)
             {
                 var user = PersonService.GetPersonById(ID);
@@ -169,16 +138,8 @@ namespace RipCore.Controllers
         public async Task<ActionResult> EditPerson(RegisterViewModel model)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ModelState.IsValid)
@@ -203,16 +164,8 @@ namespace RipCore.Controllers
         public ActionResult AddCourse()
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             return View();
@@ -221,16 +174,8 @@ namespace RipCore.Controllers
         public ActionResult AddCourse(AdminCourseOverView newData)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ModelState.IsValid)
@@ -246,16 +191,8 @@ namespace RipCore.Controllers
         public ActionResult EditCourse(int? ID)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ID.HasValue)
@@ -273,16 +210,8 @@ namespace RipCore.Controllers
         public ActionResult EditCourse(AdminCourseOverView newData)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ModelState.IsValid)
@@ -304,16 +233,8 @@ namespace RipCore.Controllers
         public ActionResult ChangeAdminStatus(string userID, bool isAdmin)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (isAdmin)
@@ -332,17 +253,8 @@ namespace RipCore.Controllers
         public ActionResult CourseConnections(int? courseID)
         {
             #region Security
-
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (courseID.HasValue)
@@ -370,16 +282,8 @@ namespace RipCore.Controllers
         public ActionResult CourseConnections(CourseConnectViewModel newData)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             List<PersonViewModel> persons = newData.UnConnectedUsers;
@@ -402,19 +306,11 @@ namespace RipCore.Controllers
             return RedirectToAction("CourseConnections", new { courseID = newData.CurrentCourse.ID });
         }
 
-        public ActionResult RemoveFromCourse(string ID , int courseID, string role)
+        public ActionResult RemoveFromCourse(string ID, int courseID, string role)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (role == "Teacher")
@@ -441,16 +337,8 @@ namespace RipCore.Controllers
         public ActionResult DeleteCourse(int? ID)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ID.HasValue)
@@ -469,16 +357,8 @@ namespace RipCore.Controllers
         public ActionResult DeleteCourse(AdminCourseOverView newData)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             Course courseToDelete = db.Courses.Where(x => x.ID == newData.ID).SingleOrDefault();
@@ -492,16 +372,8 @@ namespace RipCore.Controllers
        public ActionResult DeletePerson(string ID)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (ID != null)
@@ -525,16 +397,8 @@ namespace RipCore.Controllers
         public async Task<ActionResult> DeletePerson(RegisterViewModel user)
         {
             #region Security
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: SecurityState.ADMIN,
-                    userID: User.Identity.GetUserId()
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
+            if (EnforceSecurity(SecurityState.ADMIN) != null)
+                return EnforceSecurity(SecurityState.ADMIN);
             #endregion
 
             if (user.ID != null)
@@ -550,6 +414,21 @@ namespace RipCore.Controllers
             }
         // If we got this far, something failed, redisplay form
             return RedirectToAction("Index", "fdsfsda");
+        }
+
+        private ActionResult EnforceSecurity(SecurityState minRequirement)
+        {
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: minRequirement,
+                    userID: User.Identity.GetUserId()
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
+            return null;
         }
         
 
