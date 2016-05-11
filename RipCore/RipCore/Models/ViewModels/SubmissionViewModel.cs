@@ -14,6 +14,7 @@ namespace RipCore.Models.ViewModels
         public string MilestoneName { get; set; }
         public int MilestoneID { get; set; }
         public bool IsAccepted { get; set; }
+        public bool IsTeacher { get; set; }
         public string SolutionOutput { get; set; }
         public decimal Grade { get; set; }
         public string Code { get; set; }

@@ -434,6 +434,18 @@ namespace RipCore.Controllers
                 return View();
             #endregion
             AssignmentViewModel viewModel = assignmentService.GetAssignmentForView(id, false);
+            //if(limitSubmisssions != null)
+            //{
+            //    List<int> milestonesID = (from m in db.Milestones where m.AssignmentID == id select m.ID).ToList();
+            //    foreach (var item in milestonesID)
+            //    {
+            //        int numberOfSubmissions = (from m in db.Milestones where m.ID == milestoneID && m.userID == uerid select m).ToList().Count;
+            //        if(numberOfSubmissions >= limit)
+            //        {
+            //            SelectListItem item = new SelectListItem { Value = milestonesID, Text = Milestone name}
+            //            viewModel.milestoneNumber.Remove(item);
+            //        }
+            //    }
             return View(viewModel);
         }
 
