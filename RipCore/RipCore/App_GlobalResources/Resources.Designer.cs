@@ -250,6 +250,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Útskrá.
+        /// </summary>
+        internal static string LogOut {
+            get {
+                return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gera Notanda að kerfisstjóra.
         /// </summary>
         internal static string MakeAdmin {
@@ -376,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notendanafn :.
+        ///   Looks up a localized string similar to Notendanafn : .
         /// </summary>
         internal static string Username {
             get {

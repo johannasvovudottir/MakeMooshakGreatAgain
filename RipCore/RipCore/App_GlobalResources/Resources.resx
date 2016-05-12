@@ -175,7 +175,7 @@
     <value>Halló heimur</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>Notendanafn :</value>
+    <value>Notendanafn : </value>
   </data>
   <data name="UserTableName" xml:space="preserve">
     <value>Heiti notanda</value>
@@ -227,5 +227,8 @@
   </data>
   <data name="Summer" xml:space="preserve">
     <value>Sumarönn</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Útskrá</value>
   </data>
 </root>
