@@ -10,10 +10,18 @@ namespace RipCore.Services
 {
     public class SolutionService
     {
+        /*
         private ApplicationDbContext db;
         public SolutionService()
         {
             db = new ApplicationDbContext();
+        }*/
+
+        private readonly IAppDataContext db;
+
+        public SolutionService(IAppDataContext dataContext = null)
+        {
+            db = dataContext ?? new ApplicationDbContext();
         }
 
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
@@ -52,7 +60,9 @@ namespace RipCore.Services
             Submission submission = (from s in db.Submission
                           where s.ID == id
                           select s).FirstOrDefault();
-            SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted, Code = submission.Code, SolutionOutput = submission.SolutionOutput, ExpectedOutput = submission.ExpectedOutput };
+            SubmissionViewModel viewModel = new SubmissionViewModel { ID = id, MilestoneID = submission.MilestoneID, MilestoneName = (from m in db.Milestones where m.ID == submission.MilestoneID select m.Title).FirstOrDefault().ToString(), IsAccepted = submission.IsAccepted, Code = submission.Code, SolutionOutput = new List<string>(), ExpectedOutput = new List<string>() };
+            viewModel.SolutionOutput.Add(submission.SolutionOutput);
+            viewModel.ExpectedOutput.Add(submission.ExpectedOutput);
             return viewModel;
         }
 
@@ -121,7 +131,9 @@ namespace RipCore.Services
             List<SubmissionViewModel> viewModel = new List<SubmissionViewModel>();
             foreach (var item in allUserSubmissions)
             {
-                SubmissionViewModel tmp = new SubmissionViewModel { ID = item.ID, IsAccepted = item.IsAccepted, Code = item.Code, ExpectedOutput = item.ExpectedOutput, MilestoneID = item.MilestoneID, SolutionOutput = item.SolutionOutput, UsersName = (from u in db.Users where u.Id == item.UserID select u.UserName).FirstOrDefault(), MilestoneName = (from m in db.Milestones where m.ID == item.MilestoneID select m.Title).FirstOrDefault() };
+                SubmissionViewModel tmp = new SubmissionViewModel { ID = item.ID, IsAccepted = item.IsAccepted, Code = item.Code, ExpectedOutput = new List<string>(),  MilestoneID = item.MilestoneID, SolutionOutput = new List<string>(), UsersName = (from u in db.Users where u.Id == item.UserID select u.UserName).FirstOrDefault(), MilestoneName = (from m in db.Milestones where m.ID == item.MilestoneID select m.Title).FirstOrDefault() };
+                tmp.ExpectedOutput.Add(item.ExpectedOutput);
+                tmp.SolutionOutput.Add(item.SolutionOutput);
                 viewModel.Add(tmp);
             }
             return viewModel;

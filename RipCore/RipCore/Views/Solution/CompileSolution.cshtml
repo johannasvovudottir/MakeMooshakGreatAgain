@@ -2,15 +2,44 @@
 @if(Model.IsAccepted)
 {
     <h3 class="accepted">Accepted</h3>
-    <p>Your result: @Model.SolutionOutput</p>
-    <p>Expected result: @Model.ExpectedOutput</p>
 }
 
 @if(!Model.IsAccepted)
 {
     <h3 class="notAccepted">Not Accepted</h3>
-    <p>Your result: @Model.SolutionOutput</p>
-    <p>Expected result: @Model.ExpectedOutput</p>
+
 }
+<div class="row">
+    <div class="col-md-6">
+    @if (Model.SolutionOutput.Count != 0)
+    {
+        <div class="col-md-6">
+            <div class="col-md-8">
+                @Html.LabelFor(model => model.SolutionOutput, "Your result:", htmlAttributes: new { @class = "control-label col-md-4" })
+            </div>
+            <div class="col-md-8">
+                @foreach (var item in Model.ExpectedOutput)
+                {
+                    <p>@item</p>
+                }
+            </div>
+        </div>
+    }
 
+    </div>
+    @if (Model.ExpectedOutput.Count != 0)
+    {
+        <div class="col-md-6">
+            <div class="col-md-10">
+                @Html.LabelFor(model => model.ExpectedOutput, "Expected result:", htmlAttributes: new { @class = "control-label col-md-4" })
+            </div>
+            <div class="col-md-10">
+                @foreach (var item in Model.ExpectedOutput)
+                {
+                    <p>@item</p>
+                }
+            </div>
+        </div>
+    }
 
+</div>

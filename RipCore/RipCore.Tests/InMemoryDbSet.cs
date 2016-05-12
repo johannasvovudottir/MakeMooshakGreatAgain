@@ -1,7 +1,4 @@
 ﻿
-
-/*
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +7,7 @@ using System.Linq.Expressions;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace SozialWeb.Tests
+namespace RipCore.Tests
 {
     /// <summary>
     /// The in-memory database set, taken from Microsoft's online example (http://msdn.microsoft.com/en-us/ff714955.aspx) 
@@ -165,4 +162,3 @@ namespace SozialWeb.Tests
     }
 }
 
-*/

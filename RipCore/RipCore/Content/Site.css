@@ -50,12 +50,6 @@ footer{
     margin-top: 25em;
 }
 
-.col-md-4 {
-    border-style: solid;
-    border-collapse: separate;
-    border-color: grey;
-}
-
 .unorderedCourses
 {
     list-style-type: none;

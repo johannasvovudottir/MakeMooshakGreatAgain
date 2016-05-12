@@ -26,34 +26,36 @@
 <main class="table-responsive col-md-9">
         <h3>@Resources.Resources.AssignmentsDue</h3>
     <table class="table-striped">
-        <thead>
-            <th>Námskeið</th>
-            <th>Verkefni</th>
-            <th>Vægi</th>
-            <th>Skiladagur</th>
-            <th>Skilað</th>
-            <th>Óskilað</th>
+        <thead class="col-md-12">
+            <tr>
+                <th class="col-md-3">Námskeið</th>
+                <th class="col-md-offset-1 col-md-3">Verkefni</th>
+                <th class="col-md-offset-1 col-md-1">Vægi</th>
+                <th class="col-md-offset-1 col-md-3">Skiladagur</th>
+                <th class="col-md-offset-1 col-md-1">Skilað</th>
+                <th class="col-md-offset-1 col-md-1">Óskilað</th>
+            </tr>
         </thead>
-        <tbody>
+        <tbody class="col-md-12">
             @foreach (var item in Model.assignments)
             {
                 if (item.DueDate > DateTime.Now)
                 {
                     <tr>
-                        <td>@item.CourseName</td>
+                        <td class="col-md-3">@item.CourseName</td>
                         @*<td>@item.Title</td>*@
                         @if (item.IsTeacher == true)
                         {
-                            <td>@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</td>
+                            <td class="col-md-offset-1 col-md-3">@Html.ActionLink(item.Title, "TeacherAssignmentView", new { id = item.ID })</td>
                         }
                         @if (item.IsTeacher == false)
                         {
-                            <td>@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</td>
+                            <td class="col-md-offset-1 col-md-3">@Html.ActionLink(item.Title, "StudentAssignmentView", new { id = item.ID })</td>
                         }
-                        <td>@item.Weight %</td>
-                        <td>@item.DueDate</td>
-                        <td>@item.NumberOfHandins</td>
-                        <td>@item.NumberOfNotHandedIn </td>
+                        <td class="col-md-offset-1 col-md-1">@item.Weight %</td>
+                        <td class="col-md-offset-1 col-md-3">@item.DueDate</td>
+                        <td class="col-md-offset-1 col-md-1">@item.NumberOfHandins</td>
+                        <td class="col-md-offset-1 col-md-1">@item.NumberOfNotHandedIn </td>
                     </tr>
                 }
             }

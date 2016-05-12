@@ -1,6 +1,6 @@
 ﻿@model RipCore.Models.ViewModels.SubmissionViewModel
 
-@if (Model.SolutionOutput != "" && Model.ExpectedOutput != "")
+@if (Model.SolutionOutput[0] != "" && Model.ExpectedOutput[0] != "")
 {
     <p>Your result: @Model.SolutionOutput</p>
     <p>Expected result: @Model.ExpectedOutput</p>

@@ -10,11 +10,23 @@ namespace RipCore.Services
 {
     public class PersonService
     {
-        private ApplicationDbContext db;
+        /*
+        private readonly ApplicationDbContext db;
 
         public PersonService()
         {
             db = new ApplicationDbContext();
+        }*/
+
+
+
+        private readonly IAppDataContext db;
+
+
+        public PersonService(IAppDataContext dataContext = null)
+        {
+            db = dataContext ?? new ApplicationDbContext();
+
         }
 
         public List<PersonViewModel> GetAllPersons()

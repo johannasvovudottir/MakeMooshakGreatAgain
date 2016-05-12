@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\Verkl-2\MakeMooshakGreatAgain\RipCore\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\Verkl-2\MakeMooshakGreatAgain\RipCore\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -88,6 +94,7 @@
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="InMemoryDbSet.cs" />
     <Compile Include="MockDataContext.cs" />
+    <Compile Include="UnitTests\UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config">

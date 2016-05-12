@@ -32,11 +32,10 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
         {
-            SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, MilestoneID = viewModel.milestoneSubmissionID };
+            SubmissionViewModel submission = new SubmissionViewModel { AssignmentName = viewModel.Title, MilestoneID = viewModel.milestoneSubmissionID  };
             Assignment assigment = (from s in db.Assignments
                                     where s.ID == viewModel.ID
                                     select s).FirstOrDefault();
-
             submission.ProgrammingLanguage = aAssignment.GetProgrammingLanguageByID(assigment.ProgrammingLanguageID);
             if (viewModel.File != null)
             {
@@ -78,7 +77,8 @@ namespace RipCore.Controllers
             // The code would of course come from the student!
 
             var code = data.Code;
-
+            data.ExpectedOutput = new List<string>();
+            data.SolutionOutput = new List<string>();
             // Set up our working folder, and the file names/paths.
             // In this example, this is all hardcoded, but in a
             // real life scenario, there should probably be individual
@@ -137,7 +137,7 @@ namespace RipCore.Controllers
             var compilerTest = compiler.WaitForExit(10000);
             if (!compilerTest)
             {
-                data.SolutionOutput = "Compile Time Error!";
+                data.SolutionOutput.Add("Compile Time Error!");
                 compiler.Kill();
                 return View(data);
             }
@@ -148,14 +148,15 @@ namespace RipCore.Controllers
             // we try to execute the code:
             if (System.IO.File.Exists(exeFilePath))
             {
-                data.SolutionOutput = "";
                 var processInfoExe = new ProcessStartInfo(exeFilePath, "");
                 processInfoExe.UseShellExecute = false;
                 processInfoExe.RedirectStandardOutput = true;
                 processInfoExe.RedirectStandardInput = true;
                 processInfoExe.RedirectStandardError = true;
                 processInfoExe.CreateNoWindow = true;
-                List<Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
+                string entityOutput = "";
+                string entityExpected = "";
+                List <Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
                 for (int i = 0; i < excpectedData.Count; i++)
                 {
                     //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
@@ -176,23 +177,25 @@ namespace RipCore.Controllers
                         var RunTimeTest = processExe.WaitForExit(5000);
                         if (!RunTimeTest)
                         {
-                            data.SolutionOutput = "Run Time Error!";
+                            data.SolutionOutput.Add("Run Time Error!");
+                            entityOutput += "Run Time Error";
                             processExe.Kill();
                             return View(data);
                         }
 
                         // We then read the output of the program:
-                        var lines = new List<string>();
+                        string programOutput = "";
                         while (!processExe.StandardOutput.EndOfStream)
                         {
-                            lines.Add(processExe.StandardOutput.ReadLine());
+                            programOutput = processExe.StandardOutput.ReadLine();
                         }
 
-
-                        ViewBag.Output = lines;
-                        data.SolutionOutput += lines[0] + '\n';
-                        data.ExpectedOutput += excpectedData[i].Item2 + '\n';
-                        if (string.Equals(lines[0].ToString(), excpectedData[i].Item2))
+                        ViewBag.Output = programOutput;
+                        data.SolutionOutput.Add(programOutput);
+                        entityOutput += programOutput + ' ';
+                        data.ExpectedOutput.Add(excpectedData[i].Item2);
+                        entityOutput += excpectedData[i].Item2 + ' ';
+                        if (string.Equals(programOutput, excpectedData[i].Item2))
                         {
                             data.IsAccepted = true;
                         }
@@ -204,14 +207,14 @@ namespace RipCore.Controllers
                     }
                 }
 
-                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput= data.ExpectedOutput };
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = entityOutput, UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput = entityExpected};
                 db.Submission.Add(submission);
                 db.SaveChanges();
 
                 Solution solution = (from s in db.Solutions where s.MilestoneID == submission.MilestoneID && s.StudentID == submission.UserID select s).FirstOrDefault();
                 if(solution == null)
                 {
-                    Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID, Code = data.Code }; //sService.GetBestSubmissionByID(data.MilestoneID, User.Identity.GetUserId());
+                    Solution soliholm = new Solution { MilestoneID = submission.MilestoneID, StudentID = submission.UserID, SubmissionID = submission.ID, Code = data.Code }; 
                     db.Solutions.Add(soliholm);
                     db.SaveChanges();
                 }
@@ -232,10 +235,10 @@ namespace RipCore.Controllers
             }
             else
             {
-                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = data.SolutionOutput, UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput = data.ExpectedOutput };
+                Submission submission = new Submission { MilestoneID = data.MilestoneID, IsAccepted = data.IsAccepted, SolutionOutput = "Please add an executable file!", UserID = User.Identity.GetUserId(), Code = data.Code, ExpectedOutput = "" };
                 db.Submission.Add(submission);
                 db.SaveChanges();
-                data.SolutionOutput = "Please add an executable file!";
+                data.SolutionOutput.Add("Please add an executable file!");
             }
 
             // TODO: We might want to clean up after the process, there
@@ -288,37 +291,46 @@ namespace RipCore.Controllers
         {
             Regex passPattern = new Regex(submission.Code);
             List<List<string>> excpectedData = sService.GetExpectedRegex(submission.MilestoneID);
-            submission.SolutionOutput = "Accepted strings:\n";
-            submission.ExpectedOutput = "Accepted strings:\n";
+            string entityOutput = "Accepted strings:";
+            string entityExpected = "Accepted strings:";
+            submission.SolutionOutput.Add("Accepted strings:");
+            submission.ExpectedOutput.Add("Accepted strings:");
             foreach (var item in excpectedData[0])
             {
-                submission.SolutionOutput += item + '\n';
+                submission.SolutionOutput.Add(item);
+                entityOutput += item;
                 if (!passPattern.IsMatch(item))
                 {
-                    submission.ExpectedOutput += "Your regex does not accept the string " + item;
+                    submission.ExpectedOutput.Add("Your regex does not accept the string " + item);
+                    entityExpected += "Your regex does not accept the string " + item + '\n';
                     submission.IsAccepted = false;
-                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = entityOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = entityExpected};
                     db.Submission.Add(newData);
                     db.SaveChanges();
                     return View(submission);
                 }
-                submission.ExpectedOutput += item + '\n';
+                submission.ExpectedOutput.Add(item);
+                entityExpected += item + '\n';
             }
-            submission.SolutionOutput += "Not accepted strings:\n";
+            submission.SolutionOutput.Add("Not accepted strings:");
+            entityOutput += "Not accepted strings: \n";
             foreach (var item in excpectedData[1])
             {
-                submission.SolutionOutput += item + '\n';
+                submission.SolutionOutput.Add(item);
+                entityOutput += item + "\n";
                 if (passPattern.IsMatch(item))
                 {
-                    submission.ExpectedOutput += "Your regex accepts the string " + item;
+                    submission.ExpectedOutput.Add("Your regex accepts the string " + item);
+                    entityOutput += "Your regex accepts the string " + item + "\n";
                     submission.IsAccepted = false;
-                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = entityExpected, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = entityExpected };
                     db.Submission.Add(newData);
                     return View(submission);
                 }
-                submission.ExpectedOutput += item + '\n';
+                submission.ExpectedOutput.Add(item);
+                entityExpected += item + '\n';
             }
-            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = entityExpected, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = entityExpected };
             db.Submission.Add(newSubmission);
             submission.IsAccepted = true;
             return View(submission);
@@ -327,7 +339,7 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult Other(SubmissionViewModel submission)
         {
-            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = "", UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = "" };
             db.Submission.Add(newSubmission);
             return View(submission);
         }
@@ -335,10 +347,10 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult OtherWithTests(SubmissionViewModel submission)
         {
-            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, UserID = User.Identity.GetUserId(), Code = submission.Code };
             db.Submission.Add(newSubmission);
-            submission.SolutionOutput = submission.Code;
-            submission.ExpectedOutput = sService.GetTestCase(submission.MilestoneID);
+            submission.SolutionOutput[0] = submission.Code;
+            submission.ExpectedOutput[0] = sService.GetTestCase(submission.MilestoneID);
             return View(submission);
         }
 

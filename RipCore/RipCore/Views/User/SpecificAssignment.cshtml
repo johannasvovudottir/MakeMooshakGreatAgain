@@ -1,21 +1,33 @@
 ﻿@model RipCore.Models.ViewModels.AssignmentViewModel
 <h3>@Html.DisplayFor(modelItem => Model.Title)</h3>
-<table>
-    <tbody>
-        <tr>
-            <td class="topRow">Date Created: @Model.DateCreated</td>
-            <td class="topRow">Weight: @Model.Weight</td>
-        </tr>
-        <tr>
-            <td class="bottomRow">Due Date: @Model.DueDate</td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-@if (Model.IsTeacher == true)
-{
-    <h4>@Html.ActionLink("Edit", "Edit", new { id = Model.ID, @class = "btn btn-default" })</h4>
-}
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.DateCreated, "Date Created", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.DisplayFor(model => model.DateCreated)
+        </div>
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.DueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.DisplayFor(model => model.DueDate)
+        </div>
+
+
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.Weight, "Weight", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.DisplayFor(model => model.Weight)
+
+        </div>
+        <div class="col-md-10">
+            @Html.LabelFor(model => model.ProgrammingLanguage, "Language", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.DisplayFor(model => model.ProgrammingLanguage)
+        </div>
+    </div>
+</div>
+
+
+
 @Styles.Render("~/Content/tabs.css")
 
 <div class="container">
@@ -68,6 +80,12 @@
                         </div>
                     </div>
                 }
+            }
+            @if (Model.IsTeacher)
+            {
+                <div class="col-md-10">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+                </div>
             }
         </div>
         <div id="menu1" class="tab-pane fade">
