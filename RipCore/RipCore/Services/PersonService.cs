@@ -135,10 +135,10 @@ namespace RipCore.Services
             db.Admins.Remove(adminToRemove);
             db.SaveChanges();
         }
-        public PersonViewModel GetPersonById(string PersonID)
+        public PersonViewModel GetPersonById(string personID)
         {
             var result = (from x in db.Users
-                          where x.Id == PersonID
+                          where x.Id == personID
                           select x).SingleOrDefault();
 
             if (result == null)
