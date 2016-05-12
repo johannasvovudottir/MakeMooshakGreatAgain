@@ -8,11 +8,19 @@ using System.Web.Mvc;
 
 namespace RipCore.Controllers
 {
+    /// <summary>
+    /// A controller that all other controllers inherit from
+    /// contains the HandleError attribute and a function that 
+    /// checks what language to  use
+    /// </summary>
     [HandleError]
     public class BaseController : Controller
     {
         protected string Language { get; set; }
-
+        /// <summary>
+        /// A function that checks what languague the page is supposed
+        /// to be displayed in
+        /// </summary>
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);

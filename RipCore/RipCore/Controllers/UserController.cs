@@ -13,12 +13,21 @@ using System.Web.Mvc;
 
 namespace RipCore.Controllers
 {
+    /// <summary>
+    /// A controller class that controls the views and operations 
+    /// that users need access to
+    /// </summary>
     public class UserController : BaseController
     {
         private CourseService service = new CourseService();
         private AccountsService accountService = new AccountsService();
         private AssignmentsService assignmentService = new AssignmentsService();
         private ApplicationDbContext db = new ApplicationDbContext();
+        /// <summary>
+        /// A function that displays the index for the user controller which
+        /// contains a list of assignments that the user has not turned in
+        /// allready, also contains links to the courses the user is studying/teaching
+        /// </summary>
         public ActionResult Index()
         {
             #region Security
@@ -39,7 +48,10 @@ namespace RipCore.Controllers
             viewModels.Name = User.Identity.Name;
             return View(viewModels);
         }
-
+        /// <summary>
+        /// A function that displays a view for a student in a certain course.
+        /// Displays ongoing and past projects with their grades
+        /// </summary>
         public ActionResult StudentOverview(int id)
         {
             #region Security
@@ -62,7 +74,10 @@ namespace RipCore.Controllers
             viewModel.isTeacher = false;
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that displays a view for a teacher in a certain course.
+        /// Displays ongoing and past projects
+        /// </summary>
         public ActionResult TeacherOverview(int id)
         {
             #region Security
@@ -83,7 +98,9 @@ namespace RipCore.Controllers
             viewModel.isTeacher = true;
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that deletes a specific assignment 
+        /// </summary>
         public ActionResult Delete(int id)
         {
             Assignment assignment = (from a in db.Assignments where a.ID == id select a).FirstOrDefault();
@@ -116,7 +133,9 @@ namespace RipCore.Controllers
             //}
             return RedirectToAction("TeacherOverview", new { id = courseID });
          }
-
+        /// <summary>
+        /// A function that deletes a specific assignment milestone 
+        /// </summary>
         public ActionResult DeleteMilestone(int id)
         {
             Milestone milestone = (from m in db.Milestones where m.ID == id select m).FirstOrDefault();
@@ -159,7 +178,9 @@ namespace RipCore.Controllers
             return RedirectToAction("TeacherAssignmentView", new { id = assignmentID });
         }
         
-
+        /// <summary>
+        /// A function that displays the view used to create a new assignment
+        /// </summary>
         public ActionResult Create(int id)
         {
             #region Security
@@ -179,7 +200,9 @@ namespace RipCore.Controllers
             viewModel.DateCreated = DateTime.Now;
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that creates a new assignment 
+        /// </summary>
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Create(AssignmentViewModel newData, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
@@ -260,7 +283,9 @@ namespace RipCore.Controllers
             newData.Milestones = new List<AssignmentMilestoneViewModel>();
             return View(newData);
         }
-
+        /// <summary>
+        /// A function that displays the view used to edit an Assignment
+        /// </summary>
         public ActionResult Edit(int id)
         {
             #region Security
@@ -349,7 +374,9 @@ namespace RipCore.Controllers
                }
                return View(model);
            }*/
-
+        /// <summary>
+        /// A function that edits an assignment in the system
+        /// </summary>
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
@@ -417,7 +444,9 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ActionResult StudentAssignmentView(int id)
         {
             #region Security
@@ -450,7 +479,10 @@ namespace RipCore.Controllers
             //    }
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that displays information for a teacher about a
+        /// specific assignment
+        /// </summary>
         public ActionResult TeacherAssignmentView(int id)
         {
             #region Security
@@ -472,7 +504,10 @@ namespace RipCore.Controllers
             viewModel.UserID = User.Identity.GetUserId();
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that takes a file from an ajax call and converts it 
+        /// to a string
+        /// </summary>
         public ActionResult AddMilestone(FormCollection collection, HttpPostedFileBase files)
         {
             var test = collection["files"];
