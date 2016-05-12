@@ -1,7 +1,10 @@
 ﻿@model RipCore.Models.ViewModels.AssignmentViewModel
 <h3>@Html.DisplayFor(modelItem => Model.Title)</h3>
+
+
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="col-md-10">
             @Html.LabelFor(model => model.DateCreated, "Date Created", htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.DateCreated)
@@ -12,8 +15,7 @@
         </div>
 
 
-    </div>
-    <div class="col-md-6">
+
         <div class="col-md-10">
             @Html.LabelFor(model => model.Weight, "Weight", htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.Weight)
@@ -126,6 +128,9 @@
     </div>
 </div>
 
+<div>
+    @Html.ActionLink("Back to List", "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
+</div>
 
 
 <script type="text/javascript">

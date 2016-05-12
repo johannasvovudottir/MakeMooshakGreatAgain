@@ -6,10 +6,10 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Notandi: " + User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log out</a></li>
+        <li>@Html.ActionLink("English", "Index", new { lang = "en" }, new { @class = "pull right" }) </li>
+        <li>@Html.ActionLink("Íslenska", "Index", new { lang = "is" }) </li>
+        <li>@Html.ActionLink(@Resources.Resources.Username + User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" }) </li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Resources.LogOut</a></li>
     </ul>
     }
 }

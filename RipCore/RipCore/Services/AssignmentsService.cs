@@ -135,11 +135,14 @@ namespace RipCore.Services
 
         public List<Solution> GetSolutionsById(string userID, int assignmentID)
         {
-            var result = (from c in db.Milestones
-                          join cn in db.Solutions on userID equals cn.StudentID
-                          where (assignmentID == c.AssignmentID)
-                          select cn).ToList();
-            return result;
+            List<int> bar = (from m in db.Milestones where m.AssignmentID == assignmentID select m.ID).ToList();
+            List<Solution> userSolutions = new List<Solution>();
+            foreach (var item in bar)
+            {
+                List<Solution> smu = (from s in db.Solutions where s.MilestoneID == item && s.StudentID == userID select s).ToList();
+                userSolutions.AddRange(smu);
+            }
+            return userSolutions; 
         }
 
         public double GetGradeByAssignment(string userID, int assignmentID)
@@ -149,7 +152,7 @@ namespace RipCore.Services
             foreach (var item in userSolutions)
             {
                 Milestone currentMilestone = GetMilestoneBySolution(item);
-                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight * 0.01);
+                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight)/100;
             }
             return totalGrade;
         }

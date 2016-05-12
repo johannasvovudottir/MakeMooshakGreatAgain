@@ -175,7 +175,7 @@
     <value>Hello World</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>Username:</value>
+    <value>Username: </value>
   </data>
   <data name="UserTableName" xml:space="preserve">
     <value>Name of course</value>
@@ -227,5 +227,14 @@
   </data>
   <data name="Summer" xml:space="preserve">
     <value>Summer semester</value>
+  </data>
+  <data name="dummy" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Icelandic" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Log out</value>
   </data>
 </root>

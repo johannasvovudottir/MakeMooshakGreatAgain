@@ -121,18 +121,19 @@ namespace RipCore.Controllers
             Process compiler = new Process();
             if (data.ProgrammingLanguage == ".cs")
             {
-                compiler.StartInfo.FileName = "csc.exe";
+                compiler.StartInfo.FileName = "cmd.exe";
                 compiler.StartInfo.WorkingDirectory = workingFolder;
                 compiler.StartInfo.RedirectStandardInput = true;
-              //  compiler.StartInfo.Arguments = "csc /target:exe /out:"+ exeFilePath + cppFileName;
+                compiler.StartInfo.RedirectStandardError = true;
                 compiler.StartInfo.RedirectStandardOutput = true;
                 compiler.StartInfo.UseShellExecute = false;
 
                 compiler.Start();
-                //compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+                compiler.StandardInput.WriteLine("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\CSC.EXE " + cppFileName);
                 //compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
-                //compiler.StandardInput.WriteLine("exit");
-                string output = compiler.StandardOutput.ReadToEnd();
+                compiler.StandardInput.WriteLine("exit");
+                //string output = compiler.StandardOutput.ReadToEnd();
+                Debug.WriteLine(compiler.StandardError.ReadLine());
             }
             
             else
@@ -149,13 +150,13 @@ namespace RipCore.Controllers
                 compiler.StandardInput.WriteLine("exit");
                 string output = compiler.StandardOutput.ReadToEnd();
             }
-            var compilerTest = compiler.WaitForExit(10000);
-            if (!compilerTest)
-            {
-                data.SolutionOutput.Add("Compile Time Error!");
-                compiler.Kill();
-                return View(data);
-            }
+          //  var compilerTest = compiler.WaitForExit(10000);
+            //if (!compilerTest)
+            //{
+                //data.SolutionOutput.Add("Compile Time Error!");
+                //compiler.Kill();
+                //return View(data);
+            //}
             compiler.Close();
 
 
