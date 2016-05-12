@@ -18,6 +18,7 @@ namespace RipCore.Controllers
         private CourseService service = new CourseService();
         private AccountsService accountService = new AccountsService();
         private AssignmentsService assignmentService = new AssignmentsService();
+        private PersonService personService = new PersonService();
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
@@ -450,7 +451,20 @@ namespace RipCore.Controllers
             //    }
             return View(viewModel);
         }
+        
+        public ActionResult PersonInfo(string id)
+        {
+            #region Security
+            string userID = null;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
 
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
+            #endregion
+            PersonViewModel person = personService.GetPersonById(id);
+            return View(person);
+        }
         public ActionResult TeacherAssignmentView(int id)
         {
             #region Security

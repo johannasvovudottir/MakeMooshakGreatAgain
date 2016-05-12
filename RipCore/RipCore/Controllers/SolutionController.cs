@@ -73,24 +73,12 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult CompileSolution(SubmissionViewModel data)
         {
-            // To simplify matters, we declare the code here.
-            // The code would of course come from the student!
-
             var code = data.Code;
             data.ExpectedOutput = new List<string>();
             data.SolutionOutput = new List<string>();
-            // Set up our working folder, and the file names/paths.
-            // In this example, this is all hardcoded, but in a
-            // real life scenario, there should probably be individual
-            // folders for each user/assignment/milestone.
             string user = User.Identity.GetUserId();
 
             string smu = AppDomain.CurrentDomain.BaseDirectory;
-            //string smusmu = System.IO.Directory.GetCurrentDirectory();
-            //string smusmusmu = Environment.CurrentDirectory;
-            //string smusmusmusmu = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-            //string smusmusmusmusmusmu = System.IO.Path.GetDirectoryName(
-            //System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             var workingFolder = smu + user + "\\"; //name; // eða ID
             System.IO.Directory.CreateDirectory(workingFolder);
@@ -104,7 +92,15 @@ namespace RipCore.Controllers
 
             // In this case, we use the C++ compiler (cl.exe) which ships
             // with Visual Studio. It is located in this folder:
-            var compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+            string compilerFolder;
+            if (data.ProgrammingLanguage == ".cs")
+            {
+                compilerFolder = "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\";
+            }
+            else
+            {
+                compilerFolder = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\";
+            }
             // There is a bit more to executing the compiler than
             // just calling cl.exe. In order for it to be able to know
             // where to find #include-d files (such as <iostream>),
@@ -123,17 +119,36 @@ namespace RipCore.Controllers
 
             // Execute the compiler:
             Process compiler = new Process();
-            compiler.StartInfo.FileName = "cmd.exe";
-            compiler.StartInfo.WorkingDirectory = workingFolder;
-            compiler.StartInfo.RedirectStandardInput = true;
-            compiler.StartInfo.RedirectStandardOutput = true;
-            compiler.StartInfo.UseShellExecute = false;
+            if (data.ProgrammingLanguage == ".cs")
+            {
+                compiler.StartInfo.FileName = "csc.exe";
+                compiler.StartInfo.WorkingDirectory = workingFolder;
+                compiler.StartInfo.RedirectStandardInput = true;
+              //  compiler.StartInfo.Arguments = "csc /target:exe /out:"+ exeFilePath + cppFileName;
+                compiler.StartInfo.RedirectStandardOutput = true;
+                compiler.StartInfo.UseShellExecute = false;
 
-            compiler.Start();
-            compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
-            compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
-            compiler.StandardInput.WriteLine("exit");
-            string output = compiler.StandardOutput.ReadToEnd();
+                compiler.Start();
+                //compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+                //compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
+                //compiler.StandardInput.WriteLine("exit");
+                string output = compiler.StandardOutput.ReadToEnd();
+            }
+            
+            else
+            {                
+                compiler.StartInfo.FileName = "cmd.exe";
+                compiler.StartInfo.WorkingDirectory = workingFolder;
+                compiler.StartInfo.RedirectStandardInput = true;
+                compiler.StartInfo.RedirectStandardOutput = true;
+                compiler.StartInfo.UseShellExecute = false;
+
+                compiler.Start();
+                compiler.StandardInput.WriteLine("\"" + compilerFolder + "vcvars32.bat" + "\"");
+                compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
+                compiler.StandardInput.WriteLine("exit");
+                string output = compiler.StandardOutput.ReadToEnd();
+            }
             var compilerTest = compiler.WaitForExit(10000);
             if (!compilerTest)
             {
@@ -191,8 +206,11 @@ namespace RipCore.Controllers
                         }
 
                         ViewBag.Output = programOutput;
-                        data.SolutionOutput.Add(programOutput);
-                        entityOutput += programOutput + ' ';
+                        if (!String.IsNullOrEmpty(programOutput))
+                        {
+                            data.SolutionOutput.Add(programOutput);
+                            entityOutput += programOutput + ' ';
+                        }
                         data.ExpectedOutput.Add(excpectedData[i].Item2);
                         entityOutput += excpectedData[i].Item2 + ' ';
                         if (string.Equals(programOutput, excpectedData[i].Item2))

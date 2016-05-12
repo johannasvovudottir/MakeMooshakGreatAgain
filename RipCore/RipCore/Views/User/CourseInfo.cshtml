@@ -33,7 +33,7 @@
                         @item.FullName
                     </td>
                     <td>
-                        //TODO Info
+                        @Html.ActionLink("See Information", "PersonInfo", new { id = item.Id })
                     </td>
                 </tr>
             }
