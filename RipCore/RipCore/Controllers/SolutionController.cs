@@ -18,16 +18,19 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace RipCore.Controllers
 {
+    /// <summary>
+    /// A controller class that controls the actions  regarding solutions.
+    /// Especially regarding compiling
+    /// </summary>
     public class SolutionController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private SolutionService sService = new SolutionService();
         private AssignmentsService aAssignment = new AssignmentsService();
-        public ActionResult Index()
-        {
-            return View();
-        }
 
+        /// <summary>
+        /// Spyrja johonnu þegar hun hefur tima
+        /// </summary>
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult SubmitSolution(AssignmentViewModel viewModel)
@@ -68,8 +71,11 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("CompileSolution", submission);
         }
-
-        ///[HttpPost] // ??
+        /// <summary>
+        /// A function that compiles a solution, checks for an infinite loop
+        /// and checks if it validates for input/output pairs
+        /// </summary>
+        //[HttpPost] // ??
         [ValidateInput(false)]
         public ActionResult CompileSolution(SubmissionViewModel data)
         {
@@ -248,20 +254,30 @@ namespace RipCore.Controllers
 
             return View(data);
         }
-
+        /// <summary>
+        /// A function that displays a view that displays all the 
+        /// solutions(best submissions of each user) for a specific assignment
+        /// </summary>
         public ActionResult AllSolutions(int id)
         {
             SolutionOverViewModel submissions = new SolutionOverViewModel { AssignmentSolutions = sService.GetSolutionsForView(id), MilestoneNames = sService.GetMilestoneNames(id) };
             return View(submissions);
         }
-
+        /// <summary>
+        /// A function that displays a view that displays all the submissions
+        /// for a specicfic assignment
+        /// </summary>
         public ActionResult AllSubmissions(int id)
         {
             string userID = User.Identity.GetUserId();
             SubmissionsOverViewModel submissions = new SubmissionsOverViewModel { otherSubmissions = sService.GetAllNotConnected(id, userID), usersSubmissions = sService.GetSubmissionsForUser(id, userID), MilestoneNames = sService.GetMilestoneNames(id) };
             return View(submissions);
         }
-
+        /// <summary>
+        /// A function that displays a view that includes the details 
+        /// about a specific solution The view contains the user's 
+        /// code and is used for gradeing
+        /// </summary>
         public ActionResult SubmissionDetails(int id, bool isTeacher)
         {
             SubmissionViewModel submission = sService.GetSubmissionForView(id);
@@ -275,7 +291,9 @@ namespace RipCore.Controllers
             submission.IsTeacher = isTeacher;
             return View(submission);
         }
-
+        /// <summary>
+        /// A function that updates a user's grade for a specific solution
+        /// </summary>
         [HttpPost]
         public ActionResult SubmitGrade(SubmissionViewModel submission)
         {
@@ -286,7 +304,10 @@ namespace RipCore.Controllers
             int assignmentID = (from m in db.Milestones where m.ID == submission.MilestoneID select m.AssignmentID).FirstOrDefault();
             return RedirectToAction("AllSolutions", new { id = assignmentID});
         }
-
+        /// <summary>
+        /// A function that checks if a regex string validates for given
+        ///input/output pairs
+        /// </summary>
         public ActionResult RegexTest(SubmissionViewModel submission)
         {
             Regex passPattern = new Regex(submission.Code);
@@ -335,7 +356,10 @@ namespace RipCore.Controllers
             submission.IsAccepted = true;
             return View(submission);
         }
-
+        /// <summary>
+        /// A function that adds a submission in an unspecified language to the
+        /// database, does not validate with input/output pairs
+        /// </summary>
         [ValidateInput(false)]
         public ActionResult Other(SubmissionViewModel submission)
         {
@@ -343,7 +367,10 @@ namespace RipCore.Controllers
             db.Submission.Add(newSubmission);
             return View(submission);
         }
-
+        /// <summary>
+        /// A function that adds a submission in an unspecified language to the
+        /// database, validates with input/output pairs
+        /// </summary>
         [ValidateInput(false)]
         public ActionResult OtherWithTests(SubmissionViewModel submission)
         {
