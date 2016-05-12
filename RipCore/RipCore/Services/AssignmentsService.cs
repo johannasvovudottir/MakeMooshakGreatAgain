@@ -11,12 +11,23 @@ namespace RipCore.Services
 {
     public class AssignmentsService
     {
+        private readonly IAppDataContext db;
+        private CourseService CourseService = new CourseService();
+
+
+        public AssignmentsService(IAppDataContext dataContext = null)
+        {
+            db = dataContext ?? new ApplicationDbContext();
+
+        }
+
+        /*
         private ApplicationDbContext db;
         private CourseService CourseService = new CourseService();
         public AssignmentsService()
         {
             db = new ApplicationDbContext();
-        }
+        }*/
 
         public List<AssignmentViewModel> GetAssignmentsInCourse(int courseId)
         {
@@ -179,14 +190,22 @@ namespace RipCore.Services
                 if (solutions.Count != 0)
                 {
                     IEnumerable<Solution> solutionsToDelete = solutions;
-                    db.Solutions.RemoveRange(solutionsToDelete);
+                    foreach (var item in solutionsToDelete)
+                    {
+                        db.Solutions.Remove(item);
+                    }
+                    //db.Solutions.RemoveRange(solutionsToDelete);
                     db.SaveChanges();
                 }
 
                 if (submissions.Count != 0)
                 {
                     IEnumerable<Submission> submissionsToDelete = submissions;
-                    db.Submission.RemoveRange(submissionsToDelete);
+                    foreach (var item in submissionsToDelete)
+                    {
+                        db.Submission.Remove(item);
+                    }
+                    //db.Submission.RemoveRange(submissionsToDelete);
                     db.SaveChanges();
                 }
                 Milestone milestoneToDelete = db.Milestones.Where(x => x.ID == milestone.ID).SingleOrDefault();

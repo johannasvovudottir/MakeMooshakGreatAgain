@@ -10,11 +10,21 @@ namespace RipCore.Services
 {
     public class CourseService
     {
+        /*
         private ApplicationDbContext db;
         public CourseService()
         {
             db = new ApplicationDbContext();
         }
+        */
+
+        private readonly IAppDataContext db;
+
+        public CourseService(IAppDataContext dataContext = null)
+        {
+            db = dataContext ?? new ApplicationDbContext();
+        }
+
         public List<CourseViewModel> GetAllCourses()
         {
             var courses = db.Courses.ToList();

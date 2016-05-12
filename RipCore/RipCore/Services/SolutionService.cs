@@ -10,10 +10,18 @@ namespace RipCore.Services
 {
     public class SolutionService
     {
+        /*
         private ApplicationDbContext db;
         public SolutionService()
         {
             db = new ApplicationDbContext();
+        }*/
+
+        private readonly IAppDataContext db;
+
+        public SolutionService(IAppDataContext dataContext = null)
+        {
+            db = dataContext ?? new ApplicationDbContext();
         }
 
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
