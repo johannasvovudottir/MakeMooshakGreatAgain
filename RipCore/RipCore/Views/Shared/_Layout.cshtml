@@ -43,13 +43,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("User", "Index", /*new { id = 1 }, */"User")</li>
-                    <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
-                    @*<li>@Html.ActionLink("English", @ViewContext.RouteData.Values["Action"].ToString(), new { lang = "en" })</li>
-                    <li>@Html.ActionLink("Íslenska", @ViewContext.RouteData.Values["Action"].ToString(), new { lang = "is" })</li>*@
-                    <li>@Html.ActionLink("English", "Index", new { lang = "en" }) </li>
-                    <li>@Html.ActionLink("Íslenska", "Index", new { lang = "is" }) </li>
-                        
+                    <li>@Html.ActionLink("User", "Index", "User")</li>
+                    <li>@Html.ActionLink("Admin", "Index", "Admin")</li>      
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -58,9 +53,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - RipCore</p>
-        </footer>
     </div>
 
     @RenderSection("scripts", required: false)
