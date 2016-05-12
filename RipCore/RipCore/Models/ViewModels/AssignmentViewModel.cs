@@ -33,5 +33,7 @@ namespace RipCore.Models.ViewModels
         public HttpPostedFileBase File { get; set; }
         public int NumberOfHandins { get; set; }
         public int NumberOfNotHandedIn { get; set; }
+        public string ProgrammingLanguage { get; set; }
+
     }
 }

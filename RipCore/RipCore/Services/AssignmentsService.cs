@@ -76,6 +76,7 @@ namespace RipCore.Services
             AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
             viewModel.IsTeacher = teacher;
             viewModel.milestoneNumber = GetMilestonesNumber(assignmentID);
+            viewModel.ProgrammingLanguage = GetProgrammingLanguageByID(viewModel.ProgrammingLanguageID);
             return viewModel;
         }
 
