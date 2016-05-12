@@ -1,4 +1,5 @@
-﻿using RipCore.Models;
+﻿using Microsoft.AspNet.Identity;
+using RipCore.Models;
 using RipCore.Models.Entities;
 using RipCore.Models.ViewModels;
 using System;
@@ -14,7 +15,14 @@ namespace RipCore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            return View();
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            HomeIndexViewModel viewModel = new HomeIndexViewModel { IsLoggedIn = isLoggedIn };
+            if (isLoggedIn)
+            {
+                string userName = User.Identity.GetUserName();
+                viewModel.UserName = userName;
+            }           
+            return View(viewModel);
         }
 
         public ActionResult About()

@@ -12,6 +12,7 @@ namespace RipCore.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        public bool IsLoggedIn { get; internal set; }
     }
 
     public class ManageLoginsViewModel

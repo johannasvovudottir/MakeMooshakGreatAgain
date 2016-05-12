@@ -213,6 +213,7 @@
     <Compile Include="Models\ViewModels\CourseOverViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CentrisViewModel.cs" />
+    <Compile Include="Models\ViewModels\HomeIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\PersonViewModel.cs" />
     <Compile Include="Models\ViewModels\SolutionOverViewModel.cs" />
     <Compile Include="Models\ViewModels\SolutionViewModel.cs" />
