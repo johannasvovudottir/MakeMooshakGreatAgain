@@ -13,7 +13,7 @@
         <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })</p>
     }
 </nav>
-<main class="table-responsive col-md-6">
+<main class="table-responsive col-md-7">
     <h2 class="text-center">@Model.Name</h2>
     <table class="table table-striped">
         <thead>
@@ -52,17 +52,18 @@
                 <th>
                     Weight
                 </th>
-                <th>
-                    @if (Model.isTeacher == true)
-                    {
-                        <p>All Submissions</p>
-                    }
-                    @if (Model.isTeacher == false)
-                    {
-                        <p>Status</p>
-                    }
+                
+                @if (Model.isTeacher == true)
+                {
+                    <th>All Submissions</th>
+                }
+                @if (Model.isTeacher == false)
+                {
+                    <th>Status</th>
+                }
                 </th>
                 <th>
+                    Grade
                 </th>
             </tr>
         </thead>
@@ -97,6 +98,9 @@
                         }
                     </td>
                     <td>
+                        @item.Grade
+                    </td>
+                    <td>
                         @if (Model.isTeacher == true)
                         {
                             <h4>@Html.ActionLink("Delete", "Delete", new { id = item.ID})</h4>
@@ -114,7 +118,7 @@
     }
 </main>
 
-    <div class="list-unstyled col-md-3">
+    <div class="list-unstyled col-md-2">
         <h3>All Students</h3>
         <ul>
             @foreach (var item in Model.Students)
