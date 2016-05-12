@@ -8,6 +8,10 @@ using System.Web;
 
 namespace RipCore.Services
 {
+    /// <summary>
+    /// A service class that handles requests 
+    /// regarding user data in the database
+    /// </summary>
     public class PersonService
     {
         /*
@@ -28,7 +32,10 @@ namespace RipCore.Services
             db = dataContext ?? new ApplicationDbContext();
 
         }
-
+        /// <summary>
+        /// A function that returns a list of all users
+        /// in the database
+        /// </summary>
         public List<PersonViewModel> GetAllPersons()
         {
             var Persons = db.Users.ToList();
@@ -44,6 +51,9 @@ namespace RipCore.Services
             }
             return viewModel;
         }
+        /// <summary>
+        /// A function that connects a student to a course in the database
+        /// </summary>
         public void ConnectStudents(string userID,int courseID)
         {
                
@@ -56,6 +66,9 @@ namespace RipCore.Services
             db.SaveChanges();
             return; 
         }
+        /// <summary>
+        /// A function that connects a teacher to a course in the database
+        /// </summary>
         public void ConnectTeachers(string userID, int courseID)
         {
 
@@ -68,7 +81,10 @@ namespace RipCore.Services
             db.SaveChanges();
             return;
         }
-       
+       /// <summary>
+       /// A function that returns a list of all teachers for
+       /// a specific course in the database
+       /// </summary>
         public List<PersonViewModel> GetAllTeachers(int courseID)
         {
             CourseService query = new CourseService();
@@ -89,6 +105,10 @@ namespace RipCore.Services
 
             return teachersToReturn;
         }
+        /// <summary>
+        /// A function that returns a list of all students for
+        /// a specific course in the database
+        /// </summary>
         public List<PersonViewModel> GetAllStudents(int courseID)
         {
             CourseService query = new CourseService();
@@ -109,6 +129,10 @@ namespace RipCore.Services
 
             return studentsToReturn;
         }
+        /// <summary>
+        /// A function that returns a list of users that are neither teachers
+        /// nor students in a specific course
+        /// </summary>
         public List<PersonViewModel> GetAllNotConnected(int courseID)
         {
             List<PersonViewModel> allUsers = GetAllPersons();
@@ -119,6 +143,9 @@ namespace RipCore.Services
             
             return result;
         }
+        /// <summary>
+        /// A function that checks if a user does have admin rights
+        /// </summary>
         public bool checkIfAdmin(string userID)
         {
             var result = (from x in db.Admins
@@ -131,14 +158,18 @@ namespace RipCore.Services
 
             return false;
         }
-
-       
+        /// <summary>
+        /// A function that grants a specific user admin rights in the system
+        /// </summary>
         public void makeAdmin(string userID)
         {
             Admin newAdmin = new Admin { UserID = userID };
             db.Admins.Add(newAdmin);
             db.SaveChanges();
         }
+        /// <summary>
+        /// A function that removes admin rights from a specific user in the system
+        /// </summary>
         public void removeAdmin(string userID)
         {
             Admin adminToRemove = (from x in db.Admins
@@ -147,6 +178,10 @@ namespace RipCore.Services
             db.Admins.Remove(adminToRemove);
             db.SaveChanges();
         }
+        /// <summary>
+        /// A function that returns a single person from the database
+        /// given a specific ID
+        /// </summary>
         public PersonViewModel GetPersonById(string personID)
         {
             var result = (from x in db.Users
