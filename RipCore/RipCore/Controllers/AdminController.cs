@@ -16,6 +16,10 @@ using Microsoft.AspNet.Identity;
 
 namespace RipCore.Controllers
 {
+    /// <summary>
+    /// A controller class that controls the views and operations  that
+    /// the admins need access to
+    /// </summary>
     public class AdminController : BaseController
     {
         private CourseService CourseService = new CourseService();
@@ -24,16 +28,21 @@ namespace RipCore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
 
+        /// <summary>
+        /// The class constructor
+        /// </summary>
         public AdminController()
         {
 
         }
-
+        /// <summary>
+        /// A constructer for the class that accepts an ApplicationUserManager instance
+        /// as a parameter
+        /// </summary>
         public AdminController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
-
         public ApplicationUserManager UserManager
         {
             get
@@ -45,7 +54,10 @@ namespace RipCore.Controllers
                 _userManager = value;
             }
         }
-
+        /// <summary>
+        /// A function that displays the index for the admin controller which contains two tables
+        /// that display all the users and courses in the system
+        /// </summary>
         public ActionResult Index()
         {
             #region Security
@@ -64,7 +76,9 @@ namespace RipCore.Controllers
 
             return View(viewModel);
         }
-
+        /// <summary>
+        /// A function that displays the view used to add a user into the system
+        /// </summary>
         public ActionResult AddPerson()
         {
             #region Security
@@ -74,6 +88,9 @@ namespace RipCore.Controllers
 
             return View();
         }
+        /// <summary>
+        /// A function that adds a person  into the system
+        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -98,7 +115,9 @@ namespace RipCore.Controllers
 
             return View(model);
         }
-
+        /// <summary>
+        /// A function that displays the view used to edit a user in the system
+        /// </summary>
         public ActionResult EditPerson(string ID)
         {
             #region Security
@@ -128,7 +147,9 @@ namespace RipCore.Controllers
             }   
             return RedirectToAction("Index", "Admin");
         }
-
+        /// <summary>
+        /// A function that edits a person in the system        
+        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -156,7 +177,9 @@ namespace RipCore.Controllers
             }
             return View(model);
         }
-
+        /// <summary>
+        /// A function that displays the view used to add a course into the system
+        /// </summary>
         public ActionResult AddCourse()
         {
             #region Security
@@ -166,6 +189,9 @@ namespace RipCore.Controllers
 
             return View();
         }
+        /// <summary>
+        /// A function that adds a course into the system
+        /// </summary>
         [HttpPost]
         public ActionResult AddCourse(AdminCourseOverView newData)
         {
@@ -183,7 +209,9 @@ namespace RipCore.Controllers
             }
             return View(newData);
         }
-
+        /// <summary>
+        /// A function that displays the view used to edit a course in the system
+        /// </summary>
         public ActionResult EditCourse(int? ID)
         {
             #region Security
@@ -202,6 +230,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index");
         }
+        /// <summary>
+        /// A function that edits a course in the system        
+        /// </summary>
         [HttpPost]
         public ActionResult EditCourse(AdminCourseOverView newData)
         {
@@ -225,7 +256,10 @@ namespace RipCore.Controllers
             return View(newData);
 
         }
-
+        /// <summary>
+        /// A function that takes a user and gives him admin rights if he doesnt have them.
+        /// The function removes admin rights from the user if he allready has them
+        /// </summary>
         public ActionResult ChangeAdminStatus(string userID, bool isAdmin)
         {
             #region Security
@@ -245,7 +279,10 @@ namespace RipCore.Controllers
 
             return RedirectToAction("EditPerson", new { id = userID });
         }
-
+       /// <summary>
+       /// A function that displays the view used to connect  users to courses
+       /// as teachers and students
+       /// </summary>
         public ActionResult CourseConnections(int? courseID)
         {
             #region Security
@@ -273,7 +310,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// A function that connects users to courses as teachers and students
+        /// </summary>
         [HttpPost]
         public ActionResult CourseConnections(CourseConnectViewModel newData)
         {
@@ -299,7 +338,9 @@ namespace RipCore.Controllers
 
             return RedirectToAction("CourseConnections", new { courseID = newData.CurrentCourse.ID });
         }
-
+        /// <summary>
+        /// A function that removes a user from a course
+        /// </summary>
         public ActionResult RemoveFromCourse(string ID, int courseID, string role)
         {
             #region Security
@@ -327,7 +368,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("CourseConnections", new { courseID = courseID});
         }
-
+        /// <summary>
+        /// A function that displays the view used to delete courses from the system
+        /// </summary>
         public ActionResult DeleteCourse(int? ID)
         {
             #region Security
@@ -346,7 +389,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// A function that deletes a course from the system
+        /// </summary>
         [HttpPost]
         public ActionResult DeleteCourse(AdminCourseOverView newData)
         {
@@ -360,10 +405,10 @@ namespace RipCore.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
-
-       public ActionResult DeletePerson(string ID)
+        /// <summary>
+        /// A function that displays the view used to delete users from the system
+        /// </summary>
+        public ActionResult DeletePerson(string ID)
         {
             #region Security
             if (EnforceSecurity(SecurityState.ADMIN) != null)
@@ -385,7 +430,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// A function that deletes a user from the system
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeletePerson(RegisterViewModel user)
@@ -408,7 +455,9 @@ namespace RipCore.Controllers
             }
             return RedirectToAction("Index", "fdsfsda");
         }
-
+        /// <summary>
+        /// A function used to redirect unauthenticated users
+        /// </summary>
         private ActionResult EnforceSecurity(SecurityState minRequirement)
         {
             SecurityRedirect redirect = accountService.VerifySecurityLevel
@@ -424,7 +473,9 @@ namespace RipCore.Controllers
             return null;
         }
         
-
+        /// <summary>
+        /// TODO
+        /// </summary>
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

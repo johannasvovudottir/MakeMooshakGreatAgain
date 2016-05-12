@@ -231,6 +231,9 @@
   <data name="dummy" xml:space="preserve">
     <value />
   </data>
+  <data name="Icelandic" xml:space="preserve">
+    <value />
+  </data>
   <data name="LogOut" xml:space="preserve">
     <value>Log out</value>
   </data>
