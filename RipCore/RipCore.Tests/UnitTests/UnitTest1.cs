@@ -22,7 +22,13 @@ namespace RipCore.Tests.UnitTests
 
 
 
+            ApplicationUser aUser = new ApplicationUser
+            {
+                Id = "1",
+                Ssn = "1",
+                FullName = "Magnús"
 
+            };
 
             #region Assignments
 
