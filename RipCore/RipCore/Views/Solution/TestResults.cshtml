@@ -1,12 +1,18 @@
 ﻿@model RipCore.Models.ViewModels.SubmissionViewModel
-@if (Model.IsAccepted)
+
+@if (Model.SolutionOutput != "" && Model.ExpectedOutput != "")
 {
-    <h3 class="accepted">Accepted</h3>
+    <p>Your result: @Model.SolutionOutput</p>
+    <p>Expected result: @Model.ExpectedOutput</p>
 }
 
-@if (!Model.IsAccepted)
-{
-    <h3 class="notAccepted">Not Accepted</h3>
-}
-<p>Your result: @Model.SolutionOutput</p>
-<p>Expected result: @Model.ExpectedOutput</p>
+<section>
+    <div id="editor">
+        @Model.Code
+    </div>
+</section>
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    //editor.setTheme("ace/theme/twilight");
+   // editor.getSession().setMode("ace/mode/c#");
+</script>

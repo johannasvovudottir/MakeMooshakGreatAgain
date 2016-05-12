@@ -281,7 +281,7 @@ namespace RipCore.Controllers
             db.SaveChanges();
             //await db.SaveChangesAsync();
             int assignmentID = (from m in db.Milestones where m.ID == submission.MilestoneID select m.AssignmentID).FirstOrDefault();
-            return RedirectToAction("AllSolutions", assignmentID);
+            return RedirectToAction("AllSolutions", new { id = assignmentID});
         }
 
         public ActionResult RegexTest(SubmissionViewModel submission)
@@ -297,6 +297,9 @@ namespace RipCore.Controllers
                 {
                     submission.ExpectedOutput += "Your regex does not accept the string " + item;
                     submission.IsAccepted = false;
+                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+                    db.Submission.Add(newData);
+                    db.SaveChanges();
                     return View(submission);
                 }
                 submission.ExpectedOutput += item + '\n';
@@ -309,10 +312,14 @@ namespace RipCore.Controllers
                 {
                     submission.ExpectedOutput += "Your regex accepts the string " + item;
                     submission.IsAccepted = false;
+                    Submission newData = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+                    db.Submission.Add(newData);
                     return View(submission);
                 }
                 submission.ExpectedOutput += item + '\n';
             }
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            db.Submission.Add(newSubmission);
             submission.IsAccepted = true;
             return View(submission);
         }
@@ -320,12 +327,17 @@ namespace RipCore.Controllers
         [ValidateInput(false)]
         public ActionResult Other(SubmissionViewModel submission)
         {
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            db.Submission.Add(newSubmission);
             return View(submission);
         }
 
         [ValidateInput(false)]
         public ActionResult OtherWithTests(SubmissionViewModel submission)
         {
+            Submission newSubmission = new Submission { MilestoneID = submission.MilestoneID, IsAccepted = submission.IsAccepted, SolutionOutput = submission.SolutionOutput, UserID = User.Identity.GetUserId(), Code = submission.Code, ExpectedOutput = submission.ExpectedOutput };
+            db.Submission.Add(newSubmission);
+            submission.SolutionOutput = submission.Code;
             submission.ExpectedOutput = sService.GetTestCase(submission.MilestoneID);
             return View(submission);
         }
