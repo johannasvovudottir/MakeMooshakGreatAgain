@@ -3,9 +3,10 @@
 @{
     ViewBag.Title = @Resources.Resources.allSolutions;
 }
-@for (int i = 0; i < Model.MilestoneNames.Count; i++)
+
+@for (int i = 0; i < Model.MilestoneNames.Count(); i++)
 {
-    <h2>@Model.MilestoneNames[i]</h2>
+    <h2>@Model.MilestoneNames[i].Title</h2>
     <table>
         <thead>
             <tr>
@@ -21,7 +22,6 @@
             </tr>
         </thead>
         <tbody>
-            
             @foreach (var item in Model.AssignmentSolutions[i])
             {
                 <tr>
@@ -36,54 +36,72 @@
                         </h6>
                     </td>
                     <td>
+                        @if (item.CurrentBest.IsAccepted)
+                        {
+                            <h6>
+                                Accepted      
+                            </h6>
+                        }
+                        else
+                        {
+                            <h6>
+                                Not Accepted
+                            </h6>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+     </table>
+}
+
+@for (int i = 0; i < Model.MilestoneNames.Count; i++)
+{
+    <h2>@Model.MilestoneNames[i].Title</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-md-2">
+                    User
+                </th>
+                <th class="col-md-offset-2 col-md-3">
+                    Submission
+                </th>
+                <th class="col-md-offset-2 col-md-3">
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AssignmentSolutions[i])
+            {
+                <tr>
+                    <td class="col-md-2">
                         <h6>
-                            //TODO isAccepted
+                            Anonymous
                         </h6>
                     </td>
-
-    @for (int i = 0; i < Model.MilestoneNames.Count; i++)
-    {
-        <h2>@Model.MilestoneNames[i]</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th class="col-md-2">
-                        User
-                    </th>
-                    <th class="col-md-offset-2 col-md-3">
-                        Submission
-                    </th>
-                    <th class="col-md-offset-2 col-md-3">
-                        Status
-                    </th>
-
+                    <td class="col-md-offset-2 col-md-3">
+                        <h6>
+                            @Html.ActionLink("See submission", "SubmissionDetails", new { id = item.CurrentBestID, isTeacher = true })
+                        </h6>
+                    </td>
+                    <td class="col-md-offset-2 col-md-3">
+                        @if (item.CurrentBest.IsAccepted)
+                        {
+                            <h6>
+                                Accepted
+                            </h6>
+                        }
+                        else
+                        {
+                            <h6>
+                                Not Accepted
+                            </h6>
+                        }
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var item in Model.AssignmentSolutions[i])
-                {
-                    <tr>
-                        <td class="col-md-2">
-                            <h6>
-                                Anonymous
-                            </h6>
-                        </td>
-                        <td class="col-md-offset-2 col-md-3">
-                            <h6>
-                                @Html.ActionLink("See submission", "SubmissionDetails", new { id = item.CurrentBestID, isTeacher = true })
-                            </h6>
-                        </td>
-                        <td class="col-md-offset-2 col-md-3">
-                            <h6>
-                                //TODO isAccepted
-                            </h6>
-                        </td>
-                    </tr>
-
-                }
-            </tbody>
-        </table>
-    }
-
-
+            }
+        </tbody>
+    </table>
+}

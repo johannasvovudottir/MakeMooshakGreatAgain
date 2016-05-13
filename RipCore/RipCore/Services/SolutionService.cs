@@ -104,11 +104,11 @@ namespace RipCore.Services
         /// A function that returns a list of milestonenames
         /// for a specific assignment
         /// </summary>
-        public List<string> GetMilestoneNames(int id)
+        public List<Milestone> GetMilestoneNames(int id)
         {
-            List<string> names = (from m in db.Milestones
+            List<Milestone> names = (from m in db.Milestones
                                      where m.AssignmentID == id
-                                     select m.Title).ToList();
+                                     select m).ToList();
             return names;
         }
         /// <summary>
@@ -143,7 +143,8 @@ namespace RipCore.Services
                 List<SolutionViewModel> solutionsList = new List<SolutionViewModel>();
                 foreach(var i in tmp)
                 {
-                    SolutionViewModel newViewModel = new SolutionViewModel { ID = i.ID, CurrentBestID = i.SubmissionID, Grade = i.Grade, MilestoneID = i.MilestoneID, StudentID = i.StudentID };
+                    Submission bestSubmission = GetSubmissionByID(i.SubmissionID);
+                    SolutionViewModel newViewModel = new SolutionViewModel { ID = i.ID, CurrentBestID = i.SubmissionID, Grade = i.Grade, MilestoneID = i.MilestoneID, StudentID = i.StudentID, CurrentBest = bestSubmission};
                     solutionsList.Add(newViewModel);
                 }
                 solutions.Add(solutionsList);
