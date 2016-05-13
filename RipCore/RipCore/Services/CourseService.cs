@@ -8,6 +8,10 @@ using System.Web;
 
 namespace RipCore.Services
 {
+    /// <summary>
+    /// A service class that handles requests 
+    /// regarding Course data in the database
+    /// </summary>
     public class CourseService
     {
         /*
@@ -24,7 +28,10 @@ namespace RipCore.Services
         {
             db = dataContext ?? new ApplicationDbContext();
         }
-
+        /// <summary>
+        /// A function that returns a list of all courses
+        /// in the database
+        /// </summary>
         public List<CourseViewModel> GetAllCourses()
         {
             var courses = db.Courses.ToList();
@@ -43,42 +50,54 @@ namespace RipCore.Services
             }
             return viewModel;
         }
-
-        public List<AssignmentViewModel> GetAllUserAssignments(string userID)
-        {
-            var allStudentCourses = GetCoursesWhereStudent(userID);
-            var allTeacherCourses = GetCoursesWhereTeacher(userID);
-            List <AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
-            AssignmentsService tmp = new AssignmentsService();
-            foreach(var item in allStudentCourses)
-            {
-                allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
-            }
-            foreach (var item in allTeacherCourses)
-            {
-                var teacherAssignments = tmp.GetAssignmentsInCourse(item.ID);
-                foreach (var entry in teacherAssignments)
-                {
-                    entry.IsTeacher = true;
-                }
-                allAssignments.AddRange(teacherAssignments);
-            }
-            return allAssignments;
-        }
+        ///// <summary>
+        ///// A function that returns a list of assignmentviewmodels
+        ///// given a specific user ID
+        ///// </summary>
+        //public List<AssignmentViewModel> GetAllUserAssignments(string userID)
+        //{
+        //    var allStudentCourses = GetCoursesWhereStudent(userID);
+        //    var allTeacherCourses = GetCoursesWhereTeacher(userID);
+        //    List<AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
+        //    AssignmentsService tmp = new AssignmentsService();
+        //    foreach (var item in allStudentCourses)
+        //    {
+        //        allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
+        //    }
+        //    foreach (var item in allTeacherCourses)
+        //    {
+        //        var teacherAssignments = tmp.GetAssignmentsInCourse(item.ID);
+        //        foreach (var entry in teacherAssignments)
+        //        {
+        //            entry.IsTeacher = true;
+        //        }
+        //        allAssignments.AddRange(teacherAssignments);
+        //    }
+        //    return allAssignments;
+        //}
+        /// <summary>
+        /// A function that returns a courseoverviewmodel containing 
+        /// all courses for a user and information about them
+        /// </summary>
         public CourseOverViewModel GetAllInfo(string userID)
         {
             string strID = (from u in db.Users where u.Id == userID select u.Id).SingleOrDefault().ToString();
+            AssignmentsService tmp = new AssignmentsService();
             CourseOverViewModel viewModel = new CourseOverViewModel
             {
                 Name = (from u in db.Users where u.Id == userID select u.FullName).SingleOrDefault().ToString(),
                 UserID = userID,
                 whereTeacher = GetCoursesWhereTeacher(userID),
                 whereStudent = GetCoursesWhereStudent(userID),
-                assignments = GetAllUserAssignments(userID)
+                assignments = tmp.GetAllUserAssignments(userID)
             };
             return viewModel;
 
         }
+        /// <summary>
+        /// A function that returns information about a course
+        ///from the database
+        /// </summary>
         public AdminCourseOverView GetCourseByID(int courseID)
         {
             var result = (from x in db.Courses
@@ -101,7 +120,9 @@ namespace RipCore.Services
             };
             return viewModel;
         }
-       
+       /// <summary>
+       /// A function that returns a list of courses for a specific student
+       /// </summary>
         public List<Course> GetCoursesWhereStudent(string userID)
         {
             List<Course> result = (from c in db.CoursesStudents
@@ -111,7 +132,9 @@ namespace RipCore.Services
                                   select cn).ToList(); 
             return result;
         }
-        
+        /// <summary>
+        /// A function that returns a list of courses for a specific teacher
+        /// </summary>
         public List<Course> GetCoursesWhereTeacher(string userID)
         {
             List<Course> result = (from c in db.CoursesTeachers
@@ -121,7 +144,10 @@ namespace RipCore.Services
                                   select cn).ToList();
             return result;
         }
-
+        /// <summary>
+        /// A function that returns a list of all students 
+        /// for a specific course
+        /// </summary>
         public List<ApplicationUser> GetAllStudents(int courseID)
         {
             List<ApplicationUser> result = (from c in db.CoursesStudents
@@ -131,7 +157,10 @@ namespace RipCore.Services
                                    select ct).ToList();
             return result;
         }
-
+        /// <summary>
+        /// A function that returns a list of all teachers 
+        /// for a specific course 
+        /// </summary>
         public List<ApplicationUser> GetAllTeachers(int courseID)
         {
             List<ApplicationUser> result = (from c in db.CoursesTeachers
@@ -141,6 +170,10 @@ namespace RipCore.Services
                                    select ct).ToList();
             return result;
         }
+        /// <summary>
+        /// A function that returns a course name given a 
+        /// specific courseID
+        /// </summary>
         public string getCourseNameByID(int courseID)
         {
             Course result = (from c in db.Courses
@@ -148,6 +181,10 @@ namespace RipCore.Services
                           select c).SingleOrDefault();
             return (result.Name);
         }
+        /// <summary>
+        /// A function that returns information about a course given 
+        /// the course and user IDs 
+        /// </summary>
         public CourseViewModel GetCoursesById(int courseID, string userID)
         {
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);

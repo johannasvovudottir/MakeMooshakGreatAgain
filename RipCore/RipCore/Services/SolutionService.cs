@@ -8,6 +8,10 @@ using System.Web;
 
 namespace RipCore.Services
 {
+    /// <summary>
+    /// A service class that handles requests 
+    /// regarding solution data in the database
+    /// </summary>
     public class SolutionService
     {
         /*
@@ -24,6 +28,10 @@ namespace RipCore.Services
             db = dataContext ?? new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// A function that fetches test cases for a particular milestones
+        /// and makes input/output pairs out of them
+        /// </summary>
         public List<Tuple<string, string>> GetExpectedData(int milestoneID)
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
@@ -42,7 +50,10 @@ namespace RipCore.Services
 
             return IOpairs;
         }
-
+        /// <summary>
+        /// A function that returns a list of submissionviewmodels
+        /// for a specific milestone
+        /// </summary>
         public List<SubmissionViewModel> GetAllSubmissions(int milestoneID)
         {
             List<Submission> submissions = (from s in db.Submission where s.MilestoneID == milestoneID select s).ToList();
@@ -54,7 +65,10 @@ namespace RipCore.Services
             }
             return submissionsViewModel;
         }
-
+        /// <summary>
+        /// A function that fetches submission data for 
+        /// a submission specific view
+        /// </summary>
         public SubmissionViewModel GetSubmissionForView(int id)
         {
             Submission submission = (from s in db.Submission
@@ -65,7 +79,10 @@ namespace RipCore.Services
             viewModel.ExpectedOutput.Add(submission.ExpectedOutput);
             return viewModel;
         }
-
+        /// <summary>
+        /// A function that returns all submissions for a certain user
+        /// and assignment
+        /// </summary>
         public List<List<SubmissionViewModel>> GetSubmissionsForUser(int id, string userID)
         {
             List<int> milestoneIDs = (from m in db.Milestones where m.AssignmentID == id select m.ID).ToList();
@@ -83,7 +100,10 @@ namespace RipCore.Services
             }
             return submissions;
         }
-
+        /// <summary>
+        /// A function that returns a list of milestonenames
+        /// for a specific assignment
+        /// </summary>
         public List<string> GetMilestoneNames(int id)
         {
             List<string> names = (from m in db.Milestones
@@ -91,7 +111,10 @@ namespace RipCore.Services
                                      select m.Title).ToList();
             return names;
         }
-
+        /// <summary>
+        /// A function that returns a list of submissions
+        /// from other users
+        /// </summary>
         public List<List<SubmissionViewModel>> GetAllNotConnected(int assignmentID, string userID)
         {
             List<List<SubmissionViewModel>> otherStudents = new List<List<SubmissionViewModel>>();
@@ -106,7 +129,10 @@ namespace RipCore.Services
 
             return otherStudents;
         }
-
+        /// <summary>
+        /// A function that returns all solutions for a specific
+        /// assignment view
+        /// </summary>
         public List<List<SolutionViewModel>> GetSolutionsForView(int id)
         {
             List<int> milestoneIDs = (from m in db.Milestones where m.AssignmentID == id select m.ID).ToList();
@@ -124,7 +150,10 @@ namespace RipCore.Services
             }
             return solutions;
         }
-
+        /// <summary>
+        /// A function that returns all submissions for a specific
+        /// milestone and user
+        /// </summary>
         public List<SubmissionViewModel> GetUsersSubmissions(int milestoneID, string userID)
         {
             List<Submission> allUserSubmissions = (from m in db.Submission where m.MilestoneID == milestoneID && m.UserID == userID select m).ToList();
@@ -138,7 +167,10 @@ namespace RipCore.Services
             }
             return viewModel;
         }
-
+        /// <summary>
+        /// A function that returns a list of submissions for a specific
+        /// user and assignment
+        /// </summary>
         public List<Submission> GetUserSubmissions(int assignmentID, string userID)
         {
             List<Submission> submissions = (from s in db.Submission
@@ -147,7 +179,10 @@ namespace RipCore.Services
             return submissions;
         }
 
-
+        /// <summary>
+        /// A function that returns a student's best submission(Solution) 
+        /// for a specific milestone 
+        /// </summary>
         public Solution GetBestSubmissionByID(int milestoneID, string StudentID)
         {
             var result = (from s in db.Solutions
@@ -157,7 +192,9 @@ namespace RipCore.Services
 
             return result; 
         }
-
+        /// <summary>
+        /// A function that returns a submission by ID 
+        /// </summary>
         public Submission GetSubmissionByID(int submissionID)
         {
             var result = (from s in db.Submission
@@ -167,7 +204,10 @@ namespace RipCore.Services
 
             return result;
         }
-
+        /// <summary>
+        /// A function that fetches test cases for a particular milestones
+        /// that use regex and makes input/output pairs out of them
+        /// </summary>
         public List<List<string>> GetExpectedRegex(int milestoneID)
         {
             var data = (from a in db.Milestones where a.ID == milestoneID select a.TestCases).FirstOrDefault().ToString();
@@ -189,7 +229,10 @@ namespace RipCore.Services
             strings.Add(temp);
             return strings;
         }
-
+        /// <summary>
+        /// A function that returns a test case string for a 
+        /// specific milestone
+        /// </summary>
         public string GetTestCase(int milestoneID)
         {
             string expectedOutput = (from m in db.Milestones where m.ID == milestoneID select m.TestCases).ToString();
