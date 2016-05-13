@@ -16,7 +16,9 @@ namespace RipCore.Tests.UnitTests
         private CourseService courseServiceTest;
         private SolutionService solutionServiceTest;
 
-
+        /// <summary>
+        /// Initialize instances of all the classes in Mock Database
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
@@ -285,6 +287,9 @@ namespace RipCore.Tests.UnitTests
 
         }
 
+        /// <summary>
+        /// checks if attributes in Mock Database user matches with constant that are the same 
+        /// </summary>
         [TestMethod]
         public void CheckPerson()
         {
@@ -303,6 +308,9 @@ namespace RipCore.Tests.UnitTests
 
         }
 
+        /// <summary>
+        ///  checks if attributes in Mock Database Course matches with constant that are the same
+        /// </summary>
         [TestMethod]
         public void CheckCourse()
         {
@@ -321,6 +329,9 @@ namespace RipCore.Tests.UnitTests
 
         }
 
+        /// <summary>
+        /// checks if number of teacher and students in each Course matches with Mock Database 
+        /// </summary>
         [TestMethod]
         public void CheckTeachersAndStudents()
         {
@@ -342,6 +353,9 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(course2StudentsCount, course2Students.Count);
         }
 
+        /// <summary>
+        /// checks connection between courses in Mock Database
+        /// </summary>
         [TestMethod]
         public void CheckCourseConnection()
         {
@@ -378,6 +392,9 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(courseId1, courses5[0].ID);
         }
 
+        /// <summary>
+        ///  checks if attributes in Mock Database Admin matches with constant that are the same
+        /// </summary>
         [TestMethod]
         public void CheckAdmin()
         {
@@ -391,21 +408,31 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(false, personServiceTest.checkIfAdmin(userId2));
         }
 
+        /// <summary>
+        ///  checks if attributes in Mock Database Milestone matches with constant that are the same
+        /// </summary>
         [TestMethod]
         public void CheckMilestone()
         {
             const string title1 = "mila";
             const int id1 = 1;
+            const int assignmentId1 = 1;
             const string title2 = "samlagning";
 
 
-            List<string> titles = solutionServiceTest.GetMilestoneNames(id1);
+            List<Milestone> milestone = solutionServiceTest.GetMilestoneNames(id1);
 
-            Assert.AreEqual(title1, titles[0]);
-            Assert.AreEqual(title2, titles[1]);
+            Assert.AreEqual(title1, milestone[0].Title);
+            Assert.AreEqual(title2, milestone[1].Title);
+            Assert.AreEqual(id1, milestone[0].ID);
+            Assert.AreEqual(assignmentId1, milestone[0].AssignmentID);
+            
 
         }
 
+        /// <summary>
+        /// checks connection between Solutions and Milestones in Mock Database
+        /// </summary>
         [TestMethod]
         public void CheckSolutionAndMilestones()
         {
@@ -430,6 +457,9 @@ namespace RipCore.Tests.UnitTests
 
         }
 
+        /// <summary>
+        ///  checks if attributes in Mock Database Submission matches with constant that are the same
+        /// </summary>
         [TestMethod]
         public void CheckSubmission()
         {
