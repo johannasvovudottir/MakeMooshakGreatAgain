@@ -24,7 +24,7 @@ else
             <div class="col-md-6">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.Title, @Resources.Resources.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Title, @Resources.Resources.Title, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
@@ -32,7 +32,7 @@ else
             </div>
           
             <div class="form-group">
-                @Html.LabelFor(model => model.Weight, @Resources.Resources.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Weight, @Resources.Resources.Weight, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
@@ -40,19 +40,19 @@ else
             </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ProgrammingLanguageID, @Resources.Resources.Language, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ProgrammingLanguageID, @Resources.Resources.Language, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.ProgrammingLanguageID, Model.programmingLanguages, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ProgrammingLanguageID, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="container">
+                <div>
                     <div class="row">
                         <div class='col-sm-6'>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DueDate, @Resources.Resources.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class='input-group date' id='datetimepickerfordue'>
+                                <div class="input-group date" id='datetimepickerfordue'>
                                     <input type="text" class="form-control col-md-8 text-box single-line" id="DueDate" name="DueDate" data-val="true" data-val-date="The field DueDate must be a date." data-val-required="The DueDate field is required."  />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -63,29 +63,31 @@ else
                         <script type="text/javascript">
                             $(function () {
 
-                                $('#datetimepickerfordue').datetimepicker({format:"DD-mm-YY hh:mm:ss"});
+                                $('#datetimepickerfordue').datetimepicker({format:"DD-MM-YY hh:mm:ss"});
                             });
                         </script>
                     </div>
                 </div>
 
-                <div class="container">
+                <div>
                     <div class="row">
                         <div class='col-sm-6'>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.DueDate, @Resources.Resources.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class='input-group date' id='datetimepickerforcreate'>
-                                    <input type="text" class="form-control col-md-8 text-box single-line" id="DateCreated" name="DateCreated" data-val="true" data-val-date="The field DateCreated must be a date." data-val-required="The DateCreated field is required." />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                <div class="col-md-offset-2 text-right">
+                                    <div class='input-group date' id='datetimepickerforcreate'>
+                                        <input type="text" class="form-control col-md-8 text-box" id="DateCreated" name="DateCreated" data-val="true" data-val-date="The field DateCreated must be a date." data-val-required="The DateCreated field is required." />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <script type="text/javascript">
                         $(function () {
 
-                            $('#datetimepickerforcreate').datetimepicker({format:"DD-mm-YY hh:mm:ss"});
+                            $('#datetimepickerforcreate').datetimepicker({format:"DD-MM-YY hh:mm:ss"});
                         });
                         </script>
                     </div>
@@ -103,11 +105,12 @@ else
             <div class="col-md-6">
 
                 <div id="milestoneContainer">
-                    @for (int i = 0; i < Model.Milestones.Count; i++)
+                    @for (int i = 1; i < Model.Milestones.Count; i++)
                     {
                         counter++;
                         anotherCounter++;
                         <div class="form-group">
+                            <button type="button" class="removeMe btn btn-danger btn-sm fRight"><i class="glyphicon glyphicon-remove"></i></button>
                             <h3><span class="milestoneTitle">@(Model.Milestones[i].Title)</span></h3>
                             @Html.HiddenFor(model => model.Milestones[i].ID)
                             @Html.HiddenFor(model => model.Milestones[i].Title)
@@ -164,12 +167,13 @@ else
 
 
 <div>
-    @Html.ActionLink(@Resources.Resources.BackButton, "Index")
+    @Html.ActionLink(@Resources.Resources.BackButton, "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
 </div>
 
 <script type="text/html" id="milestoneTemplate">
     <div class="form-group">
         <h3><span class="milestoneTitle"></span></h3>
+        <button type="button" class="removeMe btn btn-danger btn-sm fRight"><i class="glyphicon glyphicon-remove"></i></button>
         <input type="hidden" class="milestoneID addMilestoneTitle" />
         <input type="hidden" class="milestoneID addMilestoneWeight" />
         <input type="hidden" class="milestoneID addMilestoneDescription" />

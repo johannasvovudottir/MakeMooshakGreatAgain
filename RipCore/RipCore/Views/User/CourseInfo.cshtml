@@ -2,16 +2,26 @@
 <h2>Hello @Model.UserName</h2>
 <nav class="courses col-md-3">
     <h3>@Resources.Resources.StudentCourses</h3>
-    @foreach (var item in Model.CoursesAsStudent)
-    {
-        <p>@Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })</p>
-    }
-    <h3>@Resources.Resources.TeacherCourses</h3>
+    <ul class="unorderedCourses">
+        @foreach (var item in Model.CoursesAsStudent)
+        {
+            <li>
+                @Html.ActionLink(item.Name, "StudentOverview", new { id = item.ID })
+            </li>
+        }
+    </ul>
+        <h3>@Resources.Resources.TeacherCourses</h3>
+    <ul class="unorderedCourses">
+        @foreach (var item in Model.CoursesAsTeacher)
+        {
+            <li>
+                @Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })
+            </li>
+        }
+    </ul>
 
-    @foreach (var item in Model.CoursesAsTeacher)
-    {
-        <p>@Html.ActionLink(item.Name, "TeacherOverview", new { id = item.ID })</p>
-    }
+        
+        
 </nav>
 <main class="table-responsive col-md-7">
     <h2 class="text-center">@Model.Name</h2>
