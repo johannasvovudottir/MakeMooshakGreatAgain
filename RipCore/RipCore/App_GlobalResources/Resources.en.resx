@@ -318,6 +318,9 @@
   <data name="LogIn" xml:space="preserve">
     <value>Log in</value>
   </data>
+  <data name="Milestone" xml:space="preserve">
+    <value>Milestone</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Get started</value>
   </data>

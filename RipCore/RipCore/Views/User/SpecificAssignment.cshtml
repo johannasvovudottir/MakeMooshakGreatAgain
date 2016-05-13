@@ -63,7 +63,7 @@
                     @Html.HiddenFor(model => model.Title)
                     @Html.HiddenFor(model => model.CourseID)
                     <div class="form-group">
-                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.milestoneSubmissionID, @Resources.Resources.Milestone, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
