@@ -384,7 +384,7 @@ namespace RipCore.Tests.UnitTests
 
         }
         [TestMethod]
-        public void CheckSolution()
+        public void CheckSolutionAndMilestones()
         {
             const string userId1 = "1";
             const string userId2 = "2";
