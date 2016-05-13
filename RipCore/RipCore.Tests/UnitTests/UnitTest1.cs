@@ -4,6 +4,7 @@ using RipCore.Services;
 using RipCore.Models.Entities;
 using RipCore.Models;
 using RipCore.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace RipCore.Tests.UnitTests
 {
@@ -13,6 +14,7 @@ namespace RipCore.Tests.UnitTests
         private PersonService personServiceTest;
         private AssignmentsService assignmentServiceTest;
         private CourseService courseServiceTest;
+        private SolutionService solutionServiceTest;
 
 
         [TestInitialize]
@@ -21,15 +23,43 @@ namespace RipCore.Tests.UnitTests
             MockDataContext mock = new MockDataContext();
 
 
-
-            ApplicationUser aUser = new ApplicationUser
+            #region Users
+            ApplicationUser user1 = new ApplicationUser
             {
                 Id = "1",
-                Ssn = "1",
-                FullName = "Magnús"
-
+                Ssn = "1211",
+                Email = "maggi@prins.is",
+                UserName = "HárbustaMaggi"
+                
             };
 
+            ApplicationUser user2 = new ApplicationUser
+            {
+                Id = "2",
+                Ssn = "2122",
+                Email = "gunnar@Dr.is",
+                UserName = "DrGunni"
+            };
+
+            ApplicationUser user3 = new ApplicationUser
+            {
+                Id = "3",
+                Ssn = "3102",
+                Email = "valgeir@pipar.is",
+                UserName = "vallisport"
+            };
+            ApplicationUser user4 = new ApplicationUser
+            {
+                Id = "4",
+                Ssn = "3789",
+                Email = "siggi@gmail.com",
+                UserName = "siggiskor"
+            };
+            mock.Users.Add(user1);
+            mock.Users.Add(user2);
+            mock.Users.Add(user3);
+            mock.Users.Add(user4);
+            #endregion
             #region Assignments
 
 
@@ -51,6 +81,61 @@ namespace RipCore.Tests.UnitTests
             };
             mock.Assignments.Add(assignment1);
             #endregion
+            #region Milestones
+                        Milestone milestone1 = new Milestone
+            {
+                ID = 1,
+                AssignmentID = 1,
+                Weight = 20,
+                Title = "mila",
+                Description = "mæla milu",
+                Input = "km",
+                Output = "milan",
+                Code = "1km",
+                TestCases = "profa km",
+                ProgrammingLanguageID = 1,
+                DateCreated = new DateTime(2016, 4, 20),
+                DueDate = new DateTime(2016, 4, 30)
+
+            };
+            Milestone milestone2 = new Milestone
+            {
+                ID = 2,
+                AssignmentID = 1,
+                Weight = 25,
+                Title = "samlagning",
+                Description = "leggja saman tölur",
+                Input = "2,8",
+                Output = "10",
+                Code = "cout << 2 + 8;",
+                TestCases = "profa tolur",
+                ProgrammingLanguageID = 2,
+                DateCreated = new DateTime(2016, 5, 20),
+                DueDate = new DateTime(2016, 5, 30)
+
+            };
+            Milestone milestone3 = new Milestone
+            {
+                ID = 3,
+                AssignmentID = 2,
+                Weight = 25,
+                Title = "samlagning",
+                Description = "leggja saman tölur",
+                Input = "2,4",
+                Output = "6",
+                Code = "cout << 2 + 4;",
+                TestCases = "profa tolur",
+                ProgrammingLanguageID = 2,
+                DateCreated = new DateTime(2016, 3, 20),
+                DueDate = new DateTime(2016, 3, 30)
+
+            };
+            mock.Milestones.Add(milestone1);
+            mock.Milestones.Add(milestone2);
+            mock.Milestones.Add(milestone3);
+
+
+            #endregion
             #region CourseTeachers
 
             Course_Teacher courseTeacher1 = new Course_Teacher
@@ -68,13 +153,13 @@ namespace RipCore.Tests.UnitTests
             Course_Teacher courseTeacher3 = new Course_Teacher
             {
                 ID = 3,
-                CourseID = 3,
+                CourseID = 1,
                 TeacherID = "3"
             };
             Course_Teacher courseTeacher4 = new Course_Teacher
             {
                 ID = 4,
-                CourseID = 4,
+                CourseID = 1,
                 TeacherID = "4"
             };
             mock.CoursesTeachers.Add(courseTeacher1);
@@ -99,13 +184,13 @@ namespace RipCore.Tests.UnitTests
             Course_Student courseStudent3 = new Course_Student
             {
                 ID = 3,
-                CourseID = 3,
+                CourseID = 2,
                 UserID = "3"
             };
             Course_Student courseStudent4 = new Course_Student
             {
                 ID = 4,
-                CourseID = 4,
+                CourseID = 1,
                 UserID = "4"
             };
 
@@ -139,8 +224,41 @@ namespace RipCore.Tests.UnitTests
             mock.Courses.Add(course2);
 
             #endregion
+            #region Solutions
+            Solution solution1 = new Solution
+            {
+                ID = 1,
+                MilestoneID = 1,
+                StudentID = "1",
+                Code = "Hello World",
+                SubmissionID = 1,
+                Grade = 6.7M
+            };
+            Solution solution2 = new Solution
+            {
+                ID = 2,
+                MilestoneID = 3,
+                StudentID = "2",
+                Code = "Hello Universe",
+                SubmissionID = 2,
+                Grade = 7.9M
+            };
+            mock.Solutions.Add(solution1);
+            mock.Solutions.Add(solution2);
+
+            #endregion
             #region Admins
 
+            Admin admin1 = new Admin
+            {
+                ID = 1,
+                UserID = "1"
+            };
+            Admin admin2 = new Admin
+            {
+                ID = 2,
+                UserID = "2"
+            };
 
 
             #endregion
@@ -150,6 +268,7 @@ namespace RipCore.Tests.UnitTests
             personServiceTest = new PersonService(mock);
             assignmentServiceTest = new AssignmentsService(mock);
             courseServiceTest = new CourseService(mock);
+            solutionServiceTest = new SolutionService(mock);
 
         }
 
@@ -158,58 +277,25 @@ namespace RipCore.Tests.UnitTests
         [TestMethod]
         public void CheckPerson()
         {
-            /*
-            const int id = 1;
-            const string FullName = "Olafur Valur Valdimarsson";
-            const string UserName = "oli kantur";
-            const int Ssn = 0811903459;
-            const string Email = "olikantur@gmail.com";
-            const string Password = "Olikantur1!";
-            const string Passkey = "babling";
+            
+            const string id = "1";
+            const string userName = "HárbustaMaggi";
+            const string ssn = "1211";
+            const string email = "maggi@prins.is";
 
-            AppUser appUser = personServiceTest.GetPersonById(id);
+            var user = personServiceTest.GetPersonById(id);
 
-            Assert.AreEqual(id, appUser.ID);
-            Assert.AreEqual(UserName, appUser.UserName);
-            Assert.AreEqual(FullName, appUser.FullName);
-            Assert.AreEqual(Ssn, appUser.Ssn);
-            Assert.AreEqual(Email, appUser.Email);
-            Assert.AreEqual(Password, appUser.Password);
-            Assert.AreEqual(Passkey, appUser.Passkey);
-            */
-
-            //const string FullName = "Olafur Valur Valdimarsson";
-            //const int Ssn = 0811903459;
-            //const bool CentrisUser = true;
-
+            Assert.AreEqual(id, user.ID);
+            Assert.AreEqual(userName, user.Username);
+            Assert.AreEqual(ssn, user.Ssn);
+            Assert.AreEqual(email, user.Email);
 
 
         }
 
-        [TestMethod]
-        public void CheckAssignment()
-        {
-            const int id = 1;
-            const string title = "HelloWorld";
-            const int weight = 30;
-            const int courseID = 1;
-            const string testCases = "swag";
-            const string description = "Forrita Hello World!";
-            const int programmingLanguageID = 1;
-
-            AssignmentViewModel assignment = assignmentServiceTest.GetAssignmentsById(id);
-
-            Assert.AreEqual(id, assignment.ID);
-            Assert.AreEqual(title, assignment.Title);
-            Assert.AreEqual(weight, assignment.Weight);
-            Assert.AreEqual(courseID, assignment.CourseID);
-            Assert.AreEqual(testCases, assignment.TestCases);
-            Assert.AreEqual(description, assignment.Description);
-            Assert.AreEqual(programmingLanguageID, assignment.ProgrammingLanguageID);
 
 
 
-        }
 
         [TestMethod]
         public void CheckCourseTeacher()
@@ -262,16 +348,96 @@ namespace RipCore.Tests.UnitTests
         [TestMethod]
         public void CheckCourseConnection()
         {
-            personServiceTest.ConnectStudents("1", 1);
-            personServiceTest.ConnectStudents("2", 1);
-            personServiceTest.ConnectStudents("3", 1);
-            personServiceTest.ConnectStudents("1", 2);
-            personServiceTest.ConnectTeachers("4", 1);
-            personServiceTest.ConnectTeachers("3", 2);
+            
 
-            var courses = courseServiceTest.GetCoursesWhereTeacher("4");
+            const int courseId1 = 1;
+            const int courseId2 = 2;
+            const string userId1 = "1";
+            const string userId2 = "2";
+            const string userId4 = "4";
+            const string teacherId1 = "1";
+            const string teacherId3 = "3";
+            const int courseCount1 = 1;
+            const int courseCount2 = 2;
+            personServiceTest.ConnectStudents(userId1, courseId2);
+            personServiceTest.ConnectStudents(userId2, courseId1);
+            personServiceTest.ConnectTeachers(teacherId1, courseId2);
+            
+
+            List<Course> courses1 = courseServiceTest.GetCoursesWhereStudent(userId1);
+            List<Course> courses2 = courseServiceTest.GetCoursesWhereStudent(userId2);
+            List<Course> courses3 = courseServiceTest.GetCoursesWhereStudent(userId4);
+            List<Course> courses4 = courseServiceTest.GetCoursesWhereTeacher(teacherId1);
+            List<Course> courses5 = courseServiceTest.GetCoursesWhereTeacher(teacherId3);
+
+            Assert.AreEqual(courseCount2, courses1.Count);
+            Assert.AreEqual(courseCount2, courses2.Count);
+            Assert.AreEqual(courseCount1, courses3.Count);
+            Assert.AreEqual(courseCount2, courses4.Count);
+            Assert.AreEqual(courseCount1, courses5.Count);
+
+            Assert.AreEqual(courseId1, courses1[0].ID);
+            Assert.AreEqual(courseId2, courses1[1].ID);
+            Assert.AreEqual(courseId1, courses5[0].ID);
+                
 
         }
+
+        [TestMethod]
+        public void CheckAdmin()
+        {
+            
+            const string userId1 = "1";
+            const string userId2 = "3";
+
+            personServiceTest.makeAdmin(userId1);
+
+            Assert.AreEqual(true, personServiceTest.checkIfAdmin(userId1));
+            Assert.AreEqual(false, personServiceTest.checkIfAdmin(userId2));
+        }
+
+        [TestMethod]
+        public void CheckMilestone()
+        {
+            const string title1 = "mila";
+            const int id1 = 1;
+            const string title2 = "samlagning";
+
+
+            List<string> titles = solutionServiceTest.GetMilestoneNames(id1);
+
+            Assert.AreEqual(title1, titles[0]);
+            Assert.AreEqual(title2, titles[1]);
+
+        }
+        [TestMethod]
+        public void CheckSolution()
+        {
+            const string userId1 = "1";
+            const string userId2 = "2";
+            const int assignmentId1 = 1;
+            const int assignmentId2 = 2;
+
+            List<Solution> solutions1 = assignmentServiceTest.GetSolutionsById(userId1, assignmentId1);
+            List<Solution> solutions2 = assignmentServiceTest.GetSolutionsById(userId2, assignmentId2);
+
+
+
+            Milestone milestone1 = assignmentServiceTest.GetMilestoneBySolution(solutions1[0]);
+            Milestone milestone2 = assignmentServiceTest.GetMilestoneBySolution(solutions2[0]);
+
+            Assert.AreEqual(milestone1.ID, solutions1[0].MilestoneID);
+            Assert.AreEqual(milestone2.ID, solutions2[0].MilestoneID);
+
+            Assert.AreEqual(userId1, solutions1[0].StudentID);
+            Assert.AreEqual(userId2, solutions2[0].StudentID);
+
+        }
+
+
+
+
+
 
 
 
