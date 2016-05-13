@@ -6,13 +6,13 @@
 
 <div class="jumbotron">
     <h1>RipCore</h1>
-    @*<p class="lead">@Resources.Resources.Introduction</p>*@
+    <p class="lead">@Resources.Resources.Introduction</p>
     @if (!Model.IsLoggedIn)
     {
         @Html.Partial("_LoginPartial")
     }
     @if (Model.IsLoggedIn)
     {
-       // @Html.ActionLink(@Resources.Resources.Start, "Index", "User", new { id = ""}, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+        @Html.ActionLink(@Resources.Resources.Start, "Index", "User", new { id = ""}, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
    }
 </div>

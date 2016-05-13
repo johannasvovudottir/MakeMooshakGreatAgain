@@ -309,4 +309,13 @@
   <data name="Weight" xml:space="preserve">
     <value>Vægi</value>
   </data>
+  <data name="Introduction" xml:space="preserve">
+    <value>Ripcore er kerfi sem að nýtist við þýðingu og yfirferð á forritunarverkefnum. </value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Innskrá</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Hefjast handa</value>
+  </data>
 </root>

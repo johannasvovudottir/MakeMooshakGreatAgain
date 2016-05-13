@@ -312,4 +312,13 @@
   <data name="Weight" xml:space="preserve">
     <value>Weight</value>
   </data>
+  <data name="Introduction" xml:space="preserve">
+    <value>Ripcore is a system used for compileing and gradeing programming solutions</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Get started</value>
+  </data>
 </root>
