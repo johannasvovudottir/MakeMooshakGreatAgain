@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 
-//<customErrors mode = "On" >
-  //  </ customErrors >
 
 namespace RipCore.Controllers
 {
@@ -257,7 +255,7 @@ namespace RipCore.Controllers
 
         }
         /// <summary>
-        /// A function that takes a user and gives him admin rights if he doesnt have them.
+        /// A function that takes a user and gives him admin rights if he doesn't have them.
         /// The function removes admin rights from the user if he allready has them
         /// </summary>
         public ActionResult ChangeAdminStatus(string userID, bool isAdmin)
@@ -280,7 +278,7 @@ namespace RipCore.Controllers
             return RedirectToAction("EditPerson", new { id = userID });
         }
        /// <summary>
-       /// A function that displays the view used to connect  users to courses
+       /// A function that displays the view used to connect users to courses
        /// as teachers and students
        /// </summary>
         public ActionResult CourseConnections(int? courseID)
@@ -472,10 +470,7 @@ namespace RipCore.Controllers
             }
             return null;
         }
-        
-        /// <summary>
-        /// TODO
-        /// </summary>
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

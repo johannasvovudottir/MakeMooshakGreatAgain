@@ -315,6 +315,9 @@
   <data name="LogIn" xml:space="preserve">
     <value>Innskrá</value>
   </data>
+  <data name="Mileston" xml:space="preserve">
+    <value>Verkefnisliður</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Hefjast handa</value>
   </data>

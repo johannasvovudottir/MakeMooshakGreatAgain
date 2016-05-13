@@ -430,6 +430,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verkefnisliður.
+        /// </summary>
+        internal static string Mileston {
+            get {
+                return ResourceManager.GetString("Mileston", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verkefnisþáttur.
         /// </summary>
         internal static string Milestone {
