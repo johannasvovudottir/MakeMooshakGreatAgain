@@ -297,35 +297,8 @@ namespace RipCore.Tests.UnitTests
 
 
 
-        [TestMethod]
-        public void CheckCourseTeacher()
-        {/*
-            const int id = 1;
-            const int courseID = 1;
-            const string TeacherID = "1";
 
-            Course courseTeacher = personServiceTest.GetPersonById(TeacherID);
 
-            Assert.AreEqual(id, courseTeacher.ID);
-            Assert.AreEqual(courseID, courseTeacher.CourseID);
-            Assert.AreEqual(TeacherID, courseTeacher.TeacherID);
-            */
-
-        }
-
-        [TestMethod]
-        public void CheckCourseStudent()
-        {
-            //const int id = 1;
-            //const int courseID = 1;
-            //const string studentID = "1";
-
-            //Course_Student courseStudent = personServiceTest.GetPersonById(id);
-
-            //Assert.AreEqual(id, courseStudent.ID);
-            //Assert.AreEqual(courseID, courseStudent.CourseID);
-            //Assert.AreEqual(studentID, courseStudent.UserID);
-        }
 
         [TestMethod]
         public void CheckCourse()
