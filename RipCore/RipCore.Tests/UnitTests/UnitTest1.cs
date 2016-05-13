@@ -247,6 +247,19 @@ namespace RipCore.Tests.UnitTests
             mock.Solutions.Add(solution2);
 
             #endregion
+            #region Submissions
+            Submission submission1 = new Submission
+            {
+                ID = 1,
+                UserID = "1",
+                MilestoneID = 1,
+                IsAccepted = true,
+                SolutionOutput = "Hello World",
+                ExpectedOutput = "Hello World",
+                Code = "cout << Hello World "
+            };
+            mock.Submission.Add(submission1);
+            #endregion
             #region Admins
 
             Admin admin1 = new Admin
@@ -272,8 +285,6 @@ namespace RipCore.Tests.UnitTests
 
         }
 
-
-
         [TestMethod]
         public void CheckPerson()
         {
@@ -290,15 +301,7 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(ssn, user.Ssn);
             Assert.AreEqual(email, user.Email);
 
-
         }
-
-
-
-
-
-
-
 
         [TestMethod]
         public void CheckCourse()
@@ -352,8 +355,6 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(courseId1, courses1[0].ID);
             Assert.AreEqual(courseId2, courses1[1].ID);
             Assert.AreEqual(courseId1, courses5[0].ID);
-                
-
         }
 
         [TestMethod]
@@ -383,6 +384,7 @@ namespace RipCore.Tests.UnitTests
             Assert.AreEqual(title2, titles[1]);
 
         }
+
         [TestMethod]
         public void CheckSolutionAndMilestones()
         {
@@ -407,15 +409,21 @@ namespace RipCore.Tests.UnitTests
 
         }
 
+        [TestMethod]
+        public void CheckSubmission()
+        {
+            const string userId1 = "1";
+            const int assignmentId1 = 1;
+            const int submissionId1 = 1;
+            const int count = 1;
+            
 
+            List<Submission> submissions1 = solutionServiceTest.GetUserSubmissions(assignmentId1, userId1);
 
-
-
-
-
-
-
-
+            Assert.AreEqual(count, submissions1.Count);
+            Assert.AreEqual(userId1, submissions1[0].UserID);
+            Assert.AreEqual(submissionId1, submissions1[0].ID);
+        }
 
     }
 }
