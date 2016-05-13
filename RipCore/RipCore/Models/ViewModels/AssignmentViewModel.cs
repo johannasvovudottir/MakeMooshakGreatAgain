@@ -27,16 +27,16 @@ namespace RipCore.Models.ViewModels
         public List<SelectListItem> milestoneNumber;
         public int milestoneSubmissionID { get; set; }
         public bool IsTeacher { get; set; }
+        [Required(ErrorMessage = "Verkefnið verður að hafa dagsetningu!")]
         public DateTime DateCreated { get; set; }
+        [Required(ErrorMessage = "Verkefnið verður að hafa dagsetningu!")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-
         public DateTime DueDate { get; set; }
         public string TestCases { get; set; }
         public HttpPostedFileBase File { get; set; }
         public int NumberOfHandins { get; set; }
         public int NumberOfNotHandedIn { get; set; }
-        [Required(ErrorMessage = "Verkefnið verður að hafa skilgreint forritunarmál!")]
         public string ProgrammingLanguage { get; set; }
 
     }

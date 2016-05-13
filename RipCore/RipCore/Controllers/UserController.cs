@@ -172,6 +172,31 @@ namespace RipCore.Controllers
                 db.Assignments.Add(assignemnt);
                 db.SaveChanges();
                 int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
+<<<<<<< HEAD
+                if (collection.Count <= 10)
+                {
+                    string milestoneZeroTestCases = collection["Milestones[" + 0 + "].TestCases"];
+                    if (assignmentID != 0)
+                    {
+                        Milestone milestone = new Milestone
+                        {
+                            Title = newData.Title,
+                            Weight = 100,
+                            Description = newData.Description,
+                            TestCases = milestoneZeroTestCases,
+                            AssignmentID = assignmentID,
+                            DateCreated = newData.DateCreated,
+                            DueDate = newData.DueDate,
+                            ProgrammingLanguageID = newData.ProgrammingLanguageID
+                        };
+                        db.Milestones.Add(milestone);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < counter; i++)
+=======
                 //if (newData.File != null || newData.Milestones.Count <= 1)
                 //{
                 string milestoneZeroTestCases = collection["Milestones[" + 0 + "].TestCases"];
@@ -201,26 +226,33 @@ namespace RipCore.Controllers
                     string description = collection["Milestones[" + i + "].Description"];
                     string testCases = collection["Milestones[" + i + "].TestCases"];
                     if (!string.IsNullOrEmpty(title))
+>>>>>>> 629eeccaac635e061599893c5bcf4f88fecbd823
                     {
-                        if (assignmentID != 0)
+                        string title = collection["Milestones[" + i + "].Title"];
+                        int weight;
+                        Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
+                        string description = collection["Milestones[" + i + "].Description"];
+                        string testCases = collection["Milestones[" + i + "].TestCases"];
+                        if (!string.IsNullOrEmpty(title))
                         {
-                            Milestone milestone = new Milestone
+                            if (assignmentID != 0)
                             {
-                                Title = title,
-                                Weight = weight,
-                                Description = description,
-                                TestCases = testCases,
-                                AssignmentID = assignmentID,
-                                DateCreated = newData.DateCreated,
-                                DueDate = newData.DueDate,
-                                ProgrammingLanguageID = newData.ProgrammingLanguageID
-                            };
-                            db.Milestones.Add(milestone);
-                            db.SaveChanges();
+                                Milestone milestone = new Milestone
+                                {
+                                    Title = title,
+                                    Weight = weight,
+                                    Description = description,
+                                    TestCases = testCases,
+                                    AssignmentID = assignmentID,
+                                    DateCreated = newData.DateCreated,
+                                    DueDate = newData.DueDate,
+                                    ProgrammingLanguageID = newData.ProgrammingLanguageID
+                                };
+                                db.Milestones.Add(milestone);
+                                db.SaveChanges();
+                            }
                         }
                     }
-
-                    //}
                 }
                 return RedirectToAction("TeacherOverview", new { id = newData.CourseID });
             }
@@ -265,10 +297,13 @@ namespace RipCore.Controllers
 
             if (ModelState.IsValid)
             {
-                for (int i = 1; i < counter; i++)
+                for (int i = 0; i < counter; i++)
                 {
-                    bool exists = collection["Milestones[" + i + "].ID"] != null;
-                    if (!exists)
+                    int id;
+                    Int32.TryParse(collection["Milestones[" + i + "].ID"], out id);
+                    bool exists = id != 0;
+                    string milestoneTitle = collection["Milestones[" + i + "].Title"];
+                    if (!exists && milestoneTitle != null)
                     {
                         string title = collection["Milestones[" + i + "].Title"];
                         int weight;
@@ -290,10 +325,28 @@ namespace RipCore.Controllers
                     }
                     else if (string.IsNullOrEmpty(collection["Milestones[" + i + "].Title"]))
                     {
-                        int ID;
-                        Int32.TryParse(collection["Milestones[" + i + "].Weight"], out ID);
-                        Milestone milestoneToDelete = (from m in db.Milestones where m.ID == ID select m).FirstOrDefault();
-                        db.Milestones.Remove(milestoneToDelete);
+                        List<int> IDs = (from m in db.Milestones where m.AssignmentID == model.ID select m.ID).ToList();
+                        foreach (var item in IDs)
+                        {
+                            bool existsInCollection = false;
+                            for (int j = 0; j < counter; j++)
+                            {
+                                int mID;
+                                Int32.TryParse(collection["Milestones[" + j + "].ID"], out mID);
+                                if(mID == item)
+                                {
+                                    existsInCollection = true;
+                                    break;
+                                }
+                            }
+                            if(!existsInCollection)
+                            {
+                                Milestone milestoneToDelete = (from m in db.Milestones where m.ID == item select m).FirstOrDefault();
+                                db.Milestones.Remove(milestoneToDelete);
+                                db.SaveChanges();
+                            }
+                        }
+
                     }
                 }
 
