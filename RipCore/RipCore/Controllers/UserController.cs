@@ -32,8 +32,17 @@ namespace RipCore.Controllers
         public ActionResult Index()
         {
             #region Security
-            if (EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.USER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: null
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
 
             var viewModels = service.GetAllInfo(User.Identity.GetUserId());
@@ -47,8 +56,17 @@ namespace RipCore.Controllers
         public ActionResult StudentOverview(int id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.STUDENT, id) != null)
-                return EnforceSecurity(SecurityState.STUDENT, id);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.STUDENT,
+                    userID: User.Identity.GetUserId(),
+                    courseID: id
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
 
             CourseViewModel viewModel = service.GetCoursesById(id, User.Identity.GetUserId());
@@ -64,8 +82,17 @@ namespace RipCore.Controllers
         public ActionResult TeacherOverview(int id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.TEACHER, id) != null)
-                return EnforceSecurity(SecurityState.TEACHER, id);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: id
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
 
             CourseViewModel viewModel = service.GetCoursesById(id, User.Identity.GetUserId());
@@ -80,8 +107,17 @@ namespace RipCore.Controllers
             Assignment assignment = (from a in db.Assignments where a.ID == id select a).FirstOrDefault();
             int courseID = assignment.CourseID;
             #region Security
-            if (EnforceSecurity(SecurityState.TEACHER, courseID) != null)
-                return EnforceSecurity(SecurityState.TEACHER, courseID);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: courseID
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
             assignmentService.deleteAssignment(assignment);
             //if (assignment != null)
@@ -107,8 +143,17 @@ namespace RipCore.Controllers
             int assignmentID = milestone.AssignmentID;
             int courseID = (from a in db.Assignments where a.ID == assignmentID select a.CourseID).FirstOrDefault();
             #region Security
-            if (EnforceSecurity(SecurityState.TEACHER, courseID) != null)
-                return EnforceSecurity(SecurityState.TEACHER, courseID);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: courseID
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
             assignmentService.deleteMilestone(milestone);
             //if (milestone != null)
@@ -140,8 +185,10 @@ namespace RipCore.Controllers
         public ActionResult Create(int id)
         {
             #region Security
-            if(EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER);
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             #endregion
 
             AssignmentViewModel viewModel = new AssignmentViewModel();
@@ -162,8 +209,17 @@ namespace RipCore.Controllers
         public ActionResult Create(AssignmentViewModel newData, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.TEACHER, newData.CourseID) != null)
-                return EnforceSecurity(SecurityState.TEACHER, newData.CourseID);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: newData.CourseID
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
             if (ModelState.IsValid)
             {
@@ -172,7 +228,6 @@ namespace RipCore.Controllers
                 db.Assignments.Add(assignemnt);
                 db.SaveChanges();
                 int assignmentID = (from a in db.Assignments where a.Title == newData.Title && a.CourseID == newData.CourseID select a.ID).FirstOrDefault();
-<<<<<<< HEAD
                 if (collection.Count <= 10)
                 {
                     string milestoneZeroTestCases = collection["Milestones[" + 0 + "].TestCases"];
@@ -196,37 +251,6 @@ namespace RipCore.Controllers
                 else
                 {
                     for (int i = 0; i < counter; i++)
-=======
-                //if (newData.File != null || newData.Milestones.Count <= 1)
-                //{
-                string milestoneZeroTestCases = collection["Milestones[" + 0 + "].TestCases"];
-                if (assignmentID != 0)
-                {
-                    Milestone milestone = new Milestone
-                    {
-                        Title = newData.Title,
-                        Weight = 100,
-                        Description = newData.Description,
-                        TestCases = milestoneZeroTestCases,
-                        AssignmentID = assignmentID,
-                        DateCreated = newData.DateCreated,
-                        DueDate = newData.DueDate,
-                        ProgrammingLanguageID = newData.ProgrammingLanguageID
-                    };
-                    db.Milestones.Add(milestone);
-                    db.SaveChanges();
-                }
-                //}
-                string bla = collection["Milestones[" + 0 + "].ID"];
-                for (int i = 1; i < counter; i++)
-                {
-                    string title = collection["Milestones[" + i + "].Title"];
-                    int weight;
-                    Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
-                    string description = collection["Milestones[" + i + "].Description"];
-                    string testCases = collection["Milestones[" + i + "].TestCases"];
-                    if (!string.IsNullOrEmpty(title))
->>>>>>> 629eeccaac635e061599893c5bcf4f88fecbd823
                     {
                         string title = collection["Milestones[" + i + "].Title"];
                         int weight;
@@ -266,8 +290,12 @@ namespace RipCore.Controllers
         public ActionResult Edit(int id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER);
+            string ID = null;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref ID))
+                return RedirectToAction("Index", "Home");
 
             if (id <= 0)
             {
@@ -291,8 +319,17 @@ namespace RipCore.Controllers
         public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection, IEnumerable<HttpPostedFileBase> files)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.TEACHER, model.CourseID) != null)
-                return EnforceSecurity(SecurityState.TEACHER, model.CourseID);
+            SecurityRedirect redirect = accountService.VerifySecurityLevel
+                (
+                    auth: User.Identity.IsAuthenticated,
+                    secLevel: SecurityState.TEACHER,
+                    userID: User.Identity.GetUserId(),
+                    courseID: model.CourseID
+                );
+            if (redirect.Redirect)
+            {
+                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
+            }
             #endregion
 
             if (ModelState.IsValid)
@@ -333,13 +370,13 @@ namespace RipCore.Controllers
                             {
                                 int mID;
                                 Int32.TryParse(collection["Milestones[" + j + "].ID"], out mID);
-                                if(mID == item)
+                                if (mID == item)
                                 {
                                     existsInCollection = true;
                                     break;
                                 }
                             }
-                            if(!existsInCollection)
+                            if (!existsInCollection)
                             {
                                 Milestone milestoneToDelete = (from m in db.Milestones where m.ID == item select m).FirstOrDefault();
                                 db.Milestones.Remove(milestoneToDelete);
@@ -381,8 +418,13 @@ namespace RipCore.Controllers
         public ActionResult StudentAssignmentView(int id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER, id);
+            string userID = null;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
+
             //if (!accountService.IsUserQualified("Teacher", userID, id) || !accountService.IsUserQualified("Student", userID, id))
             //  return RedirectToAction("Index", "User");
 
@@ -409,8 +451,12 @@ namespace RipCore.Controllers
         public ActionResult PersonInfo(string id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER);
+            string userID = null;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
             #endregion
             PersonViewModel person = personService.GetPersonById(id);
 
@@ -424,8 +470,13 @@ namespace RipCore.Controllers
         public ActionResult TeacherAssignmentView(int id)
         {
             #region Security
-            if (EnforceSecurity(SecurityState.USER) != null)
-                return EnforceSecurity(SecurityState.USER);
+            string userID = null;
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (!accountService.GetIdByUser(User.Identity.Name, ref userID))
+                return RedirectToAction("Index", "Home");
+
             //if (!accountService.IsUserQualified("Teacher", userID, id))
             //  return RedirectToAction("Index", "User");
 
@@ -479,22 +530,6 @@ namespace RipCore.Controllers
             //    //return RedirectToAction("IndexJSON", "MovieApp", new { id = movieId });
             //}
             return Json(TestCases, JsonRequestBehavior.AllowGet);
-        }
-
-        private ActionResult EnforceSecurity(SecurityState minRequirement, int? courseID = null)
-        {
-            SecurityRedirect redirect = accountService.VerifySecurityLevel
-                (
-                    auth: User.Identity.IsAuthenticated,
-                    secLevel: minRequirement,
-                    userID: User.Identity.GetUserId(),
-                    courseID: courseID
-                );
-            if (redirect.Redirect)
-            {
-                return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-            }
-            return null;
         }
 
     }
