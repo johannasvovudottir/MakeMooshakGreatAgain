@@ -6,13 +6,6 @@
     });
 });
 
-
-//$(function() {
-//    $( "#DateCreated" ).datepicker();
-
-//    $("#DueDate").datetimepicker({ format: 'dd/MM/yyyy hh:mm:ss' });
-//});
-
 $(function () {
     $('#formSubmit').click(function () {
         $('#Description').val(editor.getValue())
@@ -21,13 +14,6 @@ $(function () {
 
 $(function () {
     $('#milestone').on('submit', function () {
-        //if ($('#addMilestoneTitle').val() == '')
-        //    alert("You must add a title");
-        //else if ($('#addMilestoneDescription').val() == '')
-        //    alert("You must add a title");
-        //else if ($('#addMilestoneFile').val() == '')
-        //    alert("You must add a title");
-        //else {
             var milestoneRow = $($('#milestoneTemplate').html());
             $('.milestoneTitle', milestoneRow).text($('#addMilestoneTitle').val());
             $('.addMilestoneTitle', milestoneRow).val($('#addMilestoneTitle').val()).attr('name', 'Milestones[' + counter + '].Title').attr('id', 'milestoneTitle' + counter);
@@ -49,20 +35,10 @@ $(function () {
                 processData: false,
                 method: 'POST',
                 success: function (responseData) {
-                    console.log(responseData);
-                    // for (var i = 0; i < responseData.length; i++)
-                    //{
-                    console.log("smu");
-
                     var html = '<input type="hidden" class="milestoneID addMilestoneFile" name = "Milestones[' + anotherCounter + '].TestCases" id = "milestoneFile' + anotherCounter + '" value = "' + responseData + '"/>'
                     $('#anotherCounter').val(++anotherCounter);
                     $('#addMilestoneFile').val('');
                     $('#milestoneContainer').append(html);
-                    // html += '<input type="hidden" ' + responseData[counter].Weight + '</p>';
-                    // <input type="hidden" id="milestoneAssignmentID" name="milestoneAssignmentID" value="@Model.ID" />
-                    //$('#milestoneContainer').append(html);
-                    //}
-                    // $('#reviewtext').val('');
                 },
                 error: function (xhr, err) {
                     console.log("fokk everything");
@@ -70,9 +46,19 @@ $(function () {
                 }
             })
             return false;
-        //}
         });
 });
+
+$(function () {
+    $('#formSubmit').click(function () {
+        $('#Description').val(editor.getValue())
+    });
+});
+
+$(document).ready(function () {
+    InitializeButtons();
+});
+
 function InitializeButtons() {
     $('.removeMe').unbind('click').click(function () {
         $(this).closest('div.form-group').remove();

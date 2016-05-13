@@ -36,7 +36,6 @@ namespace RipCore.Models.ViewModels
         public HttpPostedFileBase File { get; set; }
         public int NumberOfHandins { get; set; }
         public int NumberOfNotHandedIn { get; set; }
-        [Required(ErrorMessage = "Verkefnið verður að hafa skilgreint forritunarmál!")]
         public string ProgrammingLanguage { get; set; }
 
     }
