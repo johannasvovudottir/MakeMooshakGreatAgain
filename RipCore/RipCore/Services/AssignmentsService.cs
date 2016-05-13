@@ -39,8 +39,8 @@ namespace RipCore.Services
         public List<AssignmentViewModel> GetAssignmentsInCourse(int courseId)
         {
             List<Assignment> assignments = (from a in db.Assignments
-                               where a.CourseID == courseId
-                               select a).ToList();
+                                            where a.CourseID == courseId
+                                            select a).ToList();
             List<AssignmentViewModel> assignentViewModel = new List<AssignmentViewModel>();
 
             foreach (var item in assignments)
@@ -84,8 +84,8 @@ namespace RipCore.Services
         public AssignmentViewModel GetAssignmentsById(int assignmentID)
         {
             Assignment item = (from a in db.Assignments
-                        where a.ID == assignmentID
-                        select a).SingleOrDefault();
+                               where a.ID == assignmentID
+                               select a).SingleOrDefault();
             if (item == null)
             {
                 //TODO kasta
@@ -113,12 +113,12 @@ namespace RipCore.Services
                 CourseName = tmp.getCourseNameByID(assignment.CourseID),
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
                 NumberOfHandins = getNumberOfHandIns(assignment.ID),
-                NumberOfNotHandedIn = tmp.GetAllStudents(assignment.CourseID).Count- getNumberOfHandIns(assignment.ID),
+                NumberOfNotHandedIn = tmp.GetAllStudents(assignment.CourseID).Count - getNumberOfHandIns(assignment.ID),
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,
                 DueDate = assignment.DueDate,
                 TestCases = assignment.TestCases,
-                programmingLanguages = GetProgrammingLanguages()   
+                programmingLanguages = GetProgrammingLanguages()
             };
             return viewModel;
         }
@@ -178,8 +178,9 @@ namespace RipCore.Services
         /// </summary>
         public CourseViewModel GetGrades(string userID, CourseViewModel modelToAddTo)
         {
-            foreach (var item in modelToAddTo.Assignments) {
-                item.Grade = GetGradeByAssignment(userID,item.ID);
+            foreach (var item in modelToAddTo.Assignments)
+            {
+                item.Grade = GetGradeByAssignment(userID, item.ID);
             }
             return modelToAddTo;
         }
@@ -196,7 +197,7 @@ namespace RipCore.Services
                 List<Solution> solutionList = (from s in db.Solutions where s.MilestoneID == item && s.StudentID == userID select s).ToList();
                 userSolutions.AddRange(solutionList);
             }
-            return userSolutions; 
+            return userSolutions;
         }
         /// <summary>
         /// A function that calculates the total grade for a specific
@@ -209,7 +210,7 @@ namespace RipCore.Services
             foreach (var item in userSolutions)
             {
                 Milestone currentMilestone = GetMilestoneBySolution(item);
-                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight)/100;
+                totalGrade += (Convert.ToDouble(item.Grade) * currentMilestone.Weight) / 100;
             }
             return totalGrade;
         }
@@ -222,7 +223,7 @@ namespace RipCore.Services
             var result = (from c in db.Milestones
                           where c.ID == userSolution.MilestoneID
                           select c).SingleOrDefault();
-            return result; 
+            return result;
         }
         /// <summary>
         /// A function that returns a programming language string 
@@ -233,7 +234,7 @@ namespace RipCore.Services
             string[] languages = { ".cpp", ".cs", ".c", "regex", "other", "otherNotTests" };
             if (languageID > 5 || languageID <= 0)
                 languageID = 1;
-            return languages[languageID-1];
+            return languages[languageID - 1];
         }
         /// <summary>
         /// A function that return a selectlistitem of milestones
@@ -285,8 +286,8 @@ namespace RipCore.Services
                 db.Milestones.Remove(milestoneToDelete);
                 db.SaveChanges();
 
-               // db.Milestones.Remove(milestone);
-               // db.SaveChanges();
+                // db.Milestones.Remove(milestone);
+                // db.SaveChanges();
             }
         }
         /// <summary>
@@ -297,7 +298,7 @@ namespace RipCore.Services
             if (assignment != null)
             {
                 List<Milestone> milestones = (from m in db.Milestones where m.AssignmentID == assignment.ID select m).ToList();
-                foreach(var item in milestones)
+                foreach (var item in milestones)
                 {
                     deleteMilestone(item);
                 }
