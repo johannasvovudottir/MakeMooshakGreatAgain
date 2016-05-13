@@ -40,8 +40,7 @@ namespace RipCore.Tests
 
 
 
-        // TODO: bætið við fleiri færslum hér
-        // eftir því sem þeim fjölgar í AppDataContext klasanum ykkar!
+
 
         public int SaveChanges()
         {
