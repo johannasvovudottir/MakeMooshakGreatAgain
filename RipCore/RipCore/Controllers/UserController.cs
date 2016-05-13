@@ -492,6 +492,7 @@ namespace RipCore.Controllers
                 return RedirectToAction("Index", "Home");
             #endregion
             PersonViewModel person = personService.GetPersonById(id);
+            
             return View(person);
         }
         /// <summary>

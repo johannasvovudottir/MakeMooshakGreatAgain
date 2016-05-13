@@ -6,23 +6,23 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-10">
-            @Html.LabelFor(model => model.DateCreated, "Date Created", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.LabelFor(model => model.DateCreated, @Resources.Resources.DateCreated, htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.DateCreated)
         </div>
         <div class="col-md-10">
-            @Html.LabelFor(model => model.DueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.LabelFor(model => model.DueDate, @Resources.Resources.DueDate, htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.DueDate)
         </div>
 
 
 
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Weight, "Weight", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.LabelFor(model => model.Weight, @Resources.Resources.Weight, htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.Weight)
 
         </div>
         <div class="col-md-10">
-            @Html.LabelFor(model => model.ProgrammingLanguage, "Language", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.LabelFor(model => model.ProgrammingLanguage, @Resources.Resources.Language, htmlAttributes: new { @class = "control-label col-md-4" })
             @Html.DisplayFor(model => model.ProgrammingLanguage)
         </div>
     </div>
@@ -34,13 +34,13 @@
 
 <div class="container">
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#home">Project Description</a></li>
-        <li><a data-toggle="tab" href="#menu1">Submit in Code Editor</a></li>
+        <li class="active"><a data-toggle="tab" href="#home">@Resources.Resources.Description</a></li>
+        <li><a data-toggle="tab" href="#menu1">@Resources.Resources.editorSubmit</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-            <h3>Project Description</h3>
+            <h3>@Resources.Resources.Description</h3>
             <div id="description">
                 @Html.DisplayFor(modelItem => Model.Description)
                 @Html.HiddenFor(model => model.ID)
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.File, @Resources.Resources.File, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.TextBoxFor(model => model.File, new { type = "file" })
                             @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
@@ -78,7 +78,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Save" id="fileButton" class="btn btn-default" />
+                            <input type="submit" value=@Resources.Resources.Save id="fileButton" class="btn btn-default" />
                         </div>
                     </div>
                 }
@@ -86,12 +86,11 @@
             @if (Model.IsTeacher)
             {
                 <div class="col-md-10">
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
+                    @Html.ActionLink(@Resources.Resources.Edit, "Edit", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-default", @role = "button" })
                 </div>
             }
         </div>
         <div id="menu1" class="tab-pane fade">
-            <h3>Menu 2</h3>
             @if (!Model.IsTeacher)
             {
                 using (Html.BeginForm("SubmitSolution", "Solution", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -99,10 +98,6 @@
                     @Html.AntiForgeryToken()
                     <section>
                         <div id="editor">
-                            function foo(items) {
-                            var x = "All this is syntax highlighted";
-                            return x;
-                            }
                         </div>
                     </section>
                     @Html.HiddenFor(model => model.ID)
@@ -110,7 +105,7 @@
                     @Html.HiddenFor(model => model.CourseID)
                     @Html.HiddenFor(model => model.Solution)
                     <div class="form-group">
-                        @Html.LabelFor(model => model.milestoneSubmissionID, "Milestone", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.milestoneSubmissionID, @Resources.Resources.Milestone, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.DropDownListFor(model => model.milestoneSubmissionID, Model.milestoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.milestoneSubmissionID, "", new { @class = "text-danger" })
@@ -118,7 +113,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Save" id="solutionButton" class="btn btn-default" />
+                            <input type="submit" value=@Resources.Resources.Save id="solutionButton" class="btn btn-default" />
                         </div>
                     </div>
                 }
@@ -129,7 +124,7 @@
 </div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
+    @Html.ActionLink(@Resources.Resources.BackButton, "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
 </div>
 
 

@@ -24,7 +24,7 @@ else
             <div class="col-md-6">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Title, @Resources.Resources.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
@@ -32,7 +32,7 @@ else
             </div>
           
             <div class="form-group">
-                @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Weight, @Resources.Resources.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
@@ -40,34 +40,60 @@ else
             </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ProgrammingLanguageID, "Language", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ProgrammingLanguageID, @Resources.Resources.Language, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.ProgrammingLanguageID, Model.programmingLanguages, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ProgrammingLanguageID, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.DateCreated, "Date Created", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.DateCreated, "{0:dd-MM-yyyy}", new { htmlAttributes = new { @class = "form-control col-md-8" } })
-                    <i id="dateButton2" class="fa fa-calendar col-md-2"></i>
-                    @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DueDate, @Resources.Resources.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class='input-group date' id='datetimepickerfordue'>
+                                    <input type="text" class="form-control col-md-8 text-box single-line" id="DueDate" name="DueDate" data-val="true" data-val-date="The field DueDate must be a date." data-val-required="The DueDate field is required."  />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
 
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.DueDate, "{0:dd-MM-yyyy}", new { htmlAttributes = new { @class = "form-control col-md-8" } })
-                        <i id="dateButton" class="fa fa-calendar col-md-2"></i>
-                        @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                                $('#datetimepickerfordue').datetimepicker({format:"DD-mm-YY hh:mm:ss"});
+                            });
+                        </script>
                     </div>
                 </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DueDate, @Resources.Resources.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class='input-group date' id='datetimepickerforcreate'>
+                                    <input type="text" class="form-control col-md-8 text-box single-line" id="DateCreated" name="DateCreated" data-val="true" data-val-date="The field DateCreated must be a date." data-val-required="The DateCreated field is required." />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                        $(function () {
+
+                            $('#datetimepickerforcreate').datetimepicker({format:"DD-mm-YY hh:mm:ss"});
+                        });
+                        </script>
+                    </div>
+                </div>
+
                
                 <div class="form-group">
-                    @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.File, @Resources.Resources.File, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.TextBoxFor(model => model.File, new { type = "file" })
                         @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
@@ -97,7 +123,7 @@ else
         </div>
         @Html.HiddenFor(model => model.CourseID)
 
-        @Html.LabelFor(model => model.Description)
+        @Html.LabelFor(model => model.Description, @Resources.Resources.Description, htmlAttributes: new { @class = "control-label col-md-2" })
         @Html.HiddenFor(model => model.Description)
         <section>
             <div id="editor">
@@ -111,7 +137,7 @@ else
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" id="formSubmit" class="btn btn-default" />
+                <input type="submit" value="@Resources.Resources.Save" id="formSubmit" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -121,14 +147,14 @@ else
 @using (Html.BeginForm("AddMilestone", "User", FormMethod.Post, new { id = "milestone", enctype = "multipart/form-data" }))
 {
     <div class="form-group">
-        <label for="addMilestone" class="control-label col-md-2">Add Milestone</label>
+        <label for="addMilestone" class="control-label col-md-2">@Resources.Resources.addMilestone</label>
         <div class="col-md-10">
             <input type="text" name="addMilestoneTitle" id="addMilestoneTitle" class="form-control" />
             <input type="text" name="addMilestoneWeight" id="addMilestoneWeight" class="form-control" />
             <textarea id="addMilestoneDescription" name="addMilestoneDescription" class="form-control"></textarea>
             <input type="file" id="addMilestoneFile" name="files" class="form-control" />
             <input type="hidden" id="milestoneAssignmentID" name="milestoneAssignmentID" value="@Model.ID" />
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">@Resources.Resources.addMilestone</button>
         </div>
     </div>
     @Html.ValidationSummary(false)
@@ -138,7 +164,7 @@ else
 
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(@Resources.Resources.BackButton, "Index")
 </div>
 
 <script type="text/html" id="milestoneTemplate">
@@ -158,15 +184,4 @@ else
 <script>
     var editor = ace.edit("editor");
     editor.resize();
-</script>
-
-<script>
-    $('#dateButton2').mouseover(function(){
-        $('#DateCreated').focus();
-    });
-</script>
-<script>
-    $('#dateButton').mouseover(function(){
-        $('#DueDate').focus();
-    });
 </script>

@@ -33,37 +33,37 @@
                         @item.FullName
                     </td>
                     <td>
-                        @Html.ActionLink("See Information", "PersonInfo", new { id = item.Id })
+                        @Html.ActionLink(@Resources.Resources.seeInfo, "PersonInfo", new { id = item.Id })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <h3>Assignments</h3>
+    <h3>@Resources.Resources.Assignments</h3>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>
-                    Projoect
+                    @Resources.Resources.Project
                 </th>
                 <th>
-                    Due date
+                    @Resources.Resources.DueDate
                 </th>
                 <th>
-                    Weight
+                    @Resources.Resources.Weight
                 </th>
                 
                 @if (Model.isTeacher == true)
                 {
-                    <th>All Submissions</th>
+                    <th>@Resources.Resources.AllSubmissions</th>
                 }
                 @if (Model.isTeacher == false)
                 {
-                    <th>Status</th>
+                    <th>@Resources.Resources.Status</th>
                 }
                 </th>
                 <th>
-                    Grade
+                    @Resources.Resources.Grade
                 </th>
             </tr>
         </thead>
@@ -90,11 +90,11 @@
                     <td>
                         @if (Model.isTeacher == true)
                         {
-                            <h4>@Html.ActionLink("See submissions", "AllSolutions", "Solution", new { id = item.ID }, null)</h4>
+                            <h4>@Html.ActionLink(@Resources.Resources.SeeSubmissions, "AllSolutions", "Solution", new { id = item.ID }, null)</h4>
                         }
                         @if (Model.isTeacher == false)
                         {
-                            <h4>@Html.ActionLink("See submissions", "AllSolutions", "Solution", new { id = item.ID }, null)</h4>
+                            <h4>@Html.ActionLink(@Resources.Resources.SeeSubmissions, "AllSolutions", "Solution", new { id = item.ID }, null)</h4>
                         }
                     </td>
                     <td>
@@ -103,7 +103,7 @@
                     <td>
                         @if (Model.isTeacher == true)
                         {
-                            <h4>@Html.ActionLink("Delete", "Delete", new { id = item.ID})</h4>
+                            <h4>@Html.ActionLink(@Resources.Resources.Delete, "Delete", new { id = item.ID})</h4>
                         }
                     </td>
                 </tr>
@@ -114,12 +114,12 @@
 
     @if (Model.isTeacher == true)
     {
-        @Html.ActionLink("New Project", "Create", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
+        @Html.ActionLink(@Resources.Resources.newProject, "Create", new { id = Model.ID }, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
     }
 </main>
 
     <div class="list-unstyled col-md-2">
-        <h3>All Students</h3>
+        <h3>@Resources.Resources.allStudents</h3>
         <ul>
             @foreach (var item in Model.Students)
             {

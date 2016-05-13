@@ -1,5 +1,4 @@
 ﻿$(function () {
-    console.debug("smuu");
     $('#solutionSubmit').hide();
     $('#solutionButton').click(function () {
         $('#Solution').val(editor.getValue())
@@ -7,14 +6,12 @@
     });
 });
 
-$(function () {
-    $("#tabs").tabs();
-});
 
-$(function() {
-    $( "#DateCreated" ).datepicker();
-    $( "#DueDate" ).datepicker();
-});
+//$(function() {
+//    $( "#DateCreated" ).datepicker();
+
+//    $("#DueDate").datetimepicker({ format: 'dd/MM/yyyy hh:mm:ss' });
+//});
 
 $(function () {
     $('#formSubmit').click(function () {

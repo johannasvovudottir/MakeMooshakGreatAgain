@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bæta við.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bæta við áfanga.
         /// </summary>
         internal static string Addcourse {
@@ -75,6 +84,15 @@ namespace Resources {
         internal static string AddCourseTitle {
             get {
                 return ResourceManager.GetString("AddCourseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bæta við verkefnisþætti.
+        /// </summary>
+        internal static string addMilestone {
+            get {
+                return ResourceManager.GetString("addMilestone", resourceCulture);
             }
         }
         
@@ -102,6 +120,42 @@ namespace Resources {
         internal static string AddUserTitle {
             get {
                 return ResourceManager.GetString("AddUserTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allar lausnir.
+        /// </summary>
+        internal static string allSolutions {
+            get {
+                return ResourceManager.GetString("allSolutions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nemendur.
+        /// </summary>
+        internal static string allStudents {
+            get {
+                return ResourceManager.GetString("allStudents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Öll skil.
+        /// </summary>
+        internal static string AllSubmissions {
+            get {
+                return ResourceManager.GetString("AllSubmissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verkefni.
+        /// </summary>
+        internal static string Assignments {
+            get {
+                return ResourceManager.GetString("Assignments", resourceCulture);
             }
         }
         
@@ -187,6 +241,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lagt fyrir.
+        /// </summary>
+        internal static string DateCreated {
+            get {
+                return ResourceManager.GetString("DateCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eyða.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verkefnalýsing.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nemandi.
         /// </summary>
         internal static string DropDownStudent {
@@ -201,6 +282,42 @@ namespace Resources {
         internal static string DropDownTeacher {
             get {
                 return ResourceManager.GetString("DropDownTeacher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skiladagur.
+        /// </summary>
+        internal static string DueDate {
+            get {
+                return ResourceManager.GetString("DueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breyta.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skila í kóðaritli.
+        /// </summary>
+        internal static string editorSubmit {
+            get {
+                return ResourceManager.GetString("editorSubmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breyta verkefni.
+        /// </summary>
+        internal static string editProject {
+            get {
+                return ResourceManager.GetString("editProject", resourceCulture);
             }
         }
         
@@ -232,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skrá.
+        /// </summary>
+        internal static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fullt nafn:.
         /// </summary>
         internal static string FullName {
@@ -241,11 +367,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Einkunn.
+        /// </summary>
+        internal static string Grade {
+            get {
+                return ResourceManager.GetString("Grade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Halló.
         /// </summary>
         internal static string Greeting {
             get {
                 return ResourceManager.GetString("Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forritunarmál.
+        /// </summary>
+        internal static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
@@ -268,6 +412,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verkefnisþáttur.
+        /// </summary>
+        internal static string Milestone {
+            get {
+                return ResourceManager.GetString("Milestone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nýtt verkefni.
+        /// </summary>
+        internal static string newProject {
+            get {
+                return ResourceManager.GetString("newProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yfirlit.
         /// </summary>
         internal static string Overview {
@@ -282,6 +444,15 @@ namespace Resources {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verkefni.
+        /// </summary>
+        internal static string Project {
+            get {
+                return ResourceManager.GetString("Project", resourceCulture);
             }
         }
         
@@ -304,11 +475,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vista.
+        /// </summary>
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skrifið til að leita.
         /// </summary>
         internal static string SearchPlaceholder {
             get {
                 return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sjá upplýsingar.
+        /// </summary>
+        internal static string seeInfo {
+            get {
+                return ResourceManager.GetString("seeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sjá skil.
+        /// </summary>
+        internal static string SeeSubmissions {
+            get {
+                return ResourceManager.GetString("SeeSubmissions", resourceCulture);
             }
         }
         
@@ -331,11 +529,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Staða.
+        /// </summary>
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Áfangar sem nemandi.
         /// </summary>
         internal static string StudentCourses {
             get {
                 return ResourceManager.GetString("StudentCourses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skil.
+        /// </summary>
+        internal static string Submission {
+            get {
+                return ResourceManager.GetString("Submission", resourceCulture);
             }
         }
         
@@ -376,11 +592,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Halló heimur.
+        ///   Looks up a localized string similar to Titill.
         /// </summary>
         internal static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notandi.
+        /// </summary>
+        internal static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
             }
         }
         
@@ -399,6 +624,15 @@ namespace Resources {
         internal static string UserTableName {
             get {
                 return ResourceManager.GetString("UserTableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vægi.
+        /// </summary>
+        internal static string Weight {
+            get {
+                return ResourceManager.GetString("Weight", resourceCulture);
             }
         }
     }

@@ -172,7 +172,7 @@
     <value>Staðfesta</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Halló heimur</value>
+    <value>Titill</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Notendanafn : </value>
@@ -230,5 +230,83 @@
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Útskrá</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Bæta við</value>
+  </data>
+  <data name="addMilestone" xml:space="preserve">
+    <value>Bæta við verkefnisþætti</value>
+  </data>
+  <data name="allSolutions" xml:space="preserve">
+    <value>Allar lausnir</value>
+  </data>
+  <data name="allStudents" xml:space="preserve">
+    <value>Nemendur</value>
+  </data>
+  <data name="AllSubmissions" xml:space="preserve">
+    <value>Öll skil</value>
+  </data>
+  <data name="Assignments" xml:space="preserve">
+    <value>Verkefni</value>
+  </data>
+  <data name="DateCreated" xml:space="preserve">
+    <value>Lagt fyrir</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eyða</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Verkefnalýsing</value>
+  </data>
+  <data name="DueDate" xml:space="preserve">
+    <value>Skiladagur</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Breyta</value>
+  </data>
+  <data name="editorSubmit" xml:space="preserve">
+    <value>Skila í kóðaritli</value>
+  </data>
+  <data name="editProject" xml:space="preserve">
+    <value>Breyta verkefni</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Skrá</value>
+  </data>
+  <data name="Grade" xml:space="preserve">
+    <value>Einkunn</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Forritunarmál</value>
+  </data>
+  <data name="Milestone" xml:space="preserve">
+    <value>Verkefnisþáttur</value>
+  </data>
+  <data name="newProject" xml:space="preserve">
+    <value>Nýtt verkefni</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Verkefni</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="seeInfo" xml:space="preserve">
+    <value>Sjá upplýsingar</value>
+  </data>
+  <data name="SeeSubmissions" xml:space="preserve">
+    <value>Sjá skil</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Staða</value>
+  </data>
+  <data name="Submission" xml:space="preserve">
+    <value>Skil</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Notandi</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Vægi</value>
   </data>
 </root>

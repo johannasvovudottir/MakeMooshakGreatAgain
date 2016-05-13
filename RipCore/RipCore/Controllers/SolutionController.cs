@@ -136,9 +136,7 @@ namespace RipCore.Controllers
 
                 compiler.Start();
                 compiler.StandardInput.WriteLine("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\CSC.EXE " + cppFileName);
-                //compiler.StandardInput.WriteLine("cl.exe /nologo /EHsc " + cppFileName);
                 compiler.StandardInput.WriteLine("exit");
-                //string output = compiler.StandardOutput.ReadToEnd();
                 Debug.WriteLine(compiler.StandardError.ReadLine());
             }
             
@@ -181,7 +179,6 @@ namespace RipCore.Controllers
                 List <Tuple<string, string>> excpectedData = sService.GetExpectedData(data.MilestoneID);
                 for (int i = 0; i < excpectedData.Count; i++)
                 {
-                    //Task.Factory.StartNew(() => { Thread.Sleep(10000); processExe.Kill(); });
                     using (var processExe = new Process())
                     {
                         processExe.StartInfo = processInfoExe;
@@ -191,11 +188,7 @@ namespace RipCore.Controllers
                         {
                             processExe.StandardInput.WriteLine(excpectedData[i].Item1);
                         }
-                        // In this example, we don't try to pass any input
-                        // to the program, but that is of course also
-                        // necessary. We would do that here, using
-                        // processExe.StandardInput.WriteLine(), similar
-                        // to above.
+
                         var RunTimeTest = processExe.WaitForExit(5000);
                         if (!RunTimeTest)
                         {
@@ -205,7 +198,6 @@ namespace RipCore.Controllers
                             return View(data);
                         }
 
-                        // We then read the output of the program:
                         string programOutput = "";
                         while (!processExe.StandardOutput.EndOfStream)
                         {
@@ -266,10 +258,7 @@ namespace RipCore.Controllers
                 data.SolutionOutput.Add("Please add an executable file!");
             }
 
-            // TODO: We might want to clean up after the process, there
-            // may be files we should delete etc.
-
-            Directory.Delete(workingFolder, true); //Deletar moppunni sem vid gerdum adan
+            Directory.Delete(workingFolder, true);
 
             return View(data);
         }
@@ -399,6 +388,11 @@ namespace RipCore.Controllers
             submission.ExpectedOutput[0] = sService.GetTestCase(submission.MilestoneID);
             return View(submission);
         }
+        //public ActionResult ScoreBoard(int milestoneID)
+        //{
+        //    //var tmp = (from m in db.Solutions where m.ID == milestoneID && m. select m).ToList();
+        //    //return View(submission);
+        //}
 
     }
 
