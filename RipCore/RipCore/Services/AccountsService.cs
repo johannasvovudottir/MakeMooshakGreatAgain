@@ -15,14 +15,6 @@ namespace RipCore.Services
  
     public class AccountsService
     {
-        /*
-                private ApplicationDbContext db;
-                public AccountsService()
-                {
-                    db = new ApplicationDbContext();
-                }
-                */
-
         private readonly IAppDataContext db;
 
         public AccountsService(IAppDataContext dataContext = null)

@@ -24,14 +24,6 @@ namespace RipCore.Services
 
         }
 
-        /*
-        private ApplicationDbContext db;
-        private CourseService CourseService = new CourseService();
-        public AssignmentsService()
-        {
-            db = new ApplicationDbContext();
-        }*/
-
         /// <summary>
         /// A function that returns a list of all assignments
         /// in a given course
@@ -268,7 +260,6 @@ namespace RipCore.Services
                     {
                         db.Solutions.Remove(item);
                     }
-                    //db.Solutions.RemoveRange(solutionsToDelete);
                     db.SaveChanges();
                 }
 
@@ -279,15 +270,12 @@ namespace RipCore.Services
                     {
                         db.Submission.Remove(item);
                     }
-                    //db.Submission.RemoveRange(submissionsToDelete);
                     db.SaveChanges();
                 }
                 Milestone milestoneToDelete = db.Milestones.Where(x => x.ID == milestone.ID).SingleOrDefault();
                 db.Milestones.Remove(milestoneToDelete);
                 db.SaveChanges();
 
-                // db.Milestones.Remove(milestone);
-                // db.SaveChanges();
             }
         }
         /// <summary>
@@ -302,9 +290,7 @@ namespace RipCore.Services
                 {
                     deleteMilestone(item);
                 }
-                /*db.Assignments.Remove(assignment);
-                db.SaveChanges();*/
-
+            
                 Assignment assignmentToDelete = db.Assignments.Where(x => x.ID == assignment.ID).SingleOrDefault();
                 db.Assignments.Remove(assignmentToDelete);
                 db.SaveChanges();

@@ -50,31 +50,7 @@ namespace RipCore.Services
             }
             return viewModel;
         }
-        ///// <summary>
-        ///// A function that returns a list of assignmentviewmodels
-        ///// given a specific user ID
-        ///// </summary>
-        //public List<AssignmentViewModel> GetAllUserAssignments(string userID)
-        //{
-        //    var allStudentCourses = GetCoursesWhereStudent(userID);
-        //    var allTeacherCourses = GetCoursesWhereTeacher(userID);
-        //    List<AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
-        //    AssignmentsService tmp = new AssignmentsService();
-        //    foreach (var item in allStudentCourses)
-        //    {
-        //        allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
-        //    }
-        //    foreach (var item in allTeacherCourses)
-        //    {
-        //        var teacherAssignments = tmp.GetAssignmentsInCourse(item.ID);
-        //        foreach (var entry in teacherAssignments)
-        //        {
-        //            entry.IsTeacher = true;
-        //        }
-        //        allAssignments.AddRange(teacherAssignments);
-        //    }
-        //    return allAssignments;
-        //}
+    
         /// <summary>
         /// A function that returns a courseoverviewmodel containing 
         /// all courses for a user and information about them
@@ -190,22 +166,8 @@ namespace RipCore.Services
             var course = db.Courses.SingleOrDefault(x => x.ID == courseID);
             if (course == null)
             {
-                //TODO kastah
-                int petur = 0;
-                string strengur = "helaluja";
+                return null;
             }
-            /*
-            var milestones = db.Milestones.Where(x => x.AssignmendId == assignmentID).Select(x => new AssignmentMilestoneViewModel
-            {
-                Title = x.Title
-            }).ToList();
-                    public string Name { get; set; }
-        public int ID { get; set; }
-        public List<AssignmentViewModel> Asignments { get; set; }
-        public List<User> Teachers { get; set; }
-        public List<User> Students { get; set; }
-        public List<Course> Courses { get; set; }
-            */
 
             AssignmentsService tmp = new AssignmentsService();
             List<AssignmentViewModel> assignentViewModel = tmp.GetAssignmentsInCourse(courseID);

@@ -175,7 +175,15 @@ namespace RipCore.Controllers
             }
             catch
             {
-                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = "test@test.com", FullName = centrisModel.FullName, Ssn = centrisModel.Ssn, CentrisUser=true };
+                string email = null;
+                Random rnd = new Random();
+                int[] num = Enumerable.Range(0, 10).ToArray();
+                for (int i = 0; i < 8; i++)
+                {
+                     email += num[rnd.Next(0, 9)];
+                }
+                email += "@centris.is";
+                var user = new ApplicationUser { UserName = centrisModel.UserName, Email = email, FullName = centrisModel.FullName, Ssn = centrisModel.Ssn, CentrisUser=true };
                 var result = await UserManager.CreateAsync(user, "Centris1#");
                 if (result.Succeeded)
                 {
