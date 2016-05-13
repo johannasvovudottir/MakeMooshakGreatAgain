@@ -62,8 +62,12 @@ else
                         </div>
                         <script type="text/javascript">
                             $(function () {
-
-                                $('#datetimepickerfordue').datetimepicker({format:"DD-MM-YY hh:mm:ss"});
+                                
+                                var dateNow = new Date();
+                                $('#datetimepickerfordue').datetimepicker({
+                                    format:  'hh:mm:ss YYYY-MM-DD',
+                                    defaultDate:moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)                    
+                                });
                             });
                         </script>
                     </div>
@@ -86,8 +90,11 @@ else
                         </div>
                         <script type="text/javascript">
                         $(function () {
-
-                            $('#datetimepickerforcreate').datetimepicker({format:"DD-MM-YY hh:mm:ss"});
+                            var dateNow = new Date();
+                            $('#datetimepickerforcreate').datetimepicker({
+                                format: 'hh:mm:ss YYYY-MM-DD',
+                                defaultDate:moment(dateNow).hours(0).minutes(0).seconds(0).milliseconds(0)                    
+                            });
                         });
                         </script>
                     </div>
