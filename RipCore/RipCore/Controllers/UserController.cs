@@ -236,7 +236,7 @@ namespace RipCore.Controllers
                         Milestone milestone = new Milestone
                         {
                             Title = newData.Title,
-                            Weight = newData.Weight,
+                            Weight = 100,
                             Description = newData.Description,
                             TestCases = milestoneZeroTestCases,
                             AssignmentID = assignmentID,
@@ -250,30 +250,30 @@ namespace RipCore.Controllers
                 //}
                 string bla = collection["Milestones[" + 0 + "].ID"];
                 for (int i = 1; i < counter; i++)
-                {
-                    //bool exists = collection["Milestones[" + i + "].ID"] != "0";
-                    //if (!exists)
-                    //{
+                { 
                     string title = collection["Milestones[" + i + "].Title"];
                     int weight;
                     Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
                     string description = collection["Milestones[" + i + "].Description"];
                     string testCases = collection["Milestones[" + i + "].TestCases"];
-                    if (assignmentID != 0)
+                    if(!string.IsNullOrEmpty(title))
                     {
-                        Milestone milestone = new Milestone
+                        if (assignmentID != 0)
                         {
-                            Title = title,
-                            Weight = weight,
-                            Description = description,
-                            TestCases = testCases,
-                            AssignmentID = assignmentID,
-                            DateCreated = newData.DateCreated,
-                            DueDate = newData.DueDate,
-                            ProgrammingLanguageID = newData.ProgrammingLanguageID
-                        };
-                        db.Milestones.Add(milestone);
-                        db.SaveChanges();
+                            Milestone milestone = new Milestone
+                            {
+                                Title = title,
+                                Weight = weight,
+                                Description = description,
+                                TestCases = testCases,
+                                AssignmentID = assignmentID,
+                                DateCreated = newData.DateCreated,
+                                DueDate = newData.DueDate,
+                                ProgrammingLanguageID = newData.ProgrammingLanguageID
+                            };
+                            db.Milestones.Add(milestone);
+                            db.SaveChanges();
+                        }
                     }
 
                     //}
@@ -302,79 +302,15 @@ namespace RipCore.Controllers
                 return View();
             }
             #endregion
-            //if(id.HasValue)
-            //{ 
+
             AssignmentViewModel viewModel = assignmentService.GetAssignmentsById(id);
             if (viewModel != null)
             {
                 return View(viewModel);
             }
-            //}
             return RedirectToAction("TeacherOverview", new { id = id });
         }
 
-        /*   [HttpPost]
-           public ActionResult Edit(AssignmentViewModel model, int counter, FormCollection collection)
-           {
-               #region Security
-               SecurityRedirect redirect = accountService.VerifySecurityLevel
-                   (
-                       auth: User.Identity.IsAuthenticated,
-                       secLevel: SecurityState.TEACHER,
-                       userID: User.Identity.GetUserId(),
-                       courseID: model.CourseID
-                   );
-               if (redirect.Redirect)
-               {
-                   return RedirectToAction(redirect.ActionName, redirect.ControllerName);
-               }
-               #endregion
-
-               if (ModelState.IsValid)
-               {
-                   for (int i = 0; i < counter; i++)
-                   {
-                       bool exists = collection["Milestones[" + i + "].ID"] != null;
-                       if (!exists)
-                       {
-                           string title = collection["Milestones[" + i + "].Title"];
-                           int weight;
-                           Int32.TryParse(collection["Milestones[" + i + "].Weight"], out weight);
-                           string description = collection["Milestones[" + i + "].Description"];
-
-                           db.Milestones.Add(new Milestone()
-                           {
-                               Title = title,
-                               Weight = weight,
-                               Description = description,
-                               AssignmentID = model.ID
-                           });
-                       }
-                   }
-
-                   Assignment assignment = db.Assignments.Where(x => x.ID == model.ID).SingleOrDefault();
-                   if (assignment != null)
-                   {
-                       assignment.Title = model.Title;
-                       assignment.Description = model.Description;
-                       assignment.DateCreated = model.DateCreated;
-                       assignment.DueDate = model.DueDate;
-                       assignment.ProgrammingLanguageID = model.ProgrammingLanguageID;
-                       if (model.File != null)
-                       {
-                           using (MemoryStream memoryStream = new MemoryStream())
-                           {
-                               model.File.InputStream.CopyTo(memoryStream);
-                               assignment.TestCases = Encoding.ASCII.GetString(memoryStream.ToArray());
-                           }
-                       }
-                       db.SaveChanges();
-                   }
-                   return RedirectToAction("Index");
-
-               }
-               return View(model);
-           }*/
         /// <summary>
         /// A function that edits an assignment in the system
         /// </summary>
@@ -398,7 +334,7 @@ namespace RipCore.Controllers
 
             if (ModelState.IsValid)
             {
-                for (int i = 0; i < counter; i++)
+                for (int i = 1; i < counter; i++)
                 {
                     bool exists = collection["Milestones[" + i + "].ID"] != null;
                     if (!exists)
@@ -419,6 +355,14 @@ namespace RipCore.Controllers
                             DueDate = model.DueDate,
                             ProgrammingLanguageID = model.ProgrammingLanguageID
                         });
+                        db.SaveChanges();
+                    }
+                    else if(string.IsNullOrEmpty(collection["Milestones[" + i + "].Title"]))
+                    {
+                        int ID;
+                        Int32.TryParse(collection["Milestones[" + i + "].Weight"], out ID);
+                        Milestone milestoneToDelete = (from m in db.Milestones where m.ID == ID select m).FirstOrDefault();
+                        db.Milestones.Remove(milestoneToDelete);
                     }
                 }
 
@@ -443,6 +387,8 @@ namespace RipCore.Controllers
                 return RedirectToAction("Index");
 
             }
+            model.programmingLanguages = assignmentService.GetProgrammingLanguages();
+            model.Milestones = new List<AssignmentMilestoneViewModel>();
             return View(model);
         }
         /// <summary>
