@@ -9,11 +9,11 @@ namespace RipCore.Models.ViewModels
     public class AssignmentMilestoneViewModel
     {
         public int ID { get; set; }
-        [Required(ErrorMessage = "You must specify a title!")]
+        [Required(ErrorMessage = "Efnisþátturinn verður að hafa titil!")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "You must add a Milestone description!")]
+        [Required(ErrorMessage = "Efnisþátturinn verður að hafa lýsingu!")]
         public string Description { get; set; }
-        [Range(0, 100, ErrorMessage = "Milestone weight must be in range 0-100")]
+        [Range(0, 100, ErrorMessage = "Vægi efnisþátts verður að vera á bilinu 0-100")]
         public int Weight { get; set; }
         public int AssignmentID { get; set; }
         public HttpPostedFileBase File { get; set; }

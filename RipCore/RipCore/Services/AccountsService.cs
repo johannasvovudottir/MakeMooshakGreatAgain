@@ -68,7 +68,7 @@ namespace RipCore.Services
             return redirect;
         }
 
-        private SecurityState GetHighestUserPrivilege(string userID, int? courseID)
+        public SecurityState GetHighestUserPrivilege(string userID, int? courseID)
         {
             int securityLevel = 0;
             using (var db = new ApplicationDbContext())
