@@ -13,7 +13,7 @@ namespace RipCore.Models.ViewModels
         public string Title { get; set; }
         [Required(ErrorMessage = "Efnisþátturinn verður að hafa lýsingu!")]
         public string Description { get; set; }
-        [Range(0, 100, ErrorMessage = "Vægi efnisþátts verður að vera á bilinu 0-100")]
+        [Range(0, 100, ErrorMessage = "Vægi efnisþáttar verður að vera á bilinu 0-100")]
         public int Weight { get; set; }
         public int AssignmentID { get; set; }
         public HttpPostedFileBase File { get; set; }

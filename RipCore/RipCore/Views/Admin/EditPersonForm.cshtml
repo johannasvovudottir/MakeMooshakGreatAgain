@@ -44,7 +44,6 @@
             @Html.HiddenFor(model => model.Password)
             @Html.HiddenFor(model => model.ConfirmPassword)
 
-
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-2">
                     @if (Model.isAdmin == true)
@@ -77,4 +76,6 @@
     
 }
 
-
+<div>
+    @Html.ActionLink(@Resources.Resources.BackButton, "Index", new { Style = "color:White" }, htmlAttributes: new { @class = "btn btn-default", @role = "button", @style = "color:#f00" })
+</div>
