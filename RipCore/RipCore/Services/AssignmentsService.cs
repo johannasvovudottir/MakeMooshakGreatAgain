@@ -16,7 +16,6 @@ namespace RipCore.Services
     public class AssignmentsService
     {
         private readonly IAppDataContext db;
-        private CourseService CourseService = new CourseService();
 
 
         public AssignmentsService(IAppDataContext dataContext = null)
@@ -53,6 +52,32 @@ namespace RipCore.Services
             return assignentViewModel;
         }
         /// <summary>
+        /// A function that returns a list of assignmentviewmodels
+        /// given a specific user ID
+        /// </summary>
+        public List<AssignmentViewModel> GetAllUserAssignments(string userID)
+        {
+            CourseService temp = new CourseService();
+            var allStudentCourses = temp.GetCoursesWhereStudent(userID);
+            var allTeacherCourses = temp.GetCoursesWhereTeacher(userID);
+            List<AssignmentViewModel> allAssignments = new List<AssignmentViewModel>();
+            AssignmentsService tmp = new AssignmentsService();
+            foreach (var item in allStudentCourses)
+            {
+                allAssignments.AddRange(tmp.GetAssignmentsInCourse(item.ID));
+            }
+            foreach (var item in allTeacherCourses)
+            {
+                var teacherAssignments = tmp.GetAssignmentsInCourse(item.ID);
+                foreach (var entry in teacherAssignments)
+                {
+                    entry.IsTeacher = true;
+                }
+                allAssignments.AddRange(teacherAssignments);
+            }
+            return allAssignments;
+        }
+        /// <summary>
         /// A function that returns a specific assignment
         /// given the assignmentID
         /// </summary>
@@ -77,6 +102,7 @@ namespace RipCore.Services
         /// </summary>
         public AssignmentViewModel SetModel(Assignment assignment, List<AssignmentMilestoneViewModel> milestoneViewModel)
         {
+            CourseService tmp = new CourseService();
             AssignmentViewModel viewModel = new AssignmentViewModel
             {
                 Title = assignment.Title,
@@ -84,10 +110,10 @@ namespace RipCore.Services
                 Description = assignment.Description,
                 ID = assignment.ID,
                 CourseID = assignment.CourseID,
-                CourseName = CourseService.getCourseNameByID(assignment.CourseID),
+                CourseName = tmp.getCourseNameByID(assignment.CourseID),
                 ProgrammingLanguageID = assignment.ProgrammingLanguageID,
                 NumberOfHandins = getNumberOfHandIns(assignment.ID),
-                NumberOfNotHandedIn = CourseService.GetAllStudents(assignment.CourseID).Count- getNumberOfHandIns(assignment.ID),
+                NumberOfNotHandedIn = tmp.GetAllStudents(assignment.CourseID).Count- getNumberOfHandIns(assignment.ID),
                 DateCreated = assignment.DateCreated,
                 Milestones = milestoneViewModel,
                 DueDate = assignment.DueDate,
