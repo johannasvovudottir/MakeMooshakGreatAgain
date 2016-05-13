@@ -44,7 +44,7 @@ namespace RipCore.Services
                     ID = item.ID,
                     Year = item.Year,
                     Semester = item.Semester
-                    
+
                 };
                 viewModel.Add(temp);
             }
@@ -116,20 +116,20 @@ namespace RipCore.Services
                 ID = result.ID,
                 Name = result.Name,
                 Semester = result.Semester,
-                Year = result.Year           
+                Year = result.Year
             };
             return viewModel;
         }
-       /// <summary>
-       /// A function that returns a list of courses for a specific student
-       /// </summary>
+        /// <summary>
+        /// A function that returns a list of courses for a specific student
+        /// </summary>
         public List<Course> GetCoursesWhereStudent(string userID)
         {
             List<Course> result = (from c in db.CoursesStudents
-                                  join cn in db.Courses on c.CourseID equals cn.ID
-                                  join ct in db.Users on c.UserID equals ct.Id
-                                  where (ct.Id == userID)
-                                  select cn).ToList(); 
+                                   join cn in db.Courses on c.CourseID equals cn.ID
+                                   join ct in db.Users on c.UserID equals ct.Id
+                                   where (ct.Id == userID)
+                                   select cn).ToList();
             return result;
         }
         /// <summary>
@@ -138,10 +138,10 @@ namespace RipCore.Services
         public List<Course> GetCoursesWhereTeacher(string userID)
         {
             List<Course> result = (from c in db.CoursesTeachers
-                                  join cn in db.Courses on c.CourseID equals cn.ID
-                                  join ct in db.Users on c.TeacherID equals ct.Id
-                                  where (ct.Id == userID)
-                                  select cn).ToList();
+                                   join cn in db.Courses on c.CourseID equals cn.ID
+                                   join ct in db.Users on c.TeacherID equals ct.Id
+                                   where (ct.Id == userID)
+                                   select cn).ToList();
             return result;
         }
         /// <summary>
@@ -151,10 +151,10 @@ namespace RipCore.Services
         public List<ApplicationUser> GetAllStudents(int courseID)
         {
             List<ApplicationUser> result = (from c in db.CoursesStudents
-                                   join cn in db.Courses on c.CourseID equals cn.ID
-                                   join ct in db.Users on c.UserID equals ct.Id
-                                   where (cn.ID == courseID)
-                                   select ct).ToList();
+                                            join cn in db.Courses on c.CourseID equals cn.ID
+                                            join ct in db.Users on c.UserID equals ct.Id
+                                            where (cn.ID == courseID)
+                                            select ct).ToList();
             return result;
         }
         /// <summary>
@@ -164,10 +164,10 @@ namespace RipCore.Services
         public List<ApplicationUser> GetAllTeachers(int courseID)
         {
             List<ApplicationUser> result = (from c in db.CoursesTeachers
-                                   join cn in db.Courses on c.CourseID equals cn.ID
-                                   join ct in db.Users on c.TeacherID equals ct.Id
-                                   where (cn.ID == courseID)
-                                   select ct).ToList();
+                                            join cn in db.Courses on c.CourseID equals cn.ID
+                                            join ct in db.Users on c.TeacherID equals ct.Id
+                                            where (cn.ID == courseID)
+                                            select ct).ToList();
             return result;
         }
         /// <summary>
@@ -177,8 +177,8 @@ namespace RipCore.Services
         public string getCourseNameByID(int courseID)
         {
             Course result = (from c in db.Courses
-                          where c.ID == courseID
-                          select c).SingleOrDefault();
+                             where c.ID == courseID
+                             select c).SingleOrDefault();
             return (result.Name);
         }
         /// <summary>
@@ -232,6 +232,6 @@ namespace RipCore.Services
             };
             return viewModel;
         }
-        
+
     }
 }

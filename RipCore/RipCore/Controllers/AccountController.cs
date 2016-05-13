@@ -106,12 +106,13 @@ namespace RipCore.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "User");
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
+                    {
+                        if(service.GetHighestUserPrivilege(userID, null) == SecurityState.ADMIN)
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        return RedirectToAction("Index", "User");
+                    }
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);

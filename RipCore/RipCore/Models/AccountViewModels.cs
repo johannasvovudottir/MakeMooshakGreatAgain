@@ -69,6 +69,7 @@ namespace RipCore.Models
         public string UserName { get; set; }
 
         [Required]
+        [RegularExpression(@"^[\p{L} \.'\-]+$", ErrorMessage = "Hér vantar löglegt nafn")]
         [Display(Name = "Fullname")]
         public string FullName { get; set; }
 

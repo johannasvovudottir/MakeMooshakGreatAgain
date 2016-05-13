@@ -21,13 +21,13 @@ $(function () {
 
 $(function () {
     $('#milestone').on('submit', function () {
-        if ($('#addMilestoneTitle').val() == '')
-            alert("You must add a title");
-        else if ($('#addMilestoneDescription').val() == '')
-            alert("You must add a title");
-        else if ($('#addMilestoneFile').val() == '')
-            alert("You must add a title");
-        else {
+        //if ($('#addMilestoneTitle').val() == '')
+        //    alert("You must add a title");
+        //else if ($('#addMilestoneDescription').val() == '')
+        //    alert("You must add a title");
+        //else if ($('#addMilestoneFile').val() == '')
+        //    alert("You must add a title");
+        //else {
             var milestoneRow = $($('#milestoneTemplate').html());
             $('.milestoneTitle', milestoneRow).text($('#addMilestoneTitle').val());
             $('.addMilestoneTitle', milestoneRow).val($('#addMilestoneTitle').val()).attr('name', 'Milestones[' + counter + '].Title').attr('id', 'milestoneTitle' + counter);
@@ -37,7 +37,9 @@ $(function () {
             $('#addMilestoneWeight').val('');
             $('#addMilestoneDescription').val('');
             $('#counter').val(++counter);
+
             $('#milestoneContainer').append(milestoneRow);
+            InitializeButtons();
 
             var formData = new FormData($(this)[0]);
             $.ajax({
@@ -68,6 +70,11 @@ $(function () {
                 }
             })
             return false;
-        }
+        //}
         });
 });
+function InitializeButtons() {
+    $('.removeMe').unbind('click').click(function () {
+        $(this).closest('div.form-group').remove();
+    });
+}
