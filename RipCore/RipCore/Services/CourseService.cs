@@ -8,10 +8,6 @@ using System.Web;
 
 namespace RipCore.Services
 {
-    /// <summary>
-    /// A service class that handles requests 
-    /// regarding Course data in the database
-    /// </summary>
     public class CourseService
     {
         /*

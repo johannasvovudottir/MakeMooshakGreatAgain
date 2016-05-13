@@ -9,10 +9,6 @@ using System.Web.Mvc;
 
 namespace RipCore.Services
 {
-    /// <summary>
-    /// A service class that handles requests 
-    /// regarding assignment data in the database
-    /// </summary>
     public class AssignmentsService
     {
         private readonly IAppDataContext db;

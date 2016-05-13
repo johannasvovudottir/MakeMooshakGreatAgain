@@ -14,16 +14,6 @@ namespace RipCore.Services
     /// </summary>
     public class PersonService
     {
-        /*
-        private readonly ApplicationDbContext db;
-
-        public PersonService()
-        {
-            db = new ApplicationDbContext();
-        }*/
-
-
-
         private readonly IAppDataContext db;
 
 
