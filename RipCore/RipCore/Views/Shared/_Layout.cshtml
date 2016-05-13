@@ -43,11 +43,6 @@
                 @Html.ActionLink("RipCore", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("User", "Index", "User")</li>
-                    <li>@Html.ActionLink("Admin", "Index", "Admin")</li>      
-                </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
