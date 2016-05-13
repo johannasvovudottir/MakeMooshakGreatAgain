@@ -196,10 +196,10 @@
     <value>Kennarar</value>
   </data>
   <data name="MakeAdmin" xml:space="preserve">
-    <value>Gera Notanda að kerfisstjóra</value>
+    <value>Gera notanda að kerfisstjóra</value>
   </data>
   <data name="RemoveAdmin" xml:space="preserve">
-    <value>Kerfisstjóraréttindi fjarlægð</value>
+    <value>Fjarlægja kerfisstjóraréttindi</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Villa!</value>
