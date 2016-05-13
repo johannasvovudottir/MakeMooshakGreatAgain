@@ -9,6 +9,10 @@ using System.Web.Mvc;
 
 namespace RipCore.Services
 {
+    /// <summary>
+    /// A service class that handles requests 
+    /// regarding assignment data in the database
+    /// </summary>
     public class AssignmentsService
     {
         private readonly IAppDataContext db;
@@ -29,6 +33,10 @@ namespace RipCore.Services
             db = new ApplicationDbContext();
         }*/
 
+        /// <summary>
+        /// A function that returns a list of all assignments
+        /// in a given course
+        /// </summary>
         public List<AssignmentViewModel> GetAssignmentsInCourse(int courseId)
         {
             List<Assignment> assignments = (from a in db.Assignments
@@ -44,7 +52,10 @@ namespace RipCore.Services
             }
             return assignentViewModel;
         }
-
+        /// <summary>
+        /// A function that returns a specific assignment
+        /// given the assignmentID
+        /// </summary>
         public AssignmentViewModel GetAssignmentsById(int assignmentID)
         {
             Assignment item = (from a in db.Assignments
@@ -60,7 +71,10 @@ namespace RipCore.Services
             AssignmentViewModel viewModel = SetModel(item, milestoneViewModel);
             return viewModel;
         }
-
+        /// <summary>
+        /// A function that populates the variables for an
+        /// assignmentviewmodel
+        /// </summary>
         public AssignmentViewModel SetModel(Assignment assignment, List<AssignmentMilestoneViewModel> milestoneViewModel)
         {
             AssignmentViewModel viewModel = new AssignmentViewModel
@@ -82,6 +96,9 @@ namespace RipCore.Services
             };
             return viewModel;
         }
+        /// <summary>
+        /// A function that gets an assignmentviewmodel for a specific assignment
+        /// </summary>
         public AssignmentViewModel GetAssignmentForView(int assignmentID, bool teacher)
         {
             AssignmentViewModel viewModel = GetAssignmentsById(assignmentID);
@@ -90,7 +107,10 @@ namespace RipCore.Services
             viewModel.ProgrammingLanguage = GetProgrammingLanguageByID(viewModel.ProgrammingLanguageID);
             return viewModel;
         }
-
+        /// <summary>
+        /// A function that returns a list of all the milestones
+        /// for a specific 
+        /// </summary>
         public List<AssignmentMilestoneViewModel> GetMilestones(int assignmentID)
         {
             var milestones = (from m in db.Milestones
@@ -111,7 +131,10 @@ namespace RipCore.Services
             }
             return milestoneViewModel;
         }
-
+        /// <summary>
+        /// A function that returns a selectlistitem list of all 
+        /// the availible programming languages in the system
+        /// </summary>
         public List<SelectListItem> GetProgrammingLanguages()
         {
             List<SelectListItem> programmingLanguages = new List<SelectListItem>();
@@ -124,7 +147,9 @@ namespace RipCore.Services
             programmingLanguages.Add(new SelectListItem() { Value = "5", Text = "Other (without tests)" });
             return programmingLanguages;
         }
-
+        /// <summary>
+        /// A function that adds grades to a courseviewmodel
+        /// </summary>
         public CourseViewModel GetGrades(string userID, CourseViewModel modelToAddTo)
         {
             foreach (var item in modelToAddTo.Assignments) {
@@ -132,19 +157,25 @@ namespace RipCore.Services
             }
             return modelToAddTo;
         }
-
+        /// <summary>
+        /// A function that returns a list of solutions given a 
+        /// specific user and assignment ID
+        /// </summary>
         public List<Solution> GetSolutionsById(string userID, int assignmentID)
         {
             List<int> bar = (from m in db.Milestones where m.AssignmentID == assignmentID select m.ID).ToList();
             List<Solution> userSolutions = new List<Solution>();
             foreach (var item in bar)
             {
-                List<Solution> smu = (from s in db.Solutions where s.MilestoneID == item && s.StudentID == userID select s).ToList();
-                userSolutions.AddRange(smu);
+                List<Solution> solutionList = (from s in db.Solutions where s.MilestoneID == item && s.StudentID == userID select s).ToList();
+                userSolutions.AddRange(solutionList);
             }
             return userSolutions; 
         }
-
+        /// <summary>
+        /// A function that calculates the total grade for a specific
+        /// assignment using its milestones
+        /// </summary>
         public double GetGradeByAssignment(string userID, int assignmentID)
         {
             List<Solution> userSolutions = GetSolutionsById(userID, assignmentID);
@@ -156,7 +187,10 @@ namespace RipCore.Services
             }
             return totalGrade;
         }
-
+        /// <summary>
+        /// A function that returns a milestone for a 
+        /// specific solution
+        /// </summary>
         public Milestone GetMilestoneBySolution(Solution userSolution)
         {
             var result = (from c in db.Milestones
@@ -164,6 +198,10 @@ namespace RipCore.Services
                           select c).SingleOrDefault();
             return result; 
         }
+        /// <summary>
+        /// A function that returns a programming language string 
+        /// given the language's ID
+        /// </summary>
         public string GetProgrammingLanguageByID(int languageID)
         {
             string[] languages = { ".cpp", ".cs", ".c", "regex", "other", "otherNotTests" };
@@ -171,7 +209,10 @@ namespace RipCore.Services
                 languageID = 1;
             return languages[languageID-1];
         }
-
+        /// <summary>
+        /// A function that return a selectlistitem of milestones
+        /// for a specific assignment
+        /// </summary>
         public List<SelectListItem> GetMilestonesNumber(int assignmentID)
         {
             List<SelectListItem> milestonesNumber = new List<SelectListItem>();
@@ -183,7 +224,10 @@ namespace RipCore.Services
             }
             return milestonesNumber;
         }
-
+        /// <summary>
+        /// A function that deletes a specific milestone, also deletes it's
+        /// solutions and submissions
+        /// </summary>
         public void deleteMilestone(Milestone milestone)
         {
             if (milestone != null)
@@ -219,7 +263,9 @@ namespace RipCore.Services
                // db.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// A function that deletes a specific assignment
+        /// </summary>
         public void deleteAssignment(Assignment assignment)
         {
             if (assignment != null)
@@ -238,6 +284,10 @@ namespace RipCore.Services
             }
         }
 
+        /// <summary>
+        /// A function that returns the number of total hand ins
+        /// for a specific assignment
+        /// </summary>
         public int getNumberOfHandIns(int assignmentID)
         {
             var result = (from c in db.Solutions
