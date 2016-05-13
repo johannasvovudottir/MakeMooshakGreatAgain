@@ -322,6 +322,27 @@ namespace RipCore.Tests.UnitTests
         }
 
         [TestMethod]
+        public void CheckTeachersAndStudents()
+        {
+            const int courseId1 = 1;
+            const int courseId2 = 2;
+            const int course1TeachersCount = 3;
+            const int course2TeachersCount = 1;
+            const int course1StudentsCount = 2;
+            const int course2StudentsCount = 2;
+
+            List<ApplicationUser> course1Students = courseServiceTest.GetAllStudents(courseId1);
+            List<ApplicationUser> course1Teachers = courseServiceTest.GetAllTeachers(courseId1);
+            List<ApplicationUser> course2Students = courseServiceTest.GetAllStudents(courseId2);
+            List<ApplicationUser> course2Teachers = courseServiceTest.GetAllTeachers(courseId2);
+
+            Assert.AreEqual(course1TeachersCount, course1Teachers.Count);
+            Assert.AreEqual(course2TeachersCount, course2Teachers.Count);
+            Assert.AreEqual(course1StudentsCount, course1Students.Count);
+            Assert.AreEqual(course2StudentsCount, course2Students.Count);
+        }
+
+        [TestMethod]
         public void CheckCourseConnection()
         {
             
