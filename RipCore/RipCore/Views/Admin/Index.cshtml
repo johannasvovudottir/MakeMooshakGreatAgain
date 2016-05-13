@@ -66,12 +66,7 @@
 
 </div>
 
-
-
-    
-
-
-    <script>
+<script>
         var $rows = $('#coursetable tr');
         $('#searchcourses').keyup(function () {
             var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
@@ -81,9 +76,9 @@
             }).hide();
         });
 
-    </script>
+</script>
 
-    <script>
+<script>
         var $personrows = $('#persontable tr');
         $('#searchpersons').keyup(function () {
             var value = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
@@ -92,12 +87,13 @@
                 return !~text.indexOf(value);
             }).hide();
         });
-    </script>
+</script>
 
 <script>
     $(".deleteButton").wrapInner("<span class='glyphicon glyphicon-trash' style='font-size:1.5em;'  />");
 </script>
 
+@Scripts.Render("~/Scripts/myScripts")
 
 
     @*http://stackoverflow.com/questions/9127498/how-to-perform-a-real-time-search-and-filter-on-a-html-table*@
